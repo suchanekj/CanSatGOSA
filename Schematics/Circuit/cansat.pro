@@ -1,8 +1,8 @@
-update=Mon 27 Nov 2017 07:13:35 PM CET
+update=Tue 02 Jan 2018 10:11:54 PM CET
 last_client=eeschema
 [eeschema]
 version=1
-LibDir=
+LibDir=../Circuit;Libraries
 NetFmtName=
 RptD_X=0
 RptD_Y=100
@@ -40,3 +40,5 @@ LibName28=atmel
 LibName29=contrib
 LibName30=valves
 LibName31=others
+LibName32=cansat
+LibName33=Relay
