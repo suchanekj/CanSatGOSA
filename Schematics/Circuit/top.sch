@@ -1,6 +1,10 @@
 EESchema Schematic File Version 2
+LIBS:top-rescue
 LIBS:power
 LIBS:device
+LIBS:switches
+LIBS:relays
+LIBS:motors
 LIBS:transistors
 LIBS:conn
 LIBS:linear
@@ -10,7 +14,6 @@ LIBS:cmos4000
 LIBS:adc-dac
 LIBS:memory
 LIBS:xilinx
-LIBS:special
 LIBS:microcontrollers
 LIBS:dsp
 LIBS:microchip
@@ -30,8 +33,7 @@ LIBS:atmel
 LIBS:contrib
 LIBS:valves
 LIBS:top-cache
-LIBS:cansat-cache
-EELAYER 27 0
+EELAYER 25 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
@@ -57,7 +59,7 @@ F 3 "" H 9900 2450 60  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L C C?
+L C-RESCUE-top C?
 U 1 1 5A4CC89B
 P 8750 2400
 F 0 "C?" H 8750 2500 40  0000 L CNN
@@ -68,7 +70,7 @@ F 3 "~" H 8750 2400 60  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L C C?
+L C-RESCUE-top C?
 U 1 1 5A4CC89C
 P 9050 2400
 F 0 "C?" H 9050 2500 40  0000 L CNN
@@ -79,7 +81,7 @@ F 3 "~" H 9050 2400 60  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR?
+L GND-RESCUE-top #PWR?
 U 1 1 5A4CC89D
 P 9050 2700
 F 0 "#PWR?" H 9050 2700 30  0001 C CNN
@@ -96,7 +98,7 @@ SDA
 Text Label 9550 650  0    60   ~ 0
 RST
 $Comp
-L GND #PWR?
+L GND-RESCUE-top #PWR?
 U 1 1 5A4CC89E
 P 9650 1150
 F 0 "#PWR?" H 9650 1150 30  0001 C CNN
@@ -133,7 +135,7 @@ F 3 "" H 9650 950 60  0000 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L +3.3V #PWR?
+L +3.3V-RESCUE-top #PWR?
 U 1 1 5A4CC8A1
 P 9300 2100
 F 0 "#PWR?" H 9300 2060 30  0001 C CNN
@@ -144,7 +146,7 @@ F 3 "" H 9300 2100 60  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR?
+L GND-RESCUE-top #PWR?
 U 1 1 5A4CC8A2
 P 8400 6200
 F 0 "#PWR?" H 8400 6200 30  0001 C CNN
@@ -166,7 +168,7 @@ F 3 "" H 9600 6200 60  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L C C?
+L C-RESCUE-top C?
 U 1 1 5A4CC8A4
 P 10550 5800
 F 0 "C?" H 10550 5900 40  0000 L CNN
@@ -181,7 +183,7 @@ SDA
 Text Label 8600 6100 0    60   ~ 0
 SCL
 $Comp
-L GND #PWR?
+L GND-RESCUE-top #PWR?
 U 1 1 5A4CC8A5
 P 10800 6100
 F 0 "#PWR?" H 10800 6100 30  0001 C CNN
@@ -192,7 +194,7 @@ F 3 "" H 10800 6100 60  0000 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L +3.3V #PWR?
+L +3.3V-RESCUE-top #PWR?
 U 1 1 5A4CC8A6
 P 10750 6000
 F 0 "#PWR?" H 10750 6090 20  0001 C CNN
@@ -203,7 +205,7 @@ F 3 "" H 10750 6000 60  0000 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L LED D?
+L LED-RESCUE-top D?
 U 1 1 5A4CC8A7
 P 9800 3250
 F 0 "D?" H 9800 3350 50  0000 C CNN
@@ -214,7 +216,7 @@ F 3 "~" H 9800 3250 60  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR?
+L GND-RESCUE-top #PWR?
 U 1 1 5A4CC8A8
 P 10450 3250
 F 0 "#PWR?" H 10450 3250 30  0001 C CNN
@@ -226,8 +228,6 @@ F 3 "" H 10450 3250 60  0000 C CNN
 $EndComp
 Wire Wire Line
 	10000 3250 10450 3250
-Wire Wire Line
-	9600 3250 9050 3250
 Wire Wire Line
 	8800 6100 8600 6100
 Wire Wire Line
@@ -301,7 +301,7 @@ SDA
 Text Label 8850 4200 0    60   ~ 0
 SCL
 $Comp
-L +3.3V #PWR?
+L +3.3V-RESCUE-top #PWR?
 U 1 1 5A4CC8D7
 P 10550 4500
 F 0 "#PWR?" H 10550 4460 30  0001 C CNN
@@ -312,7 +312,7 @@ F 3 "" H 10550 4500 60  0000 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L C C?
+L C-RESCUE-top C?
 U 1 1 5A4CC8D8
 P 10700 4800
 F 0 "C?" H 10700 4900 40  0000 L CNN
@@ -323,7 +323,7 @@ F 3 "~" H 10700 4800 60  0000 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L C C?
+L C-RESCUE-top C?
 U 1 1 5A4CC8D9
 P 8650 4500
 F 0 "C?" H 8650 4600 40  0000 L CNN
@@ -334,7 +334,7 @@ F 3 "~" H 8650 4500 60  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L C C?
+L C-RESCUE-top C?
 U 1 1 5A4CC8DA
 P 8750 5100
 F 0 "C?" H 8750 5200 40  0000 L CNN
@@ -345,7 +345,7 @@ F 3 "~" H 8750 5100 60  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR?
+L GND-RESCUE-top #PWR?
 U 1 1 5A4CC8DB
 P 10900 4600
 F 0 "#PWR?" H 10900 4600 30  0001 C CNN
@@ -413,7 +413,7 @@ F 3 "" H 7000 4150 60  0000 C CNN
 	-1   0    0    1   
 $EndComp
 $Comp
-L GND #PWR?
+L GND-RESCUE-top #PWR?
 U 1 1 5A4CC94F
 P 7700 4550
 F 0 "#PWR?" H 7700 4550 30  0001 C CNN
@@ -424,7 +424,7 @@ F 3 "" H 7700 4550 60  0000 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L +3.3V #PWR?
+L +3.3V-RESCUE-top #PWR?
 U 1 1 5A4CC96D
 P 7700 4450
 F 0 "#PWR?" H 7700 4410 30  0001 C CNN
@@ -475,4 +475,21 @@ Wire Wire Line
 	7350 4450 7700 4450
 Wire Wire Line
 	7350 4550 7700 4550
+$Comp
+L R R?
+U 1 1 5A51DC75
+P 9200 3250
+F 0 "R?" V 9280 3250 50  0000 C CNN
+F 1 "150" V 9200 3250 50  0000 C CNN
+F 2 "" V 9130 3250 50  0001 C CNN
+F 3 "" H 9200 3250 50  0001 C CNN
+	1    9200 3250
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	9350 3250 9600 3250
+Wire Wire Line
+	9050 3250 8600 3250
+Text Label 8600 3250 0    60   ~ 0
+LED
 $EndSCHEMATC

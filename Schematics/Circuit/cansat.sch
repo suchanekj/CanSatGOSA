@@ -1,4 +1,5 @@
 EESchema Schematic File Version 2
+LIBS:cansat-rescue
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -10,7 +11,6 @@ LIBS:cmos4000
 LIBS:adc-dac
 LIBS:memory
 LIBS:xilinx
-LIBS:special
 LIBS:microcontrollers
 LIBS:dsp
 LIBS:microchip
@@ -29,11 +29,10 @@ LIBS:opto
 LIBS:atmel
 LIBS:contrib
 LIBS:valves
-LIBS:others
 LIBS:cansat
 LIBS:Relay
 LIBS:cansat-cache
-EELAYER 27 0
+EELAYER 25 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
@@ -59,7 +58,7 @@ F 3 "~" H 3700 2150 60  0000 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L C C1
+L C-RESCUE-cansat C1
 U 1 1 5A1AB74A
 P 3300 2450
 F 0 "C1" H 3300 2550 40  0000 L CNN
@@ -70,7 +69,7 @@ F 3 "~" H 3300 2450 60  0000 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L C C2
+L C-RESCUE-cansat C2
 U 1 1 5A1AB807
 P 3300 1850
 F 0 "C2" H 3300 1950 40  0000 L CNN
@@ -81,7 +80,7 @@ F 3 "~" H 3300 1850 60  0000 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L R R1
+L R-RESCUE-cansat R1
 U 1 1 5A1AB895
 P 3950 2150
 F 0 "R1" V 4030 2150 40  0000 C CNN
@@ -92,7 +91,7 @@ F 3 "~" H 3950 2150 30  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR?
+L GND-RESCUE-cansat #PWR?
 U 1 1 5A1AB907
 P 2850 2150
 F 0 "#PWR?" H 2850 2150 30  0001 C CNN
@@ -136,7 +135,7 @@ F 3 "" H 3800 600 60  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR?
+L GND-RESCUE-cansat #PWR?
 U 1 1 5A1ABDEB
 P 3400 1550
 F 0 "#PWR?" H 3400 1550 30  0001 C CNN
@@ -147,7 +146,7 @@ F 3 "" H 3400 1550 60  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L C C3
+L C-RESCUE-cansat C3
 U 1 1 5A1ABE1A
 P 3000 1200
 F 0 "C3" H 3000 1300 40  0000 L CNN
@@ -158,7 +157,7 @@ F 3 "~" H 3000 1200 60  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L C C4
+L C-RESCUE-cansat C4
 U 1 1 5A1ABE29
 P 3800 1200
 F 0 "C4" H 3800 1300 40  0000 L CNN
@@ -169,7 +168,7 @@ F 3 "~" H 3800 1200 60  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L R R2
+L R-RESCUE-cansat R2
 U 1 1 5A1AC5F9
 P 1150 2100
 F 0 "R2" V 1230 2100 40  0000 C CNN
@@ -191,7 +190,7 @@ F 3 "~" H 1550 2100 60  0000 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L C C5
+L C-RESCUE-cansat C5
 U 1 1 5A1AC62C
 P 1150 2650
 F 0 "C5" H 1150 2750 40  0000 L CNN
@@ -215,7 +214,7 @@ F 3 "" H 1150 1850 60  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR?
+L GND-RESCUE-cansat #PWR?
 U 1 1 5A1AC74E
 P 1150 2850
 F 0 "#PWR?" H 1150 2850 30  0001 C CNN
@@ -234,7 +233,7 @@ SCL
 Text Label 7050 4450 0    60   ~ 0
 SDA
 $Comp
-L R R4
+L R-RESCUE-cansat R4
 U 1 1 5A1ACFDA
 P 1400 3250
 F 0 "R4" V 1480 3250 40  0000 C CNN
@@ -245,7 +244,7 @@ F 3 "~" H 1400 3250 30  0000 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L R R3
+L R-RESCUE-cansat R3
 U 1 1 5A1ACFE9
 P 1400 3450
 F 0 "R3" V 1480 3450 40  0000 C CNN
@@ -260,7 +259,7 @@ SCL
 Text Label 900  3450 0    60   ~ 0
 SDA
 $Comp
-L +3.3V #PWR?
+L +3.3V-RESCUE-cansat #PWR?
 U 1 1 5A1B0206
 P 1750 3350
 F 0 "#PWR?" H 1750 3310 30  0001 C CNN
@@ -282,7 +281,7 @@ F 3 "" H 1450 1050 60  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L C C5
+L C-RESCUE-cansat C5
 U 1 1 5A1B02BD
 P 1050 1200
 F 0 "C5" H 1050 1300 40  0000 L CNN
@@ -293,7 +292,7 @@ F 3 "~" H 1050 1200 60  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L C C6
+L C-RESCUE-cansat C6
 U 1 1 5A1B02C3
 P 1850 1200
 F 0 "C6" H 1850 1300 40  0000 L CNN
@@ -304,7 +303,7 @@ F 3 "~" H 1850 1200 60  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR?
+L GND-RESCUE-cansat #PWR?
 U 1 1 5A1B02C9
 P 1450 1500
 F 0 "#PWR?" H 1450 1500 30  0001 C CNN
@@ -326,7 +325,7 @@ F 3 "" H 1050 600 60  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L +3.3V #PWR?
+L +3.3V-RESCUE-cansat #PWR?
 U 1 1 5A1B02D7
 P 1850 600
 F 0 "#PWR?" H 1850 560 30  0001 C CNN
@@ -337,7 +336,7 @@ F 3 "" H 1850 600 60  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L C C7
+L C-RESCUE-cansat C7
 U 1 1 5A1B0F9C
 P 10950 900
 F 0 "C7" H 10950 1000 40  0000 L CNN
@@ -348,7 +347,7 @@ F 3 "~" H 10950 900 60  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR?
+L GND-RESCUE-cansat #PWR?
 U 1 1 5A1B0FEF
 P 10950 700
 F 0 "#PWR?" H 10950 700 30  0001 C CNN
@@ -359,7 +358,7 @@ F 3 "" H 10950 700 60  0000 C CNN
 	-1   0    0    1   
 $EndComp
 $Comp
-L GND #PWR?
+L GND-RESCUE-cansat #PWR?
 U 1 1 5A1B0FFE
 P 10950 1350
 F 0 "#PWR?" H 10950 1350 30  0001 C CNN
@@ -370,7 +369,7 @@ F 3 "" H 10950 1350 60  0000 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L +3.3V #PWR?
+L +3.3V-RESCUE-cansat #PWR?
 U 1 1 5A1B1053
 P 10950 1850
 F 0 "#PWR?" H 10950 1810 30  0001 C CNN
@@ -381,7 +380,7 @@ F 3 "" H 10950 1850 60  0000 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L +3.3V #PWR?
+L +3.3V-RESCUE-cansat #PWR?
 U 1 1 5A1B10A9
 P 8200 1450
 F 0 "#PWR?" H 8200 1410 30  0001 C CNN
@@ -392,7 +391,7 @@ F 3 "" H 8200 1450 60  0000 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L C C8
+L C-RESCUE-cansat C8
 U 1 1 5A1B1100
 P 8450 1650
 F 0 "C8" H 8450 1750 40  0000 L CNN
@@ -403,7 +402,7 @@ F 3 "~" H 8450 1650 60  0000 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L GND #PWR?
+L GND-RESCUE-cansat #PWR?
 U 1 1 5A1B110F
 P 8150 1650
 F 0 "#PWR?" H 8150 1650 30  0001 C CNN
@@ -418,7 +417,7 @@ SDA
 Text Label 10350 850  0    60   ~ 0
 SCL
 $Comp
-L GND #PWR?
+L GND-RESCUE-cansat #PWR?
 U 1 1 5A1B1343
 P 8150 750
 F 0 "#PWR?" H 8150 750 30  0001 C CNN
@@ -429,7 +428,7 @@ F 3 "" H 8150 750 60  0000 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L C C10
+L C-RESCUE-cansat C10
 U 1 1 5A1B13EA
 P 10850 1600
 F 0 "C10" H 10850 1700 40  0000 L CNN
@@ -440,7 +439,7 @@ F 3 "~" H 10850 1600 60  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L R R7
+L R-RESCUE-cansat R7
 U 1 1 5A1B1509
 P 8500 2000
 F 0 "R7" V 8580 2000 40  0000 C CNN
@@ -455,7 +454,7 @@ XTAL2
 Text Label 4150 2050 0    60   ~ 0
 XTAL1
 $Comp
-L C C9
+L C-RESCUE-cansat C9
 U 1 1 5A1B12B6
 P 8250 1250
 F 0 "C9" H 8250 1350 40  0000 L CNN
@@ -466,7 +465,7 @@ F 3 "~" H 8250 1250 60  0000 C CNN
 	-1   0    0    1   
 $EndComp
 $Comp
-L C C17
+L C-RESCUE-cansat C17
 U 1 1 5A28F703
 P 4950 1250
 F 0 "C17" H 4950 1350 40  0000 L CNN
@@ -477,7 +476,7 @@ F 3 "~" H 4950 1250 60  0000 C CNN
 	-1   0    0    1   
 $EndComp
 $Comp
-L C C18
+L C-RESCUE-cansat C18
 U 1 1 5A28FA69
 P 5250 1250
 F 0 "C18" H 5250 1350 40  0000 L CNN
@@ -488,7 +487,7 @@ F 3 "~" H 5250 1250 60  0000 C CNN
 	-1   0    0    1   
 $EndComp
 $Comp
-L C C19
+L C-RESCUE-cansat C19
 U 1 1 5A28FA6F
 P 5550 1250
 F 0 "C19" H 5550 1350 40  0000 L CNN
@@ -499,7 +498,7 @@ F 3 "~" H 5550 1250 60  0000 C CNN
 	-1   0    0    1   
 $EndComp
 $Comp
-L C C20
+L C-RESCUE-cansat C20
 U 1 1 5A28FA75
 P 5850 1250
 F 0 "C20" H 5850 1350 40  0000 L CNN
@@ -510,7 +509,7 @@ F 3 "~" H 5850 1250 60  0000 C CNN
 	-1   0    0    1   
 $EndComp
 $Comp
-L C C22
+L C-RESCUE-cansat C22
 U 1 1 5A3E3494
 P 2100 1200
 F 0 "C22" H 2100 1300 40  0000 L CNN
@@ -521,7 +520,7 @@ F 3 "~" H 2100 1200 60  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L C C24
+L C-RESCUE-cansat C24
 U 1 1 5A3E34A6
 P 4050 1200
 F 0 "C24" H 4050 1300 40  0000 L CNN
@@ -543,7 +542,7 @@ F 3 "" H 5700 4350 60  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR?
+L GND-RESCUE-cansat #PWR?
 U 1 1 5A3E45AF
 P 5850 1000
 F 0 "#PWR?" H 5850 1000 30  0001 C CNN
@@ -565,7 +564,7 @@ F 3 "" H 6150 1300 60  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR?
+L GND-RESCUE-cansat #PWR?
 U 1 1 5A3E49E1
 P 5700 7400
 F 0 "#PWR?" H 5700 7400 30  0001 C CNN
@@ -611,7 +610,7 @@ F 3 "" H 10250 2500 60  0000 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L GND #PWR?
+L GND-RESCUE-cansat #PWR?
 U 1 1 5A4B9C80
 P 10250 2400
 F 0 "#PWR?" H 10250 2400 30  0001 C CNN
@@ -637,7 +636,7 @@ F 3 "" H 9150 2600 60  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR?
+L GND-RESCUE-cansat #PWR?
 U 1 1 5A4BC235
 P 8450 2650
 F 0 "#PWR?" H 8450 2650 30  0001 C CNN
@@ -648,7 +647,7 @@ F 3 "" H 8450 2650 60  0000 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L +3.3V #PWR?
+L +3.3V-RESCUE-cansat #PWR?
 U 1 1 5A4BC244
 P 9800 2450
 F 0 "#PWR?" H 9800 2410 30  0001 C CNN
@@ -689,7 +688,7 @@ F 3 "" H 1750 4900 60  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR?
+L GND-RESCUE-cansat #PWR?
 U 1 1 5A4BF903
 P 850 4100
 F 0 "#PWR?" H 850 4100 30  0001 C CNN
@@ -700,7 +699,7 @@ F 3 "" H 850 4100 60  0000 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L GND #PWR?
+L GND-RESCUE-cansat #PWR?
 U 1 1 5A4BF91F
 P 850 4900
 F 0 "#PWR?" H 850 4900 30  0001 C CNN
