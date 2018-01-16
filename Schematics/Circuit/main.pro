@@ -1,6 +1,6 @@
-update=06/01/2018 09:38:00
+update=10.1.2018 14:58:36
 version=1
-last_client=eeschema
+last_client=kicad
 [general]
 version=1
 RootSch=
@@ -29,7 +29,7 @@ version=1
 NetIExt=net
 [eeschema]
 version=1
-LibDir=
+LibDir=Libraries
 [eeschema/libraries]
 LibName1=main-rescue
 LibName2=power
@@ -64,3 +64,6 @@ LibName30=opto
 LibName31=atmel
 LibName32=contrib
 LibName33=valves
+LibName34=Libraries/cansat
+LibName35=Libraries/regul
+LibName36=Libraries/Relay

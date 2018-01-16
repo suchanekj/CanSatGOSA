@@ -1,6 +1,6 @@
-update=06/01/2018 21:17:25
+update=14.1.2018 19:29:06
 version=1
-last_client=eeschema
+last_client=kicad
 [general]
 version=1
 RootSch=
@@ -64,3 +64,5 @@ LibName30=opto
 LibName31=atmel
 LibName32=contrib
 LibName33=valves
+LibName34=Libraries/cansat
+LibName35=Libraries/LSM303AGRTR
