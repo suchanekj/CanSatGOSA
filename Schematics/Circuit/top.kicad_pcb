@@ -12,7 +12,7 @@
     (nets 9)
   )
 
-  (page A4)
+  (page User 129.997 102.006)
   (layers
     (0 F.Cu signal)
     (31 B.Cu signal)
@@ -61,13 +61,14 @@
     (pad_size 1.5 1.5)
     (pad_drill 0.6)
     (pad_to_mask_clearance 0)
-    (aux_axis_origin 0 0)
+    (aux_axis_origin 13.5636 13.6652)
+    (grid_origin 13.5636 13.6652)
     (visible_elements 7FFFFFFF)
     (pcbplotparams
       (layerselection 0x0003c_80000001)
       (usegerberextensions true)
       (excludeedgelayer false)
-      (linewidth 0.100000)
+      (linewidth 0.152400)
       (plotframeref false)
       (viasonmask false)
       (mode 1)
