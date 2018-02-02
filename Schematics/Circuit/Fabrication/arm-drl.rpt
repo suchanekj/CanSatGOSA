@@ -1,5 +1,5 @@
 Drill report for C:\Users\sucha\programming\CanSat\Schematics\Circuit\arm.kicad_pcb
-Created on 17/01/2018 14:55:39
+Created on 31/01/2018 20:29:13
 
 Copper Layer Stackup:
     =============================================================
@@ -10,7 +10,7 @@ Copper Layer Stackup:
 Drill file 'arm.drl' contains
     plated through holes:
     =============================================================
-    T1  0.40mm  0.016"  (6 holes)
+    T1  0.60mm  0.024"  (6 holes)
 
     Total plated holes count 6
 
