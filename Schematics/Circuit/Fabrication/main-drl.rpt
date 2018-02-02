@@ -1,5 +1,5 @@
 Drill report for C:\Users\sucha\programming\CanSat\Schematics\Circuit\main.kicad_pcb
-Created on 19/01/2018 23:24:43
+Created on 31/01/2018 21:18:18
 
 Copper Layer Stackup:
     =============================================================
@@ -10,15 +10,16 @@ Copper Layer Stackup:
 Drill file 'main.drl' contains
     plated through holes:
     =============================================================
-    T1  0.50mm  0.020"  (8 holes)
-    T2  0.60mm  0.024"  (210 holes)
-    T3  0.70mm  0.028"  (6 holes)
+    T1  0.60mm  0.024"  (234 holes)
+    T2  0.70mm  0.028"  (10 holes)
+    T3  0.90mm  0.035"  (1 hole)
 
-    Total plated holes count 224
+    Total plated holes count 245
 
 
 Drill file 'main-NPTH.drl' contains
     unplated through holes:
     =============================================================
+    T1  2.00mm  0.079"  (2 holes)
 
-    Total unplated holes count 0
+    Total unplated holes count 2

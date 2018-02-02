@@ -1,10 +1,6 @@
-update=10.1.2018 14:58:36
+update=31/01/2018 18:51:00
 version=1
 last_client=kicad
-[general]
-version=1
-RootSch=
-BoardNm=
 [pcbnew]
 version=1
 LastNetListRead=
@@ -67,3 +63,5 @@ LibName33=valves
 LibName34=Libraries/cansat
 LibName35=Libraries/regul
 LibName36=Libraries/Relay
+[general]
+version=1
