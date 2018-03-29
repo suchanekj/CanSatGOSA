@@ -25,9 +25,8 @@ Contributions are welcome and encouraged.  You can contribute in many ways:
 * Software requirements: AVR chip programmmer
 
 # Used code
-Uses the RFM69 Library from: Feix Rusu (2014), felix@lowpowerlab.com http://lowpowerlab.com/
-inspired by qbcan library and hardware
-http://doc.open-cosmos.com/Qbcan_modular
+* Uses the RFM69 Library from: Feix Rusu (2014), felix@lowpowerlab.com http://lowpowerlab.com/
+* Inspired by qbcan library and hardware http://doc.open-cosmos.com/Qbcan_modular
 
 # Open Source / Contributors
 Betaflight is software that is **open source** and is available free of charge without warranty to all users.
