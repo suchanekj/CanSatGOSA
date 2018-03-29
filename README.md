@@ -29,7 +29,7 @@ Contributions are welcome and encouraged.  You can contribute in many ways:
 * Inspired by qbcan library and hardware http://doc.open-cosmos.com/Qbcan_modular
 
 # Open Source / Contributors
-Betaflight is software that is **open source** and is available free of charge without warranty to all users.
+CanSat software that is **open source** and is available free of charge without warranty to all users.
 
 Current contributors:
 * Suchánek, Jakub (suchanekj)
