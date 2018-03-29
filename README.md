@@ -21,7 +21,7 @@ Contributions are welcome and encouraged.  You can contribute in many ways:
 
 # Requirements
 * Hardware requirements: qbcan for matching ports or an AVR microcontroller with RFM69HW (will have to edit port specifications)
-** Idealy used for original construction of CanSat: https://github.com/suchanekj/CanSatGOSA/tree/master/Schematics/Model
+* Idealy used for original construction of CanSat: https://github.com/suchanekj/CanSatGOSA/tree/master/Schematics/Model
 * Software requirements: AVR chip programmmer
 
 # Used code
