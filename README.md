@@ -4,7 +4,7 @@
 CanSat code is software for autonomous exploration and landings of probe "CanSat" developed by Gymnazium Opatov Space Agency especially by Jakub Suchánek.
 
 The whole code is using following subcodes:
-* GroundStation
+* GroundStation - incoming datas of pressure, position, time and temperature
 * Will be updated (release date is 19th March)
 
 # Support
