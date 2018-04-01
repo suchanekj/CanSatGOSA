@@ -1,4 +1,4 @@
-update=3.2.2018 21:52:46
+update=1.4.2018 13:42:25
 version=1
 last_client=kicad
 [pcbnew]
@@ -65,3 +65,13 @@ LibName35=Libraries/regul
 LibName36=Libraries/Relay
 [general]
 version=1
+[schematic_editor]
+version=1
+PageLayoutDescrFile=
+PlotDirectoryName=
+SubpartIdSeparator=0
+SubpartFirstId=65
+NetFmtName=
+SpiceForceRefPrefix=0
+SpiceUseNetNumbers=0
+LabSize=60
