@@ -30,42 +30,5 @@
   **********************************************************************************
 */
 
-#ifndef CANSAT_CANSAT_H
-#define CANSAT_CANSAT_H
-
-extern int armDistance[4];
-extern int humid;
-extern int32_t accelerometer[3];
-extern int32_t magnetometer[3];
-extern int pressure;
-extern int temperature;
-extern unsigned long last_time_sent;
-
-#include <Arduino.h>
-#include "config.h"
-#ifdef RADIO
-#include "RFM69.h"
-#endif
-#ifdef BAROMETER
-#include "LPS22HBSensor.h"
-#endif
-#ifdef HUMIDITY_SENSOR
-#include "HIH7130.h"
-#endif
-#ifdef RANGING_SENSOR
-#include "VL53L0X.h"
-#endif
-#ifdef COMPASS
-#include "LSM303AGR_ACC_Sensor.h"
-#include "LSM303AGR_MAG_Sensor.h"
-#endif
-#ifdef GSM
-#include "SIM808.h"
-#endif
-#ifdef GPS
-#include "GPS.h"
-#endif
-#include "Transmitting.h"
 #include "drone.h"
-#include "states.h"
-#endif //CANSAT_CANSAT_H
+

@@ -30,42 +30,32 @@
   **********************************************************************************
 */
 
-#ifndef CANSAT_CANSAT_H
-#define CANSAT_CANSAT_H
-
-extern int armDistance[4];
-extern int humid;
-extern int32_t accelerometer[3];
-extern int32_t magnetometer[3];
-extern int pressure;
-extern int temperature;
-extern unsigned long last_time_sent;
+#ifndef CANSAT_STATES_H
+#define CANSAT_STATES_H
 
 #include <Arduino.h>
 #include "config.h"
-#ifdef RADIO
-#include "RFM69.h"
-#endif
-#ifdef BAROMETER
-#include "LPS22HBSensor.h"
-#endif
-#ifdef HUMIDITY_SENSOR
-#include "HIH7130.h"
-#endif
-#ifdef RANGING_SENSOR
-#include "VL53L0X.h"
-#endif
-#ifdef COMPASS
-#include "LSM303AGR_ACC_Sensor.h"
-#include "LSM303AGR_MAG_Sensor.h"
-#endif
-#ifdef GSM
-#include "SIM808.h"
-#endif
-#ifdef GPS
-#include "GPS.h"
-#endif
-#include "Transmitting.h"
 #include "drone.h"
-#include "states.h"
-#endif //CANSAT_CANSAT_H
+#include "CanSat.h"
+
+#define WAITING_FOR_RELEASE 0
+#define OPENING_ARMS 1
+#define BREAKING 2
+#define FLYING 3
+#define LANDING 4
+#define LANDED 5
+#define SLEEPING 6
+
+int state;
+
+void waitingForRelease();
+void openingArms();
+void breaking();
+void flying();
+void landing();
+void landed();
+void sleeping();
+
+void runState();
+
+#endif //CANSAT_STATES_H

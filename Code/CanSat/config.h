@@ -35,6 +35,18 @@
 
 /*
  ***********************************************************************************
+ *  Landing spot
+ */
+
+#define DESTINATION_LAT 499953985
+#define DESTINATION_LON 145534756
+#define DESTINATION_ALT 300
+
+#define EARTH_RADIUS_M 6371009
+#define RAD_PER_DEG (PI / 180.0)
+
+/*
+ ***********************************************************************************
  *  Subsystem definitions
  */
 //comment any line to disable subsystem
@@ -42,14 +54,22 @@
 #define DEBUG
 //#define BAROMETER
 //#define RADIO
-#define HUMIDITY_SENSOR
+//#define HUMIDITY_SENSOR
 //#define RANGING_SENSOR
 //#define COMPASS
+//#define GSM
+#define GPS
 
 /*
  ***********************************************************************************
  *  Parameter definitions
  */
+
+//Transmitting
+
+#define USE_RADIO 1
+#define USE_EMAIL 0
+#define USE_SMS   0
 
 //Radio Parameters
 
@@ -58,6 +78,9 @@
 #define GATEWAYID     1    //Receiving node
 #define ENCRYPTKEY    "Suchy Na Mars!!!" //exactly the same 16 characters/bytes on all nodes!
 
+//GSM parameters
+
+#define GSM_WAIT_FOR_POWER_UP 10000
 
 /*
  ***********************************************************************************
@@ -133,5 +156,12 @@ const uint8_t ARM_RANGING_INTERRUPT[4] = {19, 4, 53, 73};
 #define UV
 
 //Gamma read
+
+
+
+//GPS
+
+#define gpsPort Serial1
+#define GPS_PORT_NAME "Serial1"
 
 #endif //CANSAT_CONFIG_H

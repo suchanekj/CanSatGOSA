@@ -37,14 +37,7 @@
 TwoWire *i2c;
 #endif
 
-#ifdef RADIO
-//Radio object
-char payload[50];
-RFM69 radio;
-#endif
-
 #ifdef BAROMETER
-//barometer object
 LPS22HBSensor *barometer;
 #endif
 
@@ -60,6 +53,14 @@ VL53L0X ranging_sensor;
 LSM303AGR_ACC_Sensor *Acc;
 LSM303AGR_MAG_Sensor *Mag;
 #endif
+
+int armDistance[4];
+int humid;
+int32_t accelerometer[3];
+int32_t magnetometer[3];
+int pressure;
+int temperature;
+unsigned long last_time_sent;
 
 void setup() {
 
@@ -127,29 +128,18 @@ void setup() {
 
 #ifdef DEBUG
     // Led blinking.
-    for (int i = 0; i < 20; i++) {
+    for (int i = 0; i < 1; i++) {
         digitalWrite(TOP_LED, HIGH);
         delay(250);
         digitalWrite(TOP_LED, LOW);
         delay(250);
     }
     DEBUG_SERIAL.begin(9600);
+    while(!DEBUG_SERIAL);
     DEBUG_SERIAL.println("REBOOT");
 #endif
 
-#ifdef RADIO
-    //Initialize radio
-    radio.setCS(RFM_SS);
-    radio.initialize(FREQUENCY,NODEID,NETWORKID);
-    radio.setHighPower(); //To use the high power capabilities of the RFM69HW
-    radio.encrypt(ENCRYPTKEY);
-    radio.setFrequency(434200000);
-#ifdef DEBUG
-    DEBUG_SERIAL.print("Transmitting at ");
-    int f = radio.getFrequency();
-    DEBUG_SERIAL.println(f);
-#endif
-#endif
+
 
 #if defined(BAROMETER) || defined(RANGING_SENSOR) || defined(COMPASS) || defined(HUMIDITYSENSOR)
 // Initialize I2C bus.
@@ -209,11 +199,20 @@ void setup() {
 #endif
 #endif
 
+#ifdef GPS
+    GPS_init();
+#ifdef DEBUG
+    Serial.println("GPS initialized");
+#endif
+#endif
+
+    state = 0;
+    transmitting_init(1, 0, 0);
+    last_time_sent = 0;
 }
 
 void loop() {
-#ifdef RADIO
-    sprintf(payload, "Hello");
+#if defined(RADIO) && defined(DEBUG)
     radio.send(GATEWAYID, payload, 50);
     DEBUG_SERIAL.println(payload);
 #endif
@@ -250,7 +249,6 @@ void loop() {
     if (error == 0)
     {
         humidity.readRegister(address);
-        float cTemp, fTemp, humid;
 
         Serial.println("Getting Readings from HIH7130");
         Serial.println(" ");
@@ -258,20 +256,15 @@ void loop() {
         humid = humidity.Measure_Humidity();
 
         // Read and print out the temperature, then convert to C and F scales
-        cTemp = humidity.Measure_Temperature();
-        fTemp = cTemp * 1.8 + 32;
+        temperature = humidity.Measure_Temperature();
 
         // Output data to screen
         Serial.print("Relative Humidity Reading: ");
         Serial.print(humid);
         Serial.println(" %RH");
         Serial.print("Temperature Reading in Celsius: ");
-        Serial.print(cTemp);
+        Serial.print(temperature);
         Serial.println(" C");
-        Serial.print("Temperature Reading in Fahrenheit: ");
-        Serial.print(fTemp);
-        Serial.println(" F");
-        Serial.println(" ");
         Serial.println("        ***************************        ");
         Serial.println(" ");
     }
@@ -293,11 +286,9 @@ void loop() {
 
 #ifdef COMPASS
     // Read accelerometer LSM303AGR.
-    int32_t accelerometer[3];
     Acc->GetAxes(accelerometer);
 
     // Read magnetometer LSM303AGR.
-    int32_t magnetometer[3];
     Mag->GetAxes(magnetometer);
 
     // Output data.
@@ -315,4 +306,9 @@ void loop() {
     DEBUG_SERIAL.print(magnetometer[2]);
     DEBUG_SERIAL.println(" |");
 #endif
+
+#ifdef GPS
+    GPS_run();
+#endif
+    runState();
 }
