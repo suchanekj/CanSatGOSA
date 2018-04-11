@@ -2,6 +2,7 @@
 //run it in Processing IDE so you can see the received input
 
 import processing.serial.*;
+import static javax.swing.JOptionPane.*;
 
 Serial port;
 int baud = 9600;
@@ -9,13 +10,16 @@ int eol = 10; //ASCII code for end of line
 
 int timeSinceLastReceiveMS = 0;
 int receiveTimeThresholdMS = 5000;//how long should this wait until trying to connect again
+int frameCounter = 0;
+
+String urlForUploadBase = "";
 
 ArrayList<String> htmlResponses;//responces from web server
 ArrayList<String> arduinoData;//all the communication with arduino
 String dataFilename = "CanSatData";
 String htmlResponsesFilename = "CanSatHTMLResposes";
 String fileExtension = ".txt";
-int dataLength = 5;//how many pieces of data are we expecting
+int dataLength = 20;//how many pieces of data are we expecting
 
 void setup() {
   htmlResponses = new ArrayList<String>();
@@ -36,14 +40,29 @@ void setup() {
   htmlResponsesFilename += createFilenamePostfix()+fileExtension;
   println("responses filename: "+htmlResponsesFilename);
 
+  //ask for base url, we dont want it to be hardcoded because we don't provide the web storage for anyone
+  urlForUploadBase = showInputDialog("Please enter base url for uploading (https://yourPage.com/datasaving.php?table=TD)");
+  println("base url: "+urlForUploadBase);
+  
   //connect once to server -- it will speed up uploading speed later
   //use meaningless data
-  uploadData(-1, -1, -1, -1, -1);
+  connectToServer();
+
+  println("data length: "+dataLength);
 
   println("end of setup()");
 }
 
 void draw() {
+  frameCounter++;
+  //save data every 60 frames
+  if (frameCounter%60==0) {
+    //roughly every second save all data locally
+    saveData(dataFilename, arduinoData);
+    saveData(htmlResponsesFilename, htmlResponses);
+    println("data saved");
+  }
+  
   //if arduino is not available try to connect to it and then return
   if (port==null) {
     if (millis()-timeSinceLastReceiveMS>=receiveTimeThresholdMS) {
@@ -70,43 +89,36 @@ void draw() {
     //read from serial port until end of line is reached and get rid of redundant spaces
     String input = trim(port.readStringUntil(eol));
     if (input != null) {
-      //show what is received
       println(input);
-      //sava all the communication with "timestamp" (kind of - see getPrefix())
       arduinoData.add(getPrefix()+input);
-      //the data we care of is CSV -- comma separated values
+      //the data we care of is CSV in [] -- comma separated values
       String[] splitedData = getSplitedDataFromInput(input);
+      
+      if(splitedData==null){
+        continue;
+      }
+
       //if the splitedData has more or less values it's not what we want to upload
       if (splitedData.length==dataLength) {
         try {
-          //try to parse data
-          float lat = Float.parseFloat(splitedData[0]);
-          float lng = Float.parseFloat(splitedData[1]);
-          int temp = Integer.parseInt(splitedData[2]);
-          int press = Integer.parseInt(splitedData[3]);
-          long timems = Long.parseLong(splitedData[4]);
-
-          //println("lat:"+lat+",lng:"+lng+",t:"+temp+",p:"+press+"timems:"+timems);
-
-          //meassure time of uploading
           int startMS = millis();
-          //data was parsed fine so upload it
-          uploadData(lat, lng, temp, press, timems);
+          uploadDataInts(splitedData);//use uploadDataString()???
           arduinoData.add(getPrefix()+"upload timeMS: "+(millis()-startMS));
         }
         catch(Exception e) {
-          //if an error occured while parsing or uploading save it to log
           arduinoData.add(getPrefix()+" ERROR: "+e.toString());
         }
       }
     }
   }
+}
 
-  if (frameCount%60==0) {
-    //roughly every second save all data locally
-    saveData(dataFilename, arduinoData);
-    saveData(htmlResponsesFilename, htmlResponses);
+void connectToServer(){
+  String url = urlForUploadBase;
+  for (int i = 0; i< dataLength; i++) {
+    url += "&i"+(i+1)+"="+"EXCLUDE";//exclude is a key word for not uploading a value to MySQL in my php
   }
+  htmlResponses.add(join(loadStrings(url), ""));
 }
 
 void tryToConnect() {
@@ -122,12 +134,52 @@ void tryToConnect() {
 
 String[] getSplitedDataFromInput(String input) {
   //parses each line which it receives into an array
-  return input.split(",");
+  //input format #[packetNum][id][data]...
+  int thirdBracketStartIndex = findNthChar(input, '[', 3);
+  int thirdBracketEndIndex = findNthChar(input, ']', 3);
+  if(thirdBracketStartIndex>-1 && thirdBracketEndIndex>-1){
+    String data = input.substring(thirdBracketStartIndex+1, thirdBracketEndIndex);
+    return data.split(",");
+  }else{
+    return null;
+  }
 }
 
-void uploadData(float lat, float lng, int temp, int press, long timeMS) {
-  //upload data via url and save response into htmlResponses for later use
-  htmlResponses.add(join(loadStrings(""/*url to save data to web server*/), ""));
+int findNthChar(String in, char c, int n){
+  //finds nth char in a string not zero based
+  int index = -1;
+  int count = 0;
+  for(int i = 0;i < in.length(); i++){
+    if(c == in.charAt(i)){
+      index = i;
+      count++;
+      if(count == n){
+        return index;
+      }
+    }
+  }
+  return index;
+}
+
+void uploadDataStrings(String[] data){
+  String url = urlForUploadBase;
+  for (int i = 0; i< data.length; i++) {
+    url += "&i"+(i+1)+"="+parseInt(data[i]);
+  }
+  htmlResponses.add(join(loadStrings(url), ""));
+}
+
+void uploadDataInts(String[] data) {
+  String url = urlForUploadBase;
+  for (int i = 0; i< data.length; i++) {
+    try {
+      url += "&i"+(i+1)+"="+parseInt(data[i]);
+    }
+    catch(Exception e) {
+      arduinoData.add(getPrefix()+" ERROR: "+e.toString());
+    }
+  }
+  htmlResponses.add(join(loadStrings(url), ""));
 }
 
 void saveData(String filename, ArrayList<String> data) {
