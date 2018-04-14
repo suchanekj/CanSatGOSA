@@ -6,7 +6,7 @@ CanSat code is software for autonomous exploration and landings of probe "CanSat
 The whole code is using following subcodes:
 * GroundStation - incoming datas of pressure, position, time and temperature
 * Cansat - used libraries
-* Závěrečná zpráva (Detail information about the probe in LaTex article. Unfortunately only in Czech.)
+* Final report (Detail information about the probe in LaTex article. Unfortunately only in Czech.)
 
 # Support
 In case you need help with use of our program or support us, you can contact us on our public email dotazy@gosa.cz or on email of programming director suchanek989@seznam.cz
@@ -39,5 +39,5 @@ Current contributors:
 # Versions:
 * 1.0 Groundstation subcode created and README added 29/03/2018
 * 1.1 CanSat subcode created (**it is not completed**) and Model files completed 01/04/2018*
-* 1.2 Závěrečná zpráva (LaTex article) created (**it is not completed**) 03/04/2018
-
+* 1.2 Final report (LaTex article) created (**it is not completed**) 03/04/2018
+* 1.3 Final report (LaTex article) completed 12/04/2018
