@@ -54,7 +54,7 @@ void transmitting_init(bool use_radio, bool use_sms, bool use_email) {
 #endif
 }
 
-void transmitting_send(char *message, int len) {
+void transmitting_send(char message[], int len) {
 #ifdef DEBUG
     DEBUG_SERIAL.println(message);
 #endif
@@ -66,18 +66,18 @@ void transmitting_send(char *message, int len) {
 #endif
 }
 
-void transmitting_send(int data[]) {
+void transmitting_send(int data[], int size) {
     const int len = 60;
     char message[len];
     int end = 0;
-    for(int i = 0; i < sizeof(data) / sizeof(int); i++) {
+    for(int i = 0; i < size; i++) {
         if(i > 0) {
             sprintf(message + end, ";");
-            i++;
+            end++;
         }
         sprintf(message + end, "%d", data[i]);
         while(end < len && message[end]) end++;
         if(end >= len) break;
     }
-    transmitting_send(message, len);
+    transmitting_send(message, end);
 }

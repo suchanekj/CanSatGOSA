@@ -36,7 +36,16 @@
 #include <Arduino.h>
 #include "config.h"
 #include "drone.h"
-#include "CanSat.h"
+#include "Transmitting.h"
+#include "GPS.h"
+
+extern int armDistance[4];
+extern int humid;
+extern int32_t accelerometer[3];
+extern int32_t magnetometer[3];
+extern int pressure;
+extern int temperature;
+extern unsigned long last_time_sent;
 
 #define WAITING_FOR_RELEASE 0
 #define OPENING_ARMS 1
@@ -46,7 +55,7 @@
 #define LANDED 5
 #define SLEEPING 6
 
-int state;
+extern int flight_state;
 
 void waitingForRelease();
 void openingArms();

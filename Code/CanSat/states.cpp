@@ -32,11 +32,17 @@
 
 #include "states.h"
 
-int armDistance[4];
-int32_t accelerometer[3];
-int32_t magnetometer[3];
 float old_speed_ahead;
 float old_speed_up;
+
+int armDistance[4];
+int humid;
+int32_t accelerometer[3];
+int32_t magnetometer[3];
+int pressure;
+int temperature;
+unsigned long last_time_sent;
+int flight_state;
 
 void send_init() {
     char str[60] = {0};
@@ -47,31 +53,45 @@ void send_init() {
 }
 
 void send_data() {
-    int data[] = {state, temperature, pressure, humid,
+    int data[23] = {flight_state, temperature, pressure, humid,
                   armDistance[0], armDistance[1], armDistance[2], armDistance[3],
                   accelerometer[0], accelerometer[1], accelerometer[2],
                   magnetometer[0], magnetometer[1], magnetometer[2],
                   fix.dateTime.hours, fix.dateTime.minutes, fix.dateTime.seconds,
                   fix.latitudeL(), fix.longitudeL(), fix.altitude_cm(),
                   fix.velocity_north, fix.velocity_east, fix.velocity_down};
-    transmitting_send(data);
+    transmitting_send(data, 23);
 }
 
 void runState() {
-    switch(state) {
-        case WAITING_FOR_RELEASE: waitingForRelease();
-        case OPENING_ARMS: openingArms();
-        case BREAKING: breaking();
-        case FLYING: flying();
-        case LANDING: landing();
-        case LANDED: landed();
-        case SLEEPING: sleeping();
+    switch(flight_state) {
+        case WAITING_FOR_RELEASE:
+            waitingForRelease();
+            break;
+        case OPENING_ARMS:
+            openingArms();
+            break;
+        case BREAKING:
+            breaking();
+            break;
+        case FLYING:
+            flying();
+            break;
+        case LANDING:
+            landing();
+            break;
+        case LANDED:
+            landed();
+            break;
+        case SLEEPING:
+            sleeping();
+            break;
     }
 
 }
 
 void waitingForRelease() {
-    if(last_time_sent == 0) send_init();
+    //if(last_time_sent == 0) send_init();
     if(millis() - last_time_sent > 500) {
         send_data();
         last_time_sent = millis();
@@ -95,8 +115,8 @@ void breaking() {
 }
 
 void flying() {
-    float X = (DESTINATION_LON - fix.longitude()) * EARTH_RADIUS_M * RAD_PER_DEG * cos(fix.latitude());
-    float Y = (DESTINATION_LAT - fix.latitude()) * EARTH_RADIUS_M * RAD_PER_DEG;
+    float X = (DESTINATION_LON - fix.longitude()) * EARTH_RADIUS_M * RAD_PER_DEGREE * cos(fix.latitude());
+    float Y = (DESTINATION_LAT - fix.latitude()) * EARTH_RADIUS_M * RAD_PER_DEGREE;
     float H = DESTINATION_ALT - fix.altitude_cm() * 100;
     float X2 = X * X;
     float Y2 = Y * Y;
@@ -107,9 +127,22 @@ void flying() {
     old_speed_ahead += speed_ahead - sqrt(fix.velocity_east * fix.velocity_east + fix.velocity_north * fix.velocity_north);
     old_speed_up += speed_up + fix.velocity_down;
 
-    float rotation = atan2(X, Y) - atan2(magnetometer[0], magnetometer[1]);
+    old_speed_up = min(old_speed_up, 1000);
+    old_speed_up = max(old_speed_up, 0);
 
+    old_speed_ahead = min(old_speed_ahead, 400);
+    old_speed_ahead = max(old_speed_ahead, -400);
+
+    float rotation = (atan2(X, Y) - /*atan2(magnetometer[0], magnetometer[1])*/ fix.heading() * RAD_PER_DEGREE) * 200;
+
+    DEBUG_SERIAL.print("Setting speed ");
+    DEBUG_SERIAL.print(old_speed_ahead);
+    DEBUG_SERIAL.print(" 0 ");
+    DEBUG_SERIAL.print(rotation);
+    DEBUG_SERIAL.print(" ");
+    DEBUG_SERIAL.println(old_speed_up);
     set_speed(old_speed_ahead, 0, rotation, old_speed_up);
+    DEBUG_SERIAL.print("Speed set");
     if(millis() - last_time_sent > 500) {
         send_data();
         last_time_sent = millis();

@@ -33,14 +33,6 @@
 #ifndef CANSAT_CANSAT_H
 #define CANSAT_CANSAT_H
 
-extern int armDistance[4];
-extern int humid;
-extern int32_t accelerometer[3];
-extern int32_t magnetometer[3];
-extern int pressure;
-extern int temperature;
-extern unsigned long last_time_sent;
-
 #include <Arduino.h>
 #include "config.h"
 #ifdef RADIO

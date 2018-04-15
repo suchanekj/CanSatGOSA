@@ -38,12 +38,12 @@
  *  Landing spot
  */
 
-#define DESTINATION_LAT 499953985
-#define DESTINATION_LON 145534756
-#define DESTINATION_ALT 300
+#define DESTINATION_LAT 499951500
+#define DESTINATION_LON 145513150
+#define DESTINATION_ALT 32500
 
 #define EARTH_RADIUS_M 6371009
-#define RAD_PER_DEG (PI / 180.0)
+#define RAD_PER_DEGREE (PI / 180.0)
 
 /*
  ***********************************************************************************
@@ -93,20 +93,29 @@
 
 //PWM output to Flight Controller
 
-#define FC_PWM_1 9
-#define FC_PWM_2 8
-#define FC_PWM_3 7
-#define FC_PWM_4 6
-#define FC_PWM_5 44
-#define FC_PWM_6 45
-#define FC_PWM_7 46
-#define FC_PWM_8 12
+
+//#define FC_PWM_1 9
+//#define FC_PWM_2 8
+//#define FC_PWM_3 7
+//#define FC_PWM_4 6
+//#define FC_PWM_5 44
+//#define FC_PWM_6 45
+//#define FC_PWM_7 46
+//#define FC_PWM_8 12
+#define FC_PWM_1 2
+#define FC_PWM_2 3
+#define FC_PWM_3 8
+#define FC_PWM_4 9
+#define FC_PWM_5 6
+#define FC_PWM_6 7
+#define FC_PWM_7 5
+#define FC_PWM_8 4
 
 //Arms
 
-const uint8_t ARM_LED[4] = {47, 24, 76, 31};
-const uint8_t ARM_RANGING_XSHUT[4] = {38, 55, 11, 29};
-const uint8_t ARM_RANGING_INTERRUPT[4] = {19, 4, 53, 73};
+const int ARM_LED[4] = {47, 24, 76, 31};
+const int ARM_RANGING_XSHUT[4] = {38, 55, 11, 29};
+const int ARM_RANGING_INTERRUPT[4] = {19, 4, 53, 73};
 
 //Top board
 
@@ -120,7 +129,9 @@ const uint8_t ARM_RANGING_INTERRUPT[4] = {19, 4, 53, 73};
 
 //GPS module
 
-#define GPS_SERIAL Serial3
+#define GPS_SERIAL Serial1
+#define gpsPort Serial1
+#define GPS_PORT_NAME "Serial1"
 
 //Servo
 
@@ -157,11 +168,7 @@ const uint8_t ARM_RANGING_INTERRUPT[4] = {19, 4, 53, 73};
 
 //Gamma read
 
+#define GAMMA
 
-
-//GPS
-
-#define gpsPort Serial1
-#define GPS_PORT_NAME "Serial1"
 
 #endif //CANSAT_CONFIG_H

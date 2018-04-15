@@ -32,3 +32,29 @@
 
 #include "drone.h"
 
+Servo roll, pitch, yaw, trottle, aux1, aux2, aux3, aux4;
+
+void drone_init() {
+    roll.attach(FC_PWM_1);
+    pitch.attach(FC_PWM_2);
+    yaw.attach(FC_PWM_3);
+    trottle.attach(FC_PWM_4);
+    aux1.attach(FC_PWM_5);
+    aux2.attach(FC_PWM_6);
+    aux3.attach(FC_PWM_7);
+    aux4.attach(FC_PWM_8);
+}
+
+void set_speed(int forward, int side, int rotation, int up) {
+    pitch.writeMicroseconds(1500 + forward);
+    yaw.writeMicroseconds(1500 + rotation);
+    trottle.writeMicroseconds(1000 + up);
+    roll.writeMicroseconds(1500 + side);
+}
+
+void drone_disable() {
+    pitch.writeMicroseconds(1500);
+    yaw.writeMicroseconds(1500);
+    trottle.writeMicroseconds(1000);
+    roll.writeMicroseconds(1500);
+}

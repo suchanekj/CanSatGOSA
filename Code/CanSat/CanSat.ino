@@ -54,14 +54,6 @@ LSM303AGR_ACC_Sensor *Acc;
 LSM303AGR_MAG_Sensor *Mag;
 #endif
 
-int armDistance[4];
-int humid;
-int32_t accelerometer[3];
-int32_t magnetometer[3];
-int pressure;
-int temperature;
-unsigned long last_time_sent;
-
 void setup() {
 
     //PWM output to Flight Controller
@@ -206,8 +198,9 @@ void setup() {
 #endif
 #endif
 
-    state = 0;
-    transmitting_init(1, 0, 0);
+    flight_state = FLYING;
+    transmitting_init(0, 0, 0);
+    drone_init();
     last_time_sent = 0;
 }
 

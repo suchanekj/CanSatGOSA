@@ -365,13 +365,14 @@ void GPS_init()
     DEBUG_SERIAL << F("CFG_NMEA result = ") << gps.send( test );
 #endif
 
-    while (!gps.running())
-        if (gps.available( gpsPort ))
+    while (!gps.running()) {
+        if (gps.available( gpsPort )) {
             gps.read();
+        }
+    }
 }
 
 //--------------------------
-static gps_fix  fix;
 
 char debug_message[100];
 
