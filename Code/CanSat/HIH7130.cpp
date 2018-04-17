@@ -116,3 +116,4 @@ float HIH7130::Measure_Temperature()
 {
     return temperature;
 }
+

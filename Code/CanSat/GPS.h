@@ -1,7 +1,7 @@
 /*
   CanSat GOSA
   Code for a tiny probe to investigate existance of life
-  Copyright (C) 2018  Jakub Suchánek, suchanek989@seznam.cz
+  Copyright (C) 2018  Jakub SuchĂˇnek, suchanek989@seznam.cz
   http://github.com/suchanekj/CanSatGOSA
 
   License
@@ -46,3 +46,4 @@ void GPS_init();
 void GPS_run();
 
 #endif //CANSAT_GPS_H
+

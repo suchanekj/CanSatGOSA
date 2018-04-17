@@ -43,9 +43,11 @@ extern int armDistance[4];
 extern int humid;
 extern int32_t accelerometer[3];
 extern int32_t magnetometer[3];
-extern int pressure;
+extern long int pressure;
+extern long int bar_alt;
 extern int temperature;
 extern unsigned long last_time_sent;
+extern Servo servo;
 
 #define WAITING_FOR_RELEASE 0
 #define OPENING_ARMS 1

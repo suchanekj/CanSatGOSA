@@ -66,7 +66,7 @@ void transmitting_send(char message[], int len) {
 #endif
 }
 
-void transmitting_send(int data[], int size) {
+void transmitting_send(long int data[], int size) {
     const int len = 60;
     char message[len];
     int end = 0;

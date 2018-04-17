@@ -1,7 +1,7 @@
 /*
   CanSat GOSA
   Code for a tiny probe to investigate existance of life
-  Copyright (C) 2018  Jakub Suchánek, suchanek989@seznam.cz
+  Copyright (C) 2018  Jakub SuchĂˇnek, suchanek989@seznam.cz
   http://github.com/suchanekj/CanSatGOSA
 
   License
@@ -38,7 +38,8 @@ TwoWire *i2c;
 #endif
 
 #ifdef BAROMETER
-LPS22HBSensor *barometer;
+MPL3115A2 barometer;
+long int alt_mod;
 #endif
 
 #ifdef HUMIDITY_SENSOR
@@ -92,6 +93,7 @@ void setup() {
     //Servo
 
     pinMode(SERVO, OUTPUT);
+    servo.attach(SERVO);
 
     //O2 sensor
 
@@ -103,10 +105,12 @@ void setup() {
 
     //Camera power
 
+    digitalWrite(CAMERA_POWER, LOW);
     pinMode(CAMERA_POWER, OUTPUT);
 
     //Flight Controller power
 
+    digitalWrite(FC_POWER, HIGH);
     pinMode(FC_POWER, OUTPUT);
 
     //Radio transmitter
@@ -118,9 +122,23 @@ void setup() {
 
     pinMode(BATTERY_VOLTAGE, INPUT);
 
+    pinMode(A2, INPUT);
+    pinMode(A4, INPUT);
+    pinMode(A5, INPUT);
+    pinMode(A6, INPUT);
+    pinMode(A7, INPUT);
+    pinMode(A8, INPUT);
+    pinMode(A9, INPUT);
+    pinMode(A10, INPUT);
+    pinMode(A11, INPUT);
+    pinMode(A12, INPUT);
+    pinMode(A13, INPUT);
+    pinMode(A14, INPUT);
+    pinMode(A15, INPUT);
+
 #ifdef DEBUG
     // Led blinking.
-    for (int i = 0; i < 1; i++) {
+    for (int i = 0; i < 20; i++) {
         digitalWrite(TOP_LED, HIGH);
         delay(250);
         digitalWrite(TOP_LED, LOW);
@@ -144,13 +162,27 @@ void setup() {
 
 #ifdef BAROMETER
     // Initlialize components.
-    barometer = new LPS22HBSensor(i2c);
+    barometer.begin(); // Get sensor online
+
+    barometer.setModeBarometer();
+    barometer.setOversampleRate(7); // Set Oversample to the recommended 128
+    barometer.enableEventFlags(); // Enable all three pressure and temp event flags 
+
+    delay(1000);
+    barometer.readPressure();
+    delay(1000);
+    barometer.readPressure();
+    delay(1000);
+    barometer.readPressure();
+
+    bar_alt = (1013.25 - barometer.readPressure() / 100.0) * 900.0;
+
+    alt_mod = STARTING_ALT - bar_alt;
+
+    Serial.println(bar_alt);
+    Serial.println(alt_mod);
 #ifdef DEBUG
     Serial.println("barometer initialized");
-#endif
-    barometer->Enable();
-#ifdef DEBUG
-    Serial.println("barometer enabled");
 #endif
 #endif
 
@@ -202,30 +234,38 @@ void setup() {
     transmitting_init(0, 0, 0);
     drone_init();
     last_time_sent = 0;
+    digitalWrite(TOP_LED, HIGH);
 }
 
 void loop() {
 #if defined(RADIO) && defined(DEBUG)
-    radio.send(GATEWAYID, payload, 50);
-    DEBUG_SERIAL.println(payload);
+//    radio.send(GATEWAYID, payload, 50);
+//    DEBUG_SERIAL.println(payload);
 #endif
 
 #ifdef BAROMETER
-    // Led blinking.
-    digitalWrite(TOP_LED, HIGH);
-    delay(250);
-    digitalWrite(TOP_LED, LOW);
-    delay(250);
+#ifdef DEBUG
+    Serial.println(millis());
+#endif
+    
+    pressure = barometer.readPressure() * 100.0;
+    bar_alt = (101325 - pressure / 100.0) * 9.0 + alt_mod;
+#ifdef DEBUG
+    Serial.print("Alt(cm): ");
+    Serial.print(bar_alt);
+    
+    Serial.print("Pressure(Pa): ");
+    Serial.print(pressure);
+#endif
 
-    // Read pressure.
-    float pressure, temperature;
-    barometer->GetPressure(&pressure);
-    barometer->GetTemperature(&temperature);
+    temperature = barometer.readTemp() * 100;
+#ifdef DEBUG
+    Serial.print(" Temp: ");
+    Serial.print(temperature);
+    Serial.println(millis());
 
-    DEBUG_SERIAL.print("Pres[hPa]: ");
-    DEBUG_SERIAL.print(pressure, 2);
-    DEBUG_SERIAL.print(" | Temp[C]: ");
-    DEBUG_SERIAL.println(temperature, 2);
+    Serial.println();
+#endif
 #endif
 
 #ifdef HUMIDITY_SENSOR
@@ -285,6 +325,7 @@ void loop() {
     Mag->GetAxes(magnetometer);
 
     // Output data.
+#ifdef DEBUG
     DEBUG_SERIAL.print("| Acc[mg]: ");
     DEBUG_SERIAL.print(accelerometer[0]);
     DEBUG_SERIAL.print(" ");
@@ -299,9 +340,11 @@ void loop() {
     DEBUG_SERIAL.print(magnetometer[2]);
     DEBUG_SERIAL.println(" |");
 #endif
+#endif
 
 #ifdef GPS
     GPS_run();
 #endif
     runState();
 }
+

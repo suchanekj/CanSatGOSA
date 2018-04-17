@@ -44,7 +44,7 @@
 
 #define EARTH_RADIUS_M 6371009
 #define RAD_PER_DEGREE (PI / 180.0)
-
+#define STARTING_ALT 32500
 /*
  ***********************************************************************************
  *  Subsystem definitions
@@ -52,13 +52,13 @@
 //comment any line to disable subsystem
 
 #define DEBUG
-//#define BAROMETER
-//#define RADIO
+#define BAROMETER
+#define RADIO
 //#define HUMIDITY_SENSOR
 //#define RANGING_SENSOR
-//#define COMPASS
+#define COMPASS
 //#define GSM
-#define GPS
+//#define GPS
 
 /*
  ***********************************************************************************
@@ -93,23 +93,14 @@
 
 //PWM output to Flight Controller
 
-
-//#define FC_PWM_1 9
-//#define FC_PWM_2 8
-//#define FC_PWM_3 7
-//#define FC_PWM_4 6
-//#define FC_PWM_5 44
-//#define FC_PWM_6 45
-//#define FC_PWM_7 46
-//#define FC_PWM_8 12
-#define FC_PWM_1 2
-#define FC_PWM_2 3
-#define FC_PWM_3 8
-#define FC_PWM_4 9
-#define FC_PWM_5 6
-#define FC_PWM_6 7
-#define FC_PWM_7 5
-#define FC_PWM_8 4
+#define FC_PWM_1 6
+#define FC_PWM_2 7
+#define FC_PWM_3 46
+#define FC_PWM_4 12
+#define FC_PWM_5 8
+#define FC_PWM_6 9
+#define FC_PWM_7 45
+#define FC_PWM_8 44
 
 //Arms
 
@@ -129,9 +120,9 @@ const int ARM_RANGING_INTERRUPT[4] = {19, 4, 53, 73};
 
 //GPS module
 
-#define GPS_SERIAL Serial1
-#define gpsPort Serial1
-#define GPS_PORT_NAME "Serial1"
+#define GPS_SERIAL Serial3
+//#define gpsPort Serial1
+//#define GPS_PORT_NAME "Serial1"
 
 //Servo
 
@@ -160,11 +151,11 @@ const int ARM_RANGING_INTERRUPT[4] = {19, 4, 53, 73};
 
 //Read battery voltage
 
-#define BATTERY_VOLTAGE A3
+#define BATTERY_VOLTAGE A8
 
 //UV read
 
-#define UV
+#define UV A6
 
 //Gamma read
 

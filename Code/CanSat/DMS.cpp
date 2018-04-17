@@ -119,3 +119,4 @@ void DMS_t::printDDDMMmmmm( Print & outs ) const
     outs.print( '0' );
   outs.print( mmmm );
 }
+

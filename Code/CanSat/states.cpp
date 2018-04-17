@@ -39,28 +39,30 @@ int armDistance[4];
 int humid;
 int32_t accelerometer[3];
 int32_t magnetometer[3];
-int pressure;
+long int bar_alt;
+long int pressure;
 int temperature;
 unsigned long last_time_sent;
 int flight_state;
+Servo servo;
 
 void send_init() {
     char str[60] = {0};
     int len;
-    sprintf(str,"state,temperature,pressure,humid,armDistance[4],accelerometer[3],magnetometer[3],hours,minutes,seconds,latitude,longitude,altitude_cm,velocity_n,velocity_e,velocity_d");
+    sprintf(str,"state,temperature,pressure,bar_alt,UV,humid,armDistance[4],accelerometer[3],magnetometer[3],hours,minutes,seconds,latitude,longitude,altitude_cm,velocity_n,velocity_e,velocity_d");
     for(len = 0; len < 60 && str[len]; len++);
     transmitting_send(str, len);
 }
 
 void send_data() {
-    int data[23] = {flight_state, temperature, pressure, humid,
+    long int data[25] = {flight_state, temperature, pressure, bar_alt, UV, humid,
                   armDistance[0], armDistance[1], armDistance[2], armDistance[3],
                   accelerometer[0], accelerometer[1], accelerometer[2],
                   magnetometer[0], magnetometer[1], magnetometer[2],
                   fix.dateTime.hours, fix.dateTime.minutes, fix.dateTime.seconds,
                   fix.latitudeL(), fix.longitudeL(), fix.altitude_cm(),
                   fix.velocity_north, fix.velocity_east, fix.velocity_down};
-    transmitting_send(data, 23);
+    transmitting_send(data, 25);
 }
 
 void runState() {
@@ -133,7 +135,7 @@ void flying() {
     old_speed_ahead = min(old_speed_ahead, 400);
     old_speed_ahead = max(old_speed_ahead, -400);
 
-    float rotation = (atan2(X, Y) - /*atan2(magnetometer[0], magnetometer[1])*/ fix.heading() * RAD_PER_DEGREE) * 200;
+    float rotation = (atan2(X, Y) - atan2(magnetometer[0], magnetometer[1]) /* fix.heading()*/ * RAD_PER_DEGREE) * 200;
 
     DEBUG_SERIAL.print("Setting speed ");
     DEBUG_SERIAL.print(old_speed_ahead);

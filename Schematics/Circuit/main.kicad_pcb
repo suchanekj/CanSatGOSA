@@ -73,7 +73,7 @@
     (pad_to_mask_clearance 0)
     (aux_axis_origin 14.3 14.7)
     (grid_origin 14.3 14.7)
-    (visible_elements 7FFFFFFF)
+    (visible_elements 7FFCFFFF)
     (pcbplotparams
       (layerselection 0x010fc_80000001)
       (usegerberextensions true)

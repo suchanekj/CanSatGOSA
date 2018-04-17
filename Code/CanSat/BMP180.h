@@ -125,3 +125,4 @@ class BMP180
 #define	BMP180_COMMAND_PRESSURE3 0xF4
 
 #endif
+

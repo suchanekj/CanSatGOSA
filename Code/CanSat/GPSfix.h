@@ -538,3 +538,4 @@ public:
 } NEOGPS_PACKED;
 
 #endif
+

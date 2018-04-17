@@ -1,7 +1,7 @@
 /*
   CanSat GOSA
   Code for a tiny probe to investigate existance of life
-  Copyright (C) 2018  Jakub Suchánek, suchanek989@seznam.cz
+  Copyright (C) 2018  Jakub SuchĂˇnek, suchanek989@seznam.cz
   http://github.com/suchanekj/CanSatGOSA
 
   License
@@ -39,7 +39,7 @@
 #include "RFM69.h"
 #endif
 #ifdef BAROMETER
-#include "LPS22HBSensor.h"
+#include "SparkFunMPL3115A2.h"
 #endif
 #ifdef HUMIDITY_SENSOR
 #include "HIH7130.h"
@@ -61,3 +61,4 @@
 #include "drone.h"
 #include "states.h"
 #endif //CANSAT_CANSAT_H
+
