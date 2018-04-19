@@ -59,14 +59,14 @@ void send_init() {
 }
 
 void send_data() {
-    long int data[25] = {flight_state, temperature, pressure, bar_alt, UV, humid,
+    long int data[25] = {flight_state, temperature, pressure, bar_alt, UV, /*humid,*/
                   /*armDistance[0], armDistance[1],*/ armDistance, /*armDistance[3],*/
                   accelerometer[0], accelerometer[1], accelerometer[2],
                   magnetometer[0], magnetometer[1], magnetometer[2],
-                  fix.dateTime.hours, fix.dateTime.minutes, fix.dateTime.seconds,
-                  fix.latitudeL(), fix.longitudeL(), fix.altitude_cm(),
-                  fix.velocity_north, fix.velocity_east, fix.velocity_down};
-    transmitting_send(data, 25);
+                  my_fix.dateTime.hours, my_fix.dateTime.minutes, my_fix.dateTime.seconds,
+                  my_fix.latitudeL(), my_fix.longitudeL(), my_fix.altitude_cm(),
+                  my_fix.velocity_north, my_fix.velocity_east, my_fix.velocity_down};
+    transmitting_send(data, 21);
 }
 
 void runState() {
@@ -124,17 +124,17 @@ void breaking() {
 }
 
 void flying() {
-    float X = (DESTINATION_LON - fix.longitude()) * EARTH_RADIUS_M * RAD_PER_DEGREE * cos(fix.latitude());
-    float Y = (DESTINATION_LAT - fix.latitude()) * EARTH_RADIUS_M * RAD_PER_DEGREE;
-    float H = DESTINATION_ALT - fix.altitude_cm() * 100;
+    float X = (DESTINATION_LON - my_fix.longitude()) * EARTH_RADIUS_M * RAD_PER_DEGREE * cos(my_fix.latitude());
+    float Y = (DESTINATION_LAT - my_fix.latitude()) * EARTH_RADIUS_M * RAD_PER_DEGREE;
+    float H = DESTINATION_ALT - my_fix.altitude_cm() * 100;
     float X2 = X * X;
     float Y2 = Y * Y;
     float Distance = sqrt(X2 + Y2);
     float speed_ahead = min(Distance / (H + 0,1) * 100, 100);
     float speed_up = -100;
 
-    old_speed_ahead += speed_ahead - sqrt(fix.velocity_east * fix.velocity_east + fix.velocity_north * fix.velocity_north);
-    old_speed_up += speed_up + fix.velocity_down;
+    old_speed_ahead += speed_ahead - sqrt(my_fix.velocity_east * my_fix.velocity_east + my_fix.velocity_north * my_fix.velocity_north);
+    old_speed_up += speed_up + my_fix.velocity_down;
 
     old_speed_up = min(old_speed_up, 1000);
     old_speed_up = max(old_speed_up, 0);
@@ -142,7 +142,7 @@ void flying() {
     old_speed_ahead = min(old_speed_ahead, 400);
     old_speed_ahead = max(old_speed_ahead, -400);
 
-    float rotation = (atan2(X, Y) - atan2(magnetometer[0], magnetometer[1]) /* fix.heading()*/ * RAD_PER_DEGREE) * 200;
+    float rotation = (atan2(X, Y) - atan2(magnetometer[0], magnetometer[1]) /* my_fix.heading()*/ * RAD_PER_DEGREE) * 200;
 
     DEBUG_SERIAL.print("Setting speed ");
     DEBUG_SERIAL.print(old_speed_ahead);
@@ -183,17 +183,17 @@ void sleeping() {
 }
 
 void testing() {
-    float X = (DESTINATION_LON - fix.longitude()) * EARTH_RADIUS_M * RAD_PER_DEGREE * cos(fix.latitude());
-    float Y = (DESTINATION_LAT - fix.latitude()) * EARTH_RADIUS_M * RAD_PER_DEGREE;
-    float H = DESTINATION_ALT - fix.altitude_cm() * 100;
+    float X = (DESTINATION_LON - my_fix.longitude()) * EARTH_RADIUS_M * RAD_PER_DEGREE * cos(my_fix.latitude());
+    float Y = (DESTINATION_LAT - my_fix.latitude()) * EARTH_RADIUS_M * RAD_PER_DEGREE;
+    float H = DESTINATION_ALT - my_fix.altitude_cm() * 100;
     float X2 = X * X;
     float Y2 = Y * Y;
     float Distance = sqrt(X2 + Y2);
     float speed_ahead = min(Distance / (H + 0,1) * 100, 100);
-    float speed_up = 10;
+    float speed_up = 100;
 
-    old_speed_ahead += speed_ahead - sqrt(fix.velocity_east * fix.velocity_east + fix.velocity_north * fix.velocity_north);
-    old_speed_up += speed_up + armDistance;
+    old_speed_ahead += speed_ahead - sqrt(my_fix.velocity_east * my_fix.velocity_east + my_fix.velocity_north * my_fix.velocity_north);
+    old_speed_up += speed_up - armDistance;
 
     old_speed_up = min(old_speed_up, 1000);
     old_speed_up = max(old_speed_up, 0);
@@ -201,7 +201,7 @@ void testing() {
     old_speed_ahead = min(old_speed_ahead, 400);
     old_speed_ahead = max(old_speed_ahead, -400);
 
-    float rotation = (atan2(X, Y) - atan2(magnetometer[0], magnetometer[1]) /* fix.heading()*/ * RAD_PER_DEGREE) * 200;
+    float rotation = (atan2(X, Y) - atan2(magnetometer[0], magnetometer[1]) /* my_fix.heading()*/ * RAD_PER_DEGREE) * 200;
 
     DEBUG_SERIAL.print("Setting speed ");
     DEBUG_SERIAL.print(old_speed_ahead);

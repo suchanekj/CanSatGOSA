@@ -52,11 +52,11 @@
 //comment any line to disable subsystem
 
 #define DEBUG
-//#define BAROMETER
-//#define RADIO
+#define BAROMETER
+#define RADIO
 //#define HUMIDITY_SENSOR
-//#define RANGING_SENSOR
-//#define COMPASS
+#define RANGING_SENSOR
+#define COMPASS
 //#define GSM
 #define GPS
 

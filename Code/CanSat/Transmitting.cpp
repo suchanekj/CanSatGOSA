@@ -58,12 +58,7 @@ void transmitting_send(char message[], int len) {
 #ifdef DEBUG
     DEBUG_SERIAL.println(message);
 #endif
-#ifdef RADIO
-    radio.send(GATEWAYID, message, 60);
-#endif
-#ifdef GSM
-
-#endif
+    radio.send(GATEWAYID, message, len);
 }
 
 void transmitting_send(long int data[], int size) {
@@ -71,7 +66,7 @@ void transmitting_send(long int data[], int size) {
     char message[len];
     int end = 0;
     for(int i = 0; i < size; i++) {
-        if(i > 0) {
+        if(end > 0) {
             sprintf(message + end, ";");
             end++;
         }

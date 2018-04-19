@@ -40,7 +40,7 @@
 #include "Streamers.h"
 #include "config.h"
 
-static gps_fix fix;
+extern gps_fix my_fix;
 
 void GPS_init();
 void GPS_run();

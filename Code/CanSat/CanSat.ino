@@ -76,7 +76,9 @@ void setup() {
         pinMode(ARM_LED[i], OUTPUT);
         pinMode(ARM_RANGING_XSHUT[i], OUTPUT);
     }
-    digitalWrite(ARM_RANGING_XSHUT[2], LOW);
+    digitalWrite(ARM_RANGING_XSHUT[2], HIGH);
+        pinMode(ARM_RANGING_INTERRUPT[2], INPUT);
+    
 
     //Top board
 
@@ -107,7 +109,7 @@ void setup() {
 
     //Camera power
 
-    digitalWrite(CAMERA_POWER, LOW);
+    digitalWrite(CAMERA_POWER, HIGH);
     pinMode(CAMERA_POWER, OUTPUT);
 
     //Flight Controller power
@@ -245,7 +247,7 @@ void loop() {
     
     pressure = barometer.readPressure() * 100.0;
     bar_alt = (101325 - pressure / 100.0) * 9.0 + alt_mod;
-#ifdef DEBUG
+#ifdef DEBUGa
     Serial.print("Alt(cm): ");
     Serial.print(bar_alt);
     
@@ -254,7 +256,7 @@ void loop() {
 #endif
 
     temperature = barometer.readTemp() * 100;
-#ifdef DEBUG
+#ifdef DEBUGa
     Serial.print(" Temp: ");
     Serial.print(temperature);
     Serial.println();
@@ -304,7 +306,7 @@ void loop() {
 #endif
 
 #ifdef RANGING_SENSOR
-    Serial.print(ranging_sensor.readRangeContinuousMillimeters());
+    armDistance = ranging_sensor.readRangeContinuousMillimeters();
     if (ranging_sensor.timeoutOccurred()) { Serial.print(" TIMEOUT"); }
 
     Serial.println();
@@ -318,7 +320,7 @@ void loop() {
     Mag->GetAxes(magnetometer);
 
     // Output data.
-#ifdef DEBUG
+#if 0
     DEBUG_SERIAL.print("| Acc[mg]: ");
     DEBUG_SERIAL.print(accelerometer[0]);
     DEBUG_SERIAL.print(" ");

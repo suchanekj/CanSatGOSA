@@ -1,3 +1,6 @@
+#include "NeoGPS_cfg.h"
+#include "ubxGPS.h"
+
 //======================================================================
 //  Program: ublox.ino
 //
@@ -37,9 +40,9 @@
 //
 //======================================================================
 
-#include "GPS.h"
+#include "GPSport.h"
 
-gps_fix my_fix;
+#include "Streamers.h"
 
 //------------------------------------------------------------
 // Check that the config files are set up properly
@@ -304,8 +307,12 @@ static void disableUBX()
 
 //--------------------------
 
-void GPS_init()
+void setup()
 {
+  // Start the normal trace output
+  DEBUG_PORT.begin(9600);
+  while (!DEBUG_PORT)
+    ;
 
   DEBUG_PORT.print( F("ublox binary protocol example started.\n") );
   DEBUG_PORT << F("fix object size = ") << sizeof(gps.fix()) << '\n';
@@ -370,11 +377,10 @@ void GPS_init()
 
 //--------------------------
 
-void GPS_run()
+void loop()
 {
   if (gps.available( gpsPort )) {
 //    DEBUG_PORT.println(millis());
-    my_fix = gps.read();
     trace_all( DEBUG_PORT, gps, gps.read() );
 //    DEBUG_PORT.println(millis());
   }
@@ -384,4 +390,17 @@ void GPS_run()
   //   convenient to switch to another example program that
   //   expects a typical set of messages.  This also saves
   //   putting those config messages in every other example.
+
+  if (DEBUG_PORT.available()) {
+    do { DEBUG_PORT.read(); } while (DEBUG_PORT.available());
+    DEBUG_PORT.println( F("Stopping...") );
+
+    configNMEA( 1 );
+    disableUBX();
+    gpsPort.flush();
+    gpsPort.end();
+
+    DEBUG_PORT.println( F("STOPPED.") );
+    for (;;);
+  }
 }
