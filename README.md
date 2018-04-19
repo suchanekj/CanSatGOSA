@@ -38,6 +38,6 @@ Current contributors:
 * Vítek, Martin (MArtytraM99)
 # Versions:
 * 1.0 Groundstation subcode created and README added 29/03/2018
-* 1.1 CanSat subcode created (**it is not completed**) and Model files completed 01/04/2018*
+* 1.1 CanSat subcode created (**it is not completed**) and Model files completed 01/04/2018
 * 1.2 Final report (LaTex article) created (**it is not completed**) 03/04/2018
 * 1.3 Final report (LaTex article) completed 12/04/2018
