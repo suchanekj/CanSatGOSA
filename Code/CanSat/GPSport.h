@@ -57,8 +57,8 @@
 //      If you have a Mega, Leo or Due board, you could use Serial1, 
 //      Serial2 or Serial3:
 //
-             #define gpsPort Serial3
-             #define GPS_PORT_NAME "Serial3"
+             #define gpsPort Serial1
+             #define GPS_PORT_NAME "Serial1"
              #define DEBUG_PORT Serial
 //
 //      These extra ports do not have to be disconnected to upload new
@@ -157,7 +157,7 @@
 //  //      If none of these includes are uncommented, Serial will be used.
 //  //
 //  //#include <NeoHWSerial.h>    // NeoSerial or NeoSerial1 Interrupt-style processing
-//  //#include <AltSoftSerial.h>    // <-- DEFAULT.  Two specific pins required
+//  #include <AltSoftSerial.h>    // <-- DEFAULT.  Two specific pins required
 //  //#include <NeoICSerial.h>    // AltSoftSerial with Interrupt-style processing (see docs)
 //  //#include <NeoSWSerial.h>    // Any pins, only @ 9600, 19200 or 38400 baud
 //  //#include <SoftwareSerial.h> // NOT RECOMMENDED!
@@ -264,8 +264,8 @@
 //#else
 //  #define DEBUG_PORT Serial // default for most sketches
 //#endif
-//
-//// End of guessing game.
-////------------------------
-//
+
+// End of guessing game.
+//------------------------
+
 #endif

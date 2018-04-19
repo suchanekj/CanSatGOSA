@@ -69,12 +69,14 @@ void setup() {
     pinMode(FC_PWM_8, OUTPUT);
 
     //Arms
-
+//const int ARM_LED[4] = {47, 24, 76, 31};
+//const int ARM_RANGING_XSHUT[4] = {38, 55, 11, 29};
+//const int ARM_RANGING_INTERRUPT[4] = {19, 4, 53, 73};
     for (int i = 0; i < 4; i++) {
         pinMode(ARM_LED[i], OUTPUT);
         pinMode(ARM_RANGING_XSHUT[i], OUTPUT);
-        pinMode(ARM_RANGING_INTERRUPT[i], INPUT);
     }
+    digitalWrite(ARM_RANGING_XSHUT[2], LOW);
 
     //Top board
 
@@ -88,7 +90,7 @@ void setup() {
 
     //GPS module
 
-    GPS_SERIAL.begin(9600);
+ //   GPS_SERIAL.begin(9600);
 
     //Servo
 
@@ -195,7 +197,7 @@ void setup() {
 
 #ifdef RANGING_SENSOR
     ranging_sensor.init();
-    ranging_sensor.setTimeout(500);
+    ranging_sensor.setTimeout(300);
 
     // Start continuous back-to-back mode (take readings as
     // fast as possible).  To use continuous timed mode
@@ -227,26 +229,19 @@ void setup() {
     GPS_init();
 #ifdef DEBUG
     Serial.println("GPS initialized");
+    delay(1000);
 #endif
 #endif
 
-    flight_state = FLYING;
-    transmitting_init(0, 0, 0);
+    flight_state = TESTING;
     drone_init();
+    transmitting_init(0, 0, 0);
     last_time_sent = 0;
     digitalWrite(TOP_LED, HIGH);
 }
 
 void loop() {
-#if defined(RADIO) && defined(DEBUG)
-//    radio.send(GATEWAYID, payload, 50);
-//    DEBUG_SERIAL.println(payload);
-#endif
-
 #ifdef BAROMETER
-#ifdef DEBUG
-    Serial.println(millis());
-#endif
     
     pressure = barometer.readPressure() * 100.0;
     bar_alt = (101325 - pressure / 100.0) * 9.0 + alt_mod;
@@ -262,8 +257,6 @@ void loop() {
 #ifdef DEBUG
     Serial.print(" Temp: ");
     Serial.print(temperature);
-    Serial.println(millis());
-
     Serial.println();
 #endif
 #endif
@@ -345,6 +338,7 @@ void loop() {
 #ifdef GPS
     GPS_run();
 #endif
+    voltage = 15 * analogRead(BATTERY_VOLTAGE);
     runState();
 }
 

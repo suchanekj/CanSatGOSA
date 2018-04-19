@@ -52,13 +52,13 @@
 //comment any line to disable subsystem
 
 #define DEBUG
-#define BAROMETER
-#define RADIO
+//#define BAROMETER
+//#define RADIO
 //#define HUMIDITY_SENSOR
 //#define RANGING_SENSOR
-#define COMPASS
+//#define COMPASS
 //#define GSM
-//#define GPS
+#define GPS
 
 /*
  ***********************************************************************************
@@ -120,7 +120,7 @@ const int ARM_RANGING_INTERRUPT[4] = {19, 4, 53, 73};
 
 //GPS module
 
-#define GPS_SERIAL Serial3
+#define GPS_SERIAL Serial1
 //#define gpsPort Serial1
 //#define GPS_PORT_NAME "Serial1"
 

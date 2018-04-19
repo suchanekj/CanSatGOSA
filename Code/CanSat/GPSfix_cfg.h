@@ -51,4 +51,3 @@
 //#define GPS_FIX_GEOID_HEIGHT
 
 #endif
-

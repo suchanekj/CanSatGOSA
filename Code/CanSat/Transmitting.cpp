@@ -75,9 +75,13 @@ void transmitting_send(long int data[], int size) {
             sprintf(message + end, ";");
             end++;
         }
-        sprintf(message + end, "%d", data[i]);
+        sprintf(message + end, "%ld", data[i]);
         while(end < len && message[end]) end++;
-        if(end >= len) break;
+        if(end >= len - 12) {
+          message[end - 1] = '&';
+          transmitting_send(message, end);
+          end = 0;
+        }
     }
     transmitting_send(message, end);
 }

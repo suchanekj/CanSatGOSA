@@ -39,7 +39,7 @@
 #include "Transmitting.h"
 #include "GPS.h"
 
-extern int armDistance[4];
+extern int armDistance;
 extern int humid;
 extern int32_t accelerometer[3];
 extern int32_t magnetometer[3];
@@ -47,6 +47,7 @@ extern long int pressure;
 extern long int bar_alt;
 extern int temperature;
 extern unsigned long last_time_sent;
+extern int voltage;
 extern Servo servo;
 
 #define WAITING_FOR_RELEASE 0
@@ -56,6 +57,7 @@ extern Servo servo;
 #define LANDING 4
 #define LANDED 5
 #define SLEEPING 6
+#define TESTING 7
 
 extern int flight_state;
 
@@ -66,6 +68,7 @@ void flying();
 void landing();
 void landed();
 void sleeping();
+void testing();
 
 void runState();
 
