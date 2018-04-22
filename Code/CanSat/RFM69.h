@@ -31,7 +31,6 @@
 #ifndef RFM69_h
 #define RFM69_h
 #include <Arduino.h>            // assumes Arduino IDE v1.0 or greater
-#include "pins_arduino.h"
 #include "config.h"
 
 #define RF69_MAX_DATA_LEN       61 // to take advantage of the built in AES/CRC we want to limit the frame size to the internal FIFO size (66 bytes - 3 bytes overhead - 2 bytes crc)
@@ -40,7 +39,7 @@
 // INT0 on AVRs should be connected to RFM69's DIO0 (ex on ATmega328 it's D2, on ATmega644/1284 it's D2)
 
 #define RF69_IRQ_PIN          10
-#define RF69_IRQ_NUM          NOT_AN_INTERRUPT
+#define RF69_IRQ_NUM          digitalPinToInterrupt(10)
 
 
 #define CSMA_LIMIT              -90 // upper RX signal sensitivity threshold in dBm for carrier sense access

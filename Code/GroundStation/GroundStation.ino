@@ -83,8 +83,10 @@ void loop()
     {
       Serial.print("to ["); Serial.print(radio.TARGETID, DEC); Serial.print("] ");
     }
+    Serial.print("[");
     for (byte i = 0; i < radio.DATALEN; i++)
       Serial.print((char)radio.DATA[i]);
+    Serial.print("]");
     Serial.print("   [RX_RSSI:"); Serial.print(radio.RSSI); Serial.print("]");
 
     if (radio.ACKRequested())

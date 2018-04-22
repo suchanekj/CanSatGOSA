@@ -74,7 +74,6 @@ void testing();
 void par_fly();
 void par_wait();
 
-
 void runState();
 
 #endif //CANSAT_STATES_H
