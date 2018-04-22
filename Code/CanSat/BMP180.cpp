@@ -445,3 +445,4 @@ void BMP180::getData(double &T, double &P)
   else Serial.println("error starting temperature measurement\n");
 }
 
+

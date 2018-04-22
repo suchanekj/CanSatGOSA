@@ -235,7 +235,7 @@
 // If not defined, virtuals are not used, with a slight size (2 bytes) and 
 // execution time savings.
 
-//#define NMEAGPS_DERIVED_TYPES
+#define NMEAGPS_DERIVED_TYPES
 
 #ifdef NMEAGPS_DERIVED_TYPES
   #define NMEAGPS_VIRTUAL virtual

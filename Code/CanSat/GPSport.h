@@ -57,9 +57,9 @@
 //      If you have a Mega, Leo or Due board, you could use Serial1, 
 //      Serial2 or Serial3:
 //
-//             #define gpsPort Serial1
-//             #define GPS_PORT_NAME "Serial1"
-//             #define DEBUG_PORT Serial
+             #define gpsPort Serial1
+             #define GPS_PORT_NAME "Serial1"
+             #define DEBUG_PORT Serial
 //
 //      These extra ports do not have to be disconnected to upload new
 //      sketches over USB.
@@ -129,148 +129,143 @@
 //             *DELETE* the rest of this file and declare your own GPS port variable,
 //             GPS port name string, and debug print port variable (see above).
 
-#define gpsPort Serial1
-#define GPS_PORT_NAME "Serial1"
-#define DEBUG_PORT Serial
-
-/*
-#if defined(SERIAL_PORT_HARDWARE_OPEN)
-
-  #if SERIAL_PORT_HARDWARE_OPEN == Serial1
-
-    //  This Arduino has more than one hardware serial port, 
-    //      use Serial1 (or NeoSerial1).
-    #define NEOGPS_USE_SERIAL1
-
-  #endif
-
-#endif
-
-#ifdef NEOGPS_USE_SERIAL1
-
-  #if defined( NMEAGPS_INTERRUPT_PROCESSING )
-    #include <NeoHWSerial.h>
-    #define gpsPort NeoSerial1
-    #define GPS_PORT_NAME "NeoSerial1"
-  #else
-    #define gpsPort Serial1
-    #define GPS_PORT_NAME "Serial1"
-  #endif
-
-#else
-  //      Uncomment *zero* or *one* of the serial port library includes.
-  //      If none of these includes are uncommented, Serial will be used.
-  //
-  //#include <NeoHWSerial.h>    // NeoSerial or NeoSerial1 Interrupt-style processing
-  #include <AltSoftSerial.h>    // <-- DEFAULT.  Two specific pins required
-  //#include <NeoICSerial.h>    // AltSoftSerial with Interrupt-style processing (see docs)
-  //#include <NeoSWSerial.h>    // Any pins, only @ 9600, 19200 or 38400 baud
-  //#include <SoftwareSerial.h> // NOT RECOMMENDED!
-
-  #if defined( SoftwareSerial_h )
-    #define SS_TYPE SoftwareSerial
-    #warning SoftwareSerial is NOT RECOMMENDED.  Use AltSoftSerial or NeoSWSerial instead.
-
-    #if defined( NMEAGPS_INTERRUPT_PROCESSING )
-      #error You cannot use SoftwareSerial with INTERRUPT_PROCESSING.  Use NeoSWSerial or NeoICSerial instead.
-    #endif
-
-  #elif defined( NeoSWSerial_h )
-    #define SS_TYPE NeoSWSerial
-
-  #elif defined( AltSoftSerial_h )
-    #define SS_TYPE AltSoftSerial
-    #define RX_PIN -1  // doesn't matter because it only works...
-    #define TX_PIN -1  //    ...on two specific pins
-
-    #if defined( NMEAGPS_INTERRUPT_PROCESSING )
-      #error You cannot use AltSoftSerial with INTERRUPT_PROCESSING.  Use NeoICSerial instead.
-    #endif
-
-  #elif defined( NeoICSerial_h )
-    #define SS_TYPE NeoICSerial
-    #define RX_PIN -1  // doesn't matter because it only works...
-    #define TX_PIN -1  //    ...on two specific pins
-
-  #elif defined( NeoHWSerial_h )
-    #define gpsPort NeoSerial
-    #define GPS_PORT_NAME "NeoSerial"
-    #warning Using Serial (actually NeoSerial) for GPS connection.
-
-  #else
-    // No serial library files were included before this file, just use Serial.
-    #define gpsPort Serial
-    #define GPS_PORT_NAME "Serial"
-    #warning Using Serial for GPS connection.
-    
-    // You will see this warning if you want to use Serial for the GPS, because no
-    // software serial port libraries were included.  That is a good choice.
-    //
-    // To use a different serial port for GPS device, you must include a serial header 
-    // before "#include GPSport.h" in the INO.  It may be simpler to replace the 
-    // entire contents of this file with your own declarations.  Follow the
-    // instructions above for declaring your own "gpsPort" variable. Everything else
-    // in this file should be deleted. See Installation instructions for more
-    // information.
-  #endif
-#endif
-
-
-#ifdef SS_TYPE
-
-  //---------------------------------------------------------------
-  // The current Board (an Uno?) does not have an extra serial port.
-  // Use a software serial library to listen to the GPS device.
-  //   You should expect to get some RX errors, which may
-  //   prevent getting fix data every second.  YMMV.
-
-  // Default Arduino RX pin number that is connected to the GPS TX pin
-  #ifndef RX_PIN
-    #define RX_PIN 4
-  #endif
-
-  // Default Arduino TX pin number that is connected to the GPS RX pin
-  #ifndef TX_PIN
-    #define TX_PIN 3
-  #endif
-
-  SS_TYPE gpsPort( RX_PIN, TX_PIN );
-
-  //  A little preprocessor magic to get a nice string
-  #define xstr(x) str(x)
-  #define str(x) #x
-  #define GPS_PORT_NAME \
-    xstr(SS_TYPE) "( RX pin " xstr(RX_PIN) \
-                  ", TX pin " xstr(TX_PIN) " )"
-
-  #ifdef NEOGPS_USE_SERIAL1
-    //  If you *really* want to do this, or you just happened to include 
-    //  a software serial library header for something else, you're
-    //  better off *not* including this file.  Just declare
-    //  your own gpsPort in your INO file.
-
-    #error You should be using Serial1 for the GPS device.  \
-        Software serial libraries are very inefficient and unreliable when \
-        used for GPS communications!
-  #endif
-
-#endif
-
-//------------------------------------------------------------
-// When NeoHWSerial is used, none of the built-in HardwareSerial
-//   variables can be used: Serial, Serial1, Serial2 and Serial3
-//   *cannot* be used.  Instead, you must use the corresponding
-//   NeoSerial, NeoSerial1, NeoSerial2 or NeoSerial3.  This define
-//   is used to substitute the appropriate Serial variable in
-//   all debug prints.
-
-#ifdef NeoHWSerial_h
-  #define DEBUG_PORT NeoSerial
-#else
-  #define DEBUG_PORT Serial // default for most sketches
-#endif
+//#if defined(SERIAL_PORT_HARDWARE_OPEN)
+//
+//  #if SERIAL_PORT_HARDWARE_OPEN == Serial1
+//
+//    //  This Arduino has more than one hardware serial port, 
+//    //      use Serial1 (or NeoSerial1).
+//    #define NEOGPS_USE_SERIAL1
+//
+//  #endif
+//
+//#endif
+//
+//#ifdef NEOGPS_USE_SERIAL1
+//
+//  #if defined( NMEAGPS_INTERRUPT_PROCESSING )
+//    #include <NeoHWSerial.h>
+//    #define gpsPort NeoSerial1
+//    #define GPS_PORT_NAME "NeoSerial1"
+//  #else
+//    #define gpsPort Serial1
+//    #define GPS_PORT_NAME "Serial1"
+//  #endif
+//
+//#else
+//  //      Uncomment *zero* or *one* of the serial port library includes.
+//  //      If none of these includes are uncommented, Serial will be used.
+//  //
+//  //#include <NeoHWSerial.h>    // NeoSerial or NeoSerial1 Interrupt-style processing
+//  #include <AltSoftSerial.h>    // <-- DEFAULT.  Two specific pins required
+//  //#include <NeoICSerial.h>    // AltSoftSerial with Interrupt-style processing (see docs)
+//  //#include <NeoSWSerial.h>    // Any pins, only @ 9600, 19200 or 38400 baud
+//  //#include <SoftwareSerial.h> // NOT RECOMMENDED!
+//
+//  #if defined( SoftwareSerial_h )
+//    #define SS_TYPE SoftwareSerial
+//    #warning SoftwareSerial is NOT RECOMMENDED.  Use AltSoftSerial or NeoSWSerial instead.
+//
+//    #if defined( NMEAGPS_INTERRUPT_PROCESSING )
+//      #error You cannot use SoftwareSerial with INTERRUPT_PROCESSING.  Use NeoSWSerial or NeoICSerial instead.
+//    #endif
+//
+//  #elif defined( NeoSWSerial_h )
+//    #define SS_TYPE NeoSWSerial
+//
+//  #elif defined( AltSoftSerial_h )
+//    #define SS_TYPE AltSoftSerial
+//    #define RX_PIN -1  // doesn't matter because it only works...
+//    #define TX_PIN -1  //    ...on two specific pins
+//
+//    #if defined( NMEAGPS_INTERRUPT_PROCESSING )
+//      #error You cannot use AltSoftSerial with INTERRUPT_PROCESSING.  Use NeoICSerial instead.
+//    #endif
+//
+//  #elif defined( NeoICSerial_h )
+//    #define SS_TYPE NeoICSerial
+//    #define RX_PIN -1  // doesn't matter because it only works...
+//    #define TX_PIN -1  //    ...on two specific pins
+//
+//  #elif defined( NeoHWSerial_h )
+//    #define gpsPort NeoSerial
+//    #define GPS_PORT_NAME "NeoSerial"
+//    #warning Using Serial (actually NeoSerial) for GPS connection.
+//
+//  #else
+//    // No serial library files were included before this file, just use Serial.
+//    #define gpsPort Serial
+//    #define GPS_PORT_NAME "Serial"
+//    #warning Using Serial for GPS connection.
+//    
+//    // You will see this warning if you want to use Serial for the GPS, because no
+//    // software serial port libraries were included.  That is a good choice.
+//    //
+//    // To use a different serial port for GPS device, you must include a serial header 
+//    // before "#include GPSport.h" in the INO.  It may be simpler to replace the 
+//    // entire contents of this file with your own declarations.  Follow the
+//    // instructions above for declaring your own "gpsPort" variable. Everything else
+//    // in this file should be deleted. See Installation instructions for more
+//    // information.
+//  #endif
+//#endif
+//
+//
+//#ifdef SS_TYPE
+//
+//  //---------------------------------------------------------------
+//  // The current Board (an Uno?) does not have an extra serial port.
+//  // Use a software serial library to listen to the GPS device.
+//  //   You should expect to get some RX errors, which may
+//  //   prevent getting fix data every second.  YMMV.
+//
+//  // Default Arduino RX pin number that is connected to the GPS TX pin
+//  #ifndef RX_PIN
+//    #define RX_PIN 4
+//  #endif
+//
+//  // Default Arduino TX pin number that is connected to the GPS RX pin
+//  #ifndef TX_PIN
+//    #define TX_PIN 3
+//  #endif
+//
+//  SS_TYPE gpsPort( RX_PIN, TX_PIN );
+//
+//  //  A little preprocessor magic to get a nice string
+//  #define xstr(x) str(x)
+//  #define str(x) #x
+//  #define GPS_PORT_NAME \
+//    xstr(SS_TYPE) "( RX pin " xstr(RX_PIN) \
+//                  ", TX pin " xstr(TX_PIN) " )"
+//
+//  #ifdef NEOGPS_USE_SERIAL1
+//    //  If you *really* want to do this, or you just happened to include 
+//    //  a software serial library header for something else, you're
+//    //  better off *not* including this file.  Just declare
+//    //  your own gpsPort in your INO file.
+//
+//    #error You should be using Serial1 for the GPS device.  \
+//        Software serial libraries are very inefficient and unreliable when \
+//        used for GPS communications!
+//  #endif
+//
+//#endif
+//
+////------------------------------------------------------------
+//// When NeoHWSerial is used, none of the built-in HardwareSerial
+////   variables can be used: Serial, Serial1, Serial2 and Serial3
+////   *cannot* be used.  Instead, you must use the corresponding
+////   NeoSerial, NeoSerial1, NeoSerial2 or NeoSerial3.  This define
+////   is used to substitute the appropriate Serial variable in
+////   all debug prints.
+//
+//#ifdef NeoHWSerial_h
+//  #define DEBUG_PORT NeoSerial
+//#else
+//  #define DEBUG_PORT Serial // default for most sketches
+//#endif
 
 // End of guessing game.
 //------------------------
-*/
+
 #endif

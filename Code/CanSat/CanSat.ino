@@ -1,171 +1,346 @@
 /*
   CanSat GOSA
   Code for a tiny probe to investigate existance of life
-  Copyright (C) 2018  Jakub Suchánek, suchanek989@seznam.cz
+  Copyright (C) 2018  Jakub SuchĂˇnek, suchanek989@seznam.cz
   http://github.com/suchanekj/CanSatGOSA
 
   License
   **********************************************************************************
-  This program is free software; you can redistribute it 
-  and/or modify it under the terms of the GNU General    
-  Public License as published by the Free Software       
-  Foundation; either version 3 of the License, or        
-  (at your option) any later version.                    
-                                                      
-  This program is distributed in the hope that it will   
-  be useful, but WITHOUT ANY WARRANTY; without even the  
-  implied warranty of MERCHANTABILITY or FITNESS FOR A   
-  PARTICULAR PURPOSE. See the GNU General Public        
-  License for more details.                              
-                                                        
-  You should have received a copy of the GNU General    
+  This program is free software; you can redistribute it
+  and/or modify it under the terms of the GNU General
+  Public License as published by the Free Software
+  Foundation; either version 3 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will
+  be useful, but WITHOUT ANY WARRANTY; without even the
+  implied warranty of MERCHANTABILITY or FITNESS FOR A
+  PARTICULAR PURPOSE. See the GNU General Public
+  License for more details.
+
+  You should have received a copy of the GNU General
   Public License along with this program.
   If not, see <http://www.gnu.org/licenses/>.
-                                                        
-  Licence can be viewed at                               
+
+  Licence can be viewed at
   https://github.com/suchanekj/CanSatGOSA/blob/master/LICENSE
-  
+
   Please maintain this license information along with authorship
   and copyright notices in any redistribution of this code
   **********************************************************************************
 */
 
-//Include the required libraries
-#include <Wire.h>
-#include <SPI.h>
-#include <SoftwareSerial.h>
-#include "qbcan.h"
-#include "NMEAGPS.h"
+#include <USBAPI.h>
+#include "CanSat.h"
 
-//Radio Parameters
-#define NODEID        2    //unique for each node on same network
-#define NETWORKID     42  //the same on all nodes that talk to each other
-#define GATEWAYID     1    //Receiving node
-#define ENCRYPTKEY    "Suchy Na Mars!!!" //exactly the same 16 characters/bytes on all nodes!
+#if defined(BAROMETER) || defined(RANGING_SENSOR) || defined(COMPASS) || defined(HUMIDITYSENSOR)
+TwoWire *i2c;
+#endif
 
-#define gpsPort Serial1
-#define GPS_PORT_NAME "Serial1"
-#define DEBUG_PORT Serial
+#ifdef BAROMETER
+MPL3115A2 barometer;
+long int alt_mod;
+#endif
 
-//Pressure sensor object
-BMP180 bmp;
-//GPS object
-static NMEAGPS  gps;
-static gps_fix  fix;
-//Radio object
-char payload[50];
-RFM69 radio;
+#ifdef HUMIDITY_SENSOR
+HIH7130 humidity;
+#endif
 
-static void doSomeWork()
-{
-  // Print all the things!
+#ifdef RANGING_SENSOR
+VL53L0X ranging_sensor;
+#endif
 
-  double T,P;
-  
-  // Get a new pressure reading:
-  bmp.getData(T,P);
+#ifdef COMPASS
+LSM303AGR_ACC_Sensor *Acc;
+LSM303AGR_MAG_Sensor *Mag;
+#endif
 
-    DEBUG_PORT.println(millis());
+void setup() {
 
-  sprintf(payload, "%d-%d-%d %d:%d:%d N%" PRId32 " E%" PRId32 " A%" PRId32 " T%d P%d.",
-                      fix.dateTime.year, fix.dateTime.month, fix.dateTime.date,
-                      fix.dateTime.hours, fix.dateTime.minutes, fix.dateTime.seconds,
-                      fix.latitudeL(), fix.longitudeL(), fix.altitude_cm(), (int)T,(int)P);
+    //PWM output to Flight Controller
 
-  //Send Data
-    DEBUG_PORT.println(millis());
-  radio.send(GATEWAYID, payload, 50);
-    DEBUG_PORT.println(millis());
-    DEBUG_PORT.println();
+    pinMode(FC_PWM_1, OUTPUT);
+    pinMode(FC_PWM_2, OUTPUT);
+    pinMode(FC_PWM_3, OUTPUT);
+    pinMode(FC_PWM_4, OUTPUT);
+    pinMode(FC_PWM_5, OUTPUT);
+    pinMode(FC_PWM_6, OUTPUT);
+    pinMode(FC_PWM_7, OUTPUT);
+    pinMode(FC_PWM_8, OUTPUT);
 
-} // doSomeWork
-
-//------------------------------------
-//  This is the main GPS parsing loop.
-
-static void GPSloop()
-{
-  while (gps.available( gpsPort )) {
-    DEBUG_PORT.println(millis());
-    fix = gps.read();
-    DEBUG_PORT.println(millis());
-    doSomeWork();
-  }
-
-}
-
-void setup()
-{
-
-  
-  DEBUG_PORT.begin(9600);
-  DEBUG_PORT.println("REBOOT");
-  while (!DEBUG_PORT)
-    ;
-
-  DEBUG_PORT.print( F("NMEA.INO: started\n") );
-  DEBUG_PORT.print( F("  fix object size = ") );
-  DEBUG_PORT.println( sizeof(gps.fix()) );
-  DEBUG_PORT.print( F("  gps object size = ") );
-  DEBUG_PORT.println( sizeof(gps) );
-  DEBUG_PORT.println( F("Looking for GPS device on " GPS_PORT_NAME) );
-
-  #ifndef NMEAGPS_RECOGNIZE_ALL
-    #error You must define NMEAGPS_RECOGNIZE_ALL in NMEAGPS_cfg.h!
-  #endif
-
-  #ifdef NMEAGPS_INTERRUPT_PROCESSING
-    #error You must *NOT* define NMEAGPS_INTERRUPT_PROCESSING in NMEAGPS_cfg.h!
-  #endif
-
-  #if !defined( NMEAGPS_PARSE_GGA ) & !defined( NMEAGPS_PARSE_GLL ) & \
-      !defined( NMEAGPS_PARSE_GSA ) & !defined( NMEAGPS_PARSE_GSV ) & \
-      !defined( NMEAGPS_PARSE_RMC ) & !defined( NMEAGPS_PARSE_VTG ) & \
-      !defined( NMEAGPS_PARSE_ZDA ) & !defined( NMEAGPS_PARSE_GST )
-
-    DEBUG_PORT.println( F("\nWARNING: No NMEA sentences are enabled: no fix data will be displayed.") );
-
-  #else
-    if (gps.merging == NMEAGPS::NO_MERGING) {
-      DEBUG_PORT.print  ( F("\nWARNING: displaying data from ") );
-      DEBUG_PORT.print  ( gps.string_for( LAST_SENTENCE_IN_INTERVAL ) );
-      DEBUG_PORT.print  ( F(" sentences ONLY, and only if ") );
-      DEBUG_PORT.print  ( gps.string_for( LAST_SENTENCE_IN_INTERVAL ) );
-      DEBUG_PORT.println( F(" is enabled.\n"
-                            "  Other sentences may be parsed, but their data will not be displayed.") );
+    //Arms
+//const int ARM_LED[4] = {47, 24, 76, 31};
+//const int ARM_RANGING_XSHUT[4] = {38, 55, 11, 29};
+//const int ARM_RANGING_INTERRUPT[4] = {19, 4, 53, 73};
+    for (int i = 0; i < 4; i++) {
+        pinMode(ARM_LED[i], OUTPUT);
+        pinMode(ARM_RANGING_XSHUT[i], OUTPUT);
     }
-  #endif
+    digitalWrite(ARM_RANGING_XSHUT[2], HIGH);
+        pinMode(ARM_RANGING_INTERRUPT[2], INPUT);
+    
 
-  DEBUG_PORT.print  ( F("\nGPS quiet time is assumed to begin after a ") );
-  DEBUG_PORT.print  ( gps.string_for( LAST_SENTENCE_IN_INTERVAL ) );
-  DEBUG_PORT.println( F(" sentence is received.\n"
-                        "  You should confirm this with NMEAorder.ino\n") );
+    //Top board
 
-  DEBUG_PORT.flush();
+    pinMode(TOP_LED, OUTPUT);
 
-  gpsPort.begin( 9600 );
-  
+    //GSM module
 
-  // Initialize pressure sensor.
-  if (bmp.begin())
-    DEBUG_PORT.println("BMP180 init success");
-  else
-  {
-    //In case of error let user know of the problem
-    while(1); // Pause forever.
-  }
+    GSM_SERIAL.begin(9600);
+    pinMode(GSM_SLEEP, OUTPUT);
+    pinMode(GSM_POWER_KEY, OUTPUT);
 
-  //Initialize radio
-  radio.initialize(FREQUENCY,NODEID,NETWORKID);
-  radio.setHighPower(); //To use the high power capabilities of the RFM69HW
-  radio.encrypt(ENCRYPTKEY);
-  radio.setFrequency(434200000);
-  DEBUG_PORT.print("Transmitting at ");
-  int f = radio.getFrequency();
-  DEBUG_PORT.println(f);
+    //GPS module
+
+ //   GPS_SERIAL.begin(9600);
+
+    //Servo
+
+    pinMode(SERVO, OUTPUT);
+    servo.attach(SERVO);
+
+    //O2 sensor
+
+    pinMode(O2, INPUT);
+
+    //CO2 sensor
+
+    pinMode(CO2, INPUT);
+
+    //Camera power
+
+    digitalWrite(CAMERA_POWER, HIGH);
+    pinMode(CAMERA_POWER, OUTPUT);
+
+    //Flight Controller power
+
+    digitalWrite(FC_POWER, HIGH);
+    pinMode(FC_POWER, OUTPUT);
+
+    //Radio transmitter
+
+    pinMode(RFM_INT, INPUT);
+    pinMode(RFM_SS, OUTPUT);
+
+    //Read battery voltage
+
+    pinMode(BATTERY_VOLTAGE, INPUT);
+
+    pinMode(A2, INPUT);
+    pinMode(A4, INPUT);
+    pinMode(A5, INPUT);
+    pinMode(A6, INPUT);
+    pinMode(A7, INPUT);
+    pinMode(A8, INPUT);
+    pinMode(A9, INPUT);
+    pinMode(A10, INPUT);
+    pinMode(A11, INPUT);
+    pinMode(A12, INPUT);
+    pinMode(A13, INPUT);
+    pinMode(A14, INPUT);
+    pinMode(A15, INPUT);
+
+#ifdef DEBUG
+    // Led blinking.
+    for (int i = 0; i < 20; i++) {
+        digitalWrite(TOP_LED, HIGH);
+        delay(250);
+        digitalWrite(TOP_LED, LOW);
+        delay(250);
+    }
+    DEBUG_SERIAL.begin(9600);
+    while(!DEBUG_SERIAL);
+    DEBUG_SERIAL.println("REBOOT");
+#endif
+
+
+
+#if defined(BAROMETER) || defined(RANGING_SENSOR) || defined(COMPASS) || defined(HUMIDITYSENSOR)
+// Initialize I2C bus.
+    i2c = new TwoWire();
+    i2c->begin();
+#ifdef DEBUG
+    Serial.println("I2C initialized");
+#endif
+#endif
+
+#ifdef BAROMETER
+    // Initlialize components.
+    barometer.begin(); // Get sensor online
+
+    barometer.setModeBarometer();
+    barometer.setOversampleRate(7); // Set Oversample to the recommended 128
+    barometer.enableEventFlags(); // Enable all three pressure and temp event flags 
+
+    delay(1000);
+    barometer.readPressure();
+    delay(1000);
+    barometer.readPressure();
+    delay(1000);
+    barometer.readPressure();
+
+    bar_alt = (1013.25 - barometer.readPressure() / 100.0) * 900.0;
+
+    alt_mod = STARTING_ALT - bar_alt;
+
+    Serial.println(bar_alt);
+    Serial.println(alt_mod);
+#ifdef DEBUG
+    Serial.println("barometer initialized");
+#endif
+#endif
+
+#ifdef HUMIDITY_SENSOR
+    // The address can be changed making the option of connecting multiple devices
+    humidity.getAddr_HIH7130(HIH7130_DEFAULT_ADDRESS);   // 0x27
+    humidity.begin();
+    delay(500);
+#endif
+
+#ifdef RANGING_SENSOR
+    ranging_sensor.init();
+    ranging_sensor.setTimeout(300);
+
+    // Start continuous back-to-back mode (take readings as
+    // fast as possible).  To use continuous timed mode
+    // instead, provide a desired inter-measurement period in
+    // ms (e.g. sensor.startContinuous(100)).
+    ranging_sensor.startContinuous();
+#endif
+
+#ifdef COMPASS
+    Acc = new LSM303AGR_ACC_Sensor(i2c);
+#ifdef DEBUG
+    Serial.println("Accelerometer initialized");
+#endif
+    Acc->Enable();
+#ifdef DEBUG
+    Serial.println("Accelerometer enabled");
+#endif
+    Mag = new LSM303AGR_MAG_Sensor(i2c);
+#ifdef DEBUG
+    Serial.println("Magnetometer initialized");
+#endif
+    Mag->Enable();
+#ifdef DEBUG
+    Serial.println("Magnetometer enabled");
+#endif
+#endif
+
+#ifdef GPS
+    GPS_init();
+#ifdef DEBUG
+    Serial.println("GPS initialized");
+    delay(1000);
+#endif
+#endif
+
+    flight_state = PAR_WAIT;
+    drone_init();
+    transmitting_init(0, 0, 0);
+    last_time_sent = 0;
+    digitalWrite(TOP_LED, HIGH);
 }
 
-void loop()
-{
-  GPSloop();
+void loop() {
+#ifdef BAROMETER
+    
+    pressure = barometer.readPressure() * 100.0;
+    bar_alt = (101325 - pressure / 100.0) * 9.0 + alt_mod;
+#ifdef DEBUGa
+    Serial.print("Alt(cm): ");
+    Serial.print(bar_alt);
+    
+    Serial.print("Pressure(Pa): ");
+    Serial.print(pressure);
+#endif
+
+    temperature = barometer.readTemp() * 100;
+#ifdef DEBUGa
+    Serial.print(" Temp: ");
+    Serial.print(temperature);
+    Serial.println();
+#endif
+#endif
+
+#ifdef HUMIDITY_SENSOR
+    byte error;
+    int8_t address;
+
+    address = humidity.hih_i2cAddress;
+    // The i2c_scanner uses the return value of
+    // the Write.endTransmisstion to see if
+    // a device did acknowledge to the address.
+    Wire.beginTransmission(address);
+    error = Wire.endTransmission();
+    DEBUG_SERIAL.print(error);
+    if (error == 0)
+    {
+        humidity.readRegister(address);
+
+        Serial.println("Getting Readings from HIH7130");
+        Serial.println(" ");
+        // Read and print out the Relative Humidity, convert it to %RH
+        humid = humidity.Measure_Humidity();
+
+        // Read and print out the temperature, then convert to C and F scales
+        temperature = humidity.Measure_Temperature();
+
+        // Output data to screen
+        Serial.print("Relative Humidity Reading: ");
+        Serial.print(humid);
+        Serial.println(" %RH");
+        Serial.print("Temperature Reading in Celsius: ");
+        Serial.print(temperature);
+        Serial.println(" C");
+        Serial.println("        ***************************        ");
+        Serial.println(" ");
+    }
+    else
+    {
+        Serial.println("HIH7130 Disconnected!");
+        Serial.println(" ");
+        Serial.println("        ************        ");
+        Serial.println(" ");
+    }
+#endif
+
+#ifdef RANGING_SENSOR
+    armDistance = ranging_sensor.readRangeContinuousMillimeters();
+    if (ranging_sensor.timeoutOccurred()) { Serial.print(" TIMEOUT"); }
+
+    Serial.println();
+#endif
+
+#ifdef COMPASS
+    // Read accelerometer LSM303AGR.
+    Acc->GetAxes(accelerometer);
+
+    // Read magnetometer LSM303AGR.
+    Mag->GetAxes(magnetometer);
+
+    // Output data.
+#if 0
+    DEBUG_SERIAL.print("| Acc[mg]: ");
+    DEBUG_SERIAL.print(accelerometer[0]);
+    DEBUG_SERIAL.print(" ");
+    DEBUG_SERIAL.print(accelerometer[1]);
+    DEBUG_SERIAL.print(" ");
+    DEBUG_SERIAL.print(accelerometer[2]);
+    DEBUG_SERIAL.print(" | Mag[mGauss]: ");
+    DEBUG_SERIAL.print(magnetometer[0]);
+    DEBUG_SERIAL.print(" ");
+    DEBUG_SERIAL.print(magnetometer[1]);
+    DEBUG_SERIAL.print(" ");
+    DEBUG_SERIAL.print(magnetometer[2]);
+    DEBUG_SERIAL.println(" |");
+#endif
+#endif
+
+#ifdef GPS
+    GPS_run();
+#endif
+    voltage = 15 * analogRead(BATTERY_VOLTAGE);
+    runState();
 }
+
