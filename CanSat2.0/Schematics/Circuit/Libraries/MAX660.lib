@@ -1,0 +1,34 @@
+EESchema-LIBRARY Version 2.3
+#encoding utf-8
+#(c) SnapEDA 2016 (snapeda.com)
+#This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License (CC BY-SA) with Design Exception 1.0
+#
+# MAX660
+#
+DEF MAX660 U 0 40 Y Y 1 L N
+F0 "U" -401 532 50 H V L BNN
+F1 "MAX660" -401 -571 50 H V L BNN
+F2 "SO08" 0 0 50 H I L BNN
+F3 "max660 cmos monolithic voltage converter inverts or doubles input voltage" 0 0 50 H I L BNN
+F4 "None" 0 0 50 H I L BNN
+F5 "Amphenol" 0 0 50 H I L BNN
+F6 "MAX660" 0 0 50 H I L BNN
+F7 "None" 0 0 50 H I L BNN
+F8 "Unavailable" 0 0 50 H I L BNN
+DRAW
+P 2 0 0 10 -400 500 -400 -500 N
+P 2 0 0 10 -400 -500 400 -500 N
+P 2 0 0 10 400 -500 400 500 N
+P 2 0 0 10 400 500 -400 500 N
+X FC 1 -600 300 200 R 40 40 0 0 B 
+X CAP+ 2 -600 100 200 R 40 40 0 0 B 
+X GND 3 -600 -100 200 R 40 40 0 0 B 
+X CAP 4 -600 -300 200 R 40 40 0 0 B 
+X OUT 5 600 -300 200 L 40 40 0 0 B 
+X LV 6 600 -100 200 L 40 40 0 0 B 
+X OSC 7 600 100 200 L 40 40 0 0 B 
+X V+ 8 600 300 200 L 40 40 0 0 B 
+ENDDRAW
+ENDDEF
+#
+# End Library

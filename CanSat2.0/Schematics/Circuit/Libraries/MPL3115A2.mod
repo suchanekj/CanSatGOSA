@@ -1,0 +1,91 @@
+PCBNEW-LibModule-V1  
+# encoding utf-8
+Units mm
+$INDEX
+PSON125P300X500X120-8N
+$EndINDEX
+$MODULE PSON125P300X500X120-8N
+Po 0 0 0 15 00000000 00000000 ~~
+Li PSON125P300X500X120-8N
+Cd 
+Sc 00000000
+At SMD
+Op 0 0 0
+.SolderMask 0
+.SolderPaste 0
+T0 1.3426 -3.44166 1.00194 1.00194 0 0.05 N V 21 "PSON125P300X500X120-8N"
+T1 1.47709 3.46993 1.00142 1.00142 0 0.05 N V 21 "VAL**"
+DS -1.5 -2.5 1.5 -2.5 0.2 21
+DS 1.5 -2.5 1.5 2.5 0.2 24
+DS 1.5 2.5 -1.5 2.5 0.2 21
+DS -1.5 2.5 -1.5 -2.5 0.2 24
+DC -2.2 -1.9 -2.05858 -1.9 0.2 21
+DS -1.8 -2.8 1.8 -2.8 0.05 24
+DS 1.8 -2.8 1.8 2.8 0.05 24
+DS 1.8 2.8 -1.8 2.8 0.05 24
+DS -1.8 2.8 -1.8 -2.8 0.05 24
+$PAD
+Sh "1" R 0.95 0.6 0 0 0
+At SMD N 00888000
+.SolderMask 0
+.SolderPaste 0
+Ne 0 ""
+Po -1 -1.875
+$EndPAD
+$PAD
+Sh "2" R 0.95 0.6 0 0 0
+At SMD N 00888000
+.SolderMask 0
+.SolderPaste 0
+Ne 0 ""
+Po -1 -0.625
+$EndPAD
+$PAD
+Sh "3" R 0.95 0.6 0 0 0
+At SMD N 00888000
+.SolderMask 0
+.SolderPaste 0
+Ne 0 ""
+Po -1 0.625
+$EndPAD
+$PAD
+Sh "4" R 0.95 0.6 0 0 0
+At SMD N 00888000
+.SolderMask 0
+.SolderPaste 0
+Ne 0 ""
+Po -1 1.875
+$EndPAD
+$PAD
+Sh "5" R 0.95 0.6 0 0 0
+At SMD N 00888000
+.SolderMask 0
+.SolderPaste 0
+Ne 0 ""
+Po 1 1.875
+$EndPAD
+$PAD
+Sh "6" R 0.95 0.6 0 0 0
+At SMD N 00888000
+.SolderMask 0
+.SolderPaste 0
+Ne 0 ""
+Po 1 0.625
+$EndPAD
+$PAD
+Sh "7" R 0.95 0.6 0 0 0
+At SMD N 00888000
+.SolderMask 0
+.SolderPaste 0
+Ne 0 ""
+Po 1 -0.625
+$EndPAD
+$PAD
+Sh "8" R 0.95 0.6 0 0 0
+At SMD N 00888000
+.SolderMask 0
+.SolderPaste 0
+Ne 0 ""
+Po 1 -1.875
+$EndPAD
+$EndMODULE PSON125P300X500X120-8N
