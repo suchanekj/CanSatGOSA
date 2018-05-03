@@ -95,6 +95,12 @@ void runState() {
         case TESTING:
             testing();
             break;
+        case PAR_FLY:
+            par_fly();
+            break;
+        case PAR_WAIT:
+            par_wait();
+            break;
     }
 
 }
@@ -166,8 +172,12 @@ void landing() {
     }
 }
 
-void landed() {
+unsigned long int servo_time = 15000;
 
+void landed() {
+    if(millis() - servo_time < 2000) servo.write(-180);
+    else if(millis() - servo_time < 4000) servo.write(180);
+    else servo_time = millis();
     if(millis() - last_time_sent > 500) {
         send_data();
         last_time_sent = millis();
@@ -211,6 +221,30 @@ void testing() {
     DEBUG_SERIAL.println(old_speed_up);
     set_speed(0, 0, 0, old_speed_up);
     DEBUG_SERIAL.print("Speed set");
+    if(millis() - last_time_sent > 500) {
+        send_data();
+        last_time_sent = millis();
+    }
+}
+
+unsigned long int started_flying;
+
+void par_fly() {
+    if(bar_alt - DESTINATION_ALT < 5000 && armDistance < 50 || millis() - started_flying > 500000) {
+      flight_state = LANDED;
+      servo_time = millis();
+    }
+    if(millis() - last_time_sent > 500) {
+        send_data();
+        last_time_sent = millis();
+    }
+}
+
+void par_wait() {
+    if(bar_alt - DESTINATION_ALT > 10000) {
+      flight_state = PAR_FLY;
+      started_flying = millis();
+    }
     if(millis() - last_time_sent > 500) {
         send_data();
         last_time_sent = millis();

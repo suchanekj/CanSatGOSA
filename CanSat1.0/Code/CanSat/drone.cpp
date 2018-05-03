@@ -46,7 +46,7 @@ void drone_init() {
 }
 
 void set_speed(int forward, int side, int rotation, int up) {
-    if(forward || side || rotation || up) aux1.writeMicroseconds(1900);
+    if(forward != 0 || side != 0 || rotation != 0 || up != 0) aux1.writeMicroseconds(1900);
     else aux1.writeMicroseconds(1100);
     pitch.writeMicroseconds(1500 + forward);
     yaw.writeMicroseconds(1500 + rotation);

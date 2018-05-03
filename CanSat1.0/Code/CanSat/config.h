@@ -40,11 +40,11 @@
 
 #define DESTINATION_LAT 499951500
 #define DESTINATION_LON 145513150
-#define DESTINATION_ALT 32500
+#define DESTINATION_ALT 41500
 
 #define EARTH_RADIUS_M 6371009
 #define RAD_PER_DEGREE (PI / 180.0)
-#define STARTING_ALT 32500
+#define STARTING_ALT 41500
 /*
  ***********************************************************************************
  *  Subsystem definitions

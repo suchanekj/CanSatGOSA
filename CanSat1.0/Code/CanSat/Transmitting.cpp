@@ -78,5 +78,6 @@ void transmitting_send(long int data[], int size) {
           end = 0;
         }
     }
+    if(!end) return;
     transmitting_send(message, end);
 }

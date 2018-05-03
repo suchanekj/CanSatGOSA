@@ -58,6 +58,8 @@ extern Servo servo;
 #define LANDED 5
 #define SLEEPING 6
 #define TESTING 7
+#define PAR_FLY 8
+#define PAR_WAIT 9
 
 extern int flight_state;
 
@@ -69,6 +71,8 @@ void landing();
 void landed();
 void sleeping();
 void testing();
+void par_fly();
+void par_wait();
 
 void runState();
 

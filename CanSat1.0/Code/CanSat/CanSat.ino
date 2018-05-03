@@ -235,7 +235,7 @@ void setup() {
 #endif
 #endif
 
-    flight_state = TESTING;
+    flight_state = PAR_WAIT;
     drone_init();
     transmitting_init(0, 0, 0);
     last_time_sent = 0;
