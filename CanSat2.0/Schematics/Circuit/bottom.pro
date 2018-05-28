@@ -1,4 +1,4 @@
-update=10.05.2018 22:45:44
+update=28.5.2018 23:10:06
 version=1
 last_client=kicad
 [pcbnew]
@@ -25,7 +25,7 @@ version=1
 NetIExt=net
 [eeschema]
 version=1
-LibDir=
+LibDir=Libraries
 [eeschema/libraries]
 LibName1=power
 LibName2=device
@@ -59,15 +59,23 @@ LibName29=opto
 LibName30=atmel
 LibName31=contrib
 LibName32=valves
-[schematic_editor]
-version=1
-PageLayoutDescrFile=
-PlotDirectoryName=
-SubpartIdSeparator=0
-SubpartFirstId=65
-NetFmtName=
-SpiceForceRefPrefix=0
-SpiceUseNetNumbers=0
-LabSize=60
+LibName33=Libraries/analog_devices
+LibName34=Libraries/cansat
+LibName35=Libraries/LSM303AGRTR
+LibName36=Libraries/MAX660
+LibName37=Libraries/MPL3115A2
+LibName38=Libraries/regul
+LibName39=Libraries/Relay
+LibName40=arm-cache
+LibName41=battery-cache
+LibName42=bottom-cache
+LibName43=cansat-cache
+LibName44=cansat-rescue
+LibName45=center-cache
+LibName46=main-cache
+LibName47=main-rescue
+LibName48=middle-cache
+LibName49=top-cache
+LibName50=top-rescue
 [general]
 version=1

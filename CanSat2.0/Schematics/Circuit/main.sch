@@ -37,7 +37,6 @@ LIBS:Relay
 LIBS:MAX660
 LIBS:analog_devices
 LIBS:main-cache
-LIBS:middle-cache
 EELAYER 25 0
 EELAYER END
 $Descr A4 11693 8268
@@ -626,6 +625,271 @@ F 3 "" H 7100 1850 50  0001 C CNN
 	1    7100 1850
 	1    0    0    -1  
 $EndComp
+Text Label 8300 2350 0    60   ~ 0
+RFM_INT
+Text Label 8300 2450 0    60   ~ 0
+RFM_SS
+Text Label 8200 2550 0    60   ~ 0
+MOSILOW
+Text Label 7300 2550 0    60   ~ 0
+MISOLOW
+Text Label 7300 2350 0    60   ~ 0
+GSM_RX
+Text Label 7300 2250 0    60   ~ 0
+GSM_TX
+Text Label 7300 2150 0    60   ~ 0
+GSM_KEY
+Text Label 7300 2450 0    60   ~ 0
+SCKLOW
+Text Label 7300 2050 0    60   ~ 0
+GSM_SLP
+Text Label 7300 1950 0    60   ~ 0
+FC_EN
+Text Label 7300 1850 0    60   ~ 0
+CAM_EN
+$Comp
+L +BATT #PWR016
+U 1 1 5AE8C831
+P 2450 2950
+F 0 "#PWR016" H 2450 2800 50  0001 C CNN
+F 1 "+BATT" H 2450 3090 50  0000 C CNN
+F 2 "" H 2450 2950 50  0001 C CNN
+F 3 "" H 2450 2950 50  0001 C CNN
+	1    2450 2950
+	1    0    0    -1  
+$EndComp
+$Comp
+L CONN_2 P4
+U 1 1 5AE8CD76
+P 8100 5850
+F 0 "P4" V 8050 5850 40  0000 C CNN
+F 1 "CONN_2" V 8150 5850 40  0000 C CNN
+F 2 "CanSat:TX30_vertical" H 8100 5850 60  0001 C CNN
+F 3 "" H 8100 5850 60  0000 C CNN
+	1    8100 5850
+	1    0    0    -1  
+$EndComp
+$Comp
+L +BATT #PWR017
+U 1 1 5AE8CF14
+P 7650 5650
+F 0 "#PWR017" H 7650 5500 50  0001 C CNN
+F 1 "+BATT" H 7650 5790 50  0000 C CNN
+F 2 "" H 7650 5650 50  0001 C CNN
+F 3 "" H 7650 5650 50  0001 C CNN
+	1    7650 5650
+	1    0    0    -1  
+$EndComp
+$Comp
+L GND #PWR018
+U 1 1 5AE8D324
+P 1050 7100
+F 0 "#PWR018" H 1050 6850 50  0001 C CNN
+F 1 "GND" H 1050 6950 50  0000 C CNN
+F 2 "" H 1050 7100 50  0001 C CNN
+F 3 "" H 1050 7100 50  0001 C CNN
+	1    1050 7100
+	1    0    0    -1  
+$EndComp
+$Comp
+L GND #PWR019
+U 1 1 5AE8D467
+P 1350 2600
+F 0 "#PWR019" H 1350 2350 50  0001 C CNN
+F 1 "GND" H 1350 2450 50  0000 C CNN
+F 2 "" H 1350 2600 50  0001 C CNN
+F 3 "" H 1350 2600 50  0001 C CNN
+	1    1350 2600
+	1    0    0    -1  
+$EndComp
+$Comp
+L GND #PWR020
+U 1 1 5AE8D7F3
+P 3150 2650
+F 0 "#PWR020" H 3150 2400 50  0001 C CNN
+F 1 "GND" H 3150 2500 50  0000 C CNN
+F 2 "" H 3150 2650 50  0001 C CNN
+F 3 "" H 3150 2650 50  0001 C CNN
+	1    3150 2650
+	1    0    0    -1  
+$EndComp
+$Comp
+L +5V #PWR021
+U 1 1 5AE8D89B
+P 3550 1700
+F 0 "#PWR021" H 3550 1550 50  0001 C CNN
+F 1 "+5V" H 3550 1840 50  0000 C CNN
+F 2 "" H 3550 1700 50  0001 C CNN
+F 3 "" H 3550 1700 50  0001 C CNN
+	1    3550 1700
+	1    0    0    -1  
+$EndComp
+$Comp
+L GND #PWR022
+U 1 1 5AE8DC31
+P 7650 6050
+F 0 "#PWR022" H 7650 5800 50  0001 C CNN
+F 1 "GND" H 7650 5900 50  0000 C CNN
+F 2 "" H 7650 6050 50  0001 C CNN
+F 3 "" H 7650 6050 50  0001 C CNN
+	1    7650 6050
+	1    0    0    -1  
+$EndComp
+$Comp
+L +3V3 #PWR023
+U 1 1 5AE8E3E5
+P 1750 1750
+F 0 "#PWR023" H 1750 1600 50  0001 C CNN
+F 1 "+3V3" H 1750 1890 50  0000 C CNN
+F 2 "" H 1750 1750 50  0001 C CNN
+F 3 "" H 1750 1750 50  0001 C CNN
+	1    1750 1750
+	1    0    0    -1  
+$EndComp
+$Comp
+L +3V3 #PWR024
+U 1 1 5AE8E46C
+P 7400 1450
+F 0 "#PWR024" H 7400 1300 50  0001 C CNN
+F 1 "+3V3" H 7400 1590 50  0000 C CNN
+F 2 "" H 7400 1450 50  0001 C CNN
+F 3 "" H 7400 1450 50  0001 C CNN
+	1    7400 1450
+	1    0    0    -1  
+$EndComp
+Text Notes 2600 5000 0    60   ~ 0
+Current flows\nfrom D to C
+Text Label 8200 3300 0    60   ~ 0
+FC_PWM_1
+Text Label 8200 3400 0    60   ~ 0
+FC_PWM_2
+Text Label 8200 3500 0    60   ~ 0
+FC_PWM_3
+Text Label 8200 3600 0    60   ~ 0
+FC_PWM_4
+Text Label 8200 3700 0    60   ~ 0
+FC_PWM_5
+Text Label 8200 3800 0    60   ~ 0
+FC_PWM_6
+Text Label 8200 3900 0    60   ~ 0
+FC_PWM_7
+Text Label 8200 4000 0    60   ~ 0
+FC_PWM_8
+$Comp
+L +5V #PWR025
+U 1 1 5AE9E59E
+P 7600 3200
+F 0 "#PWR025" H 7600 3050 50  0001 C CNN
+F 1 "+5V" H 7600 3340 50  0000 C CNN
+F 2 "" H 7600 3200 50  0001 C CNN
+F 3 "" H 7600 3200 50  0001 C CNN
+	1    7600 3200
+	1    0    0    -1  
+$EndComp
+$Comp
+L GND #PWR026
+U 1 1 5AE9E59F
+P 7100 3600
+F 0 "#PWR026" H 7100 3350 50  0001 C CNN
+F 1 "GND" H 7100 3450 50  0000 C CNN
+F 2 "" H 7100 3600 50  0001 C CNN
+F 3 "" H 7100 3600 50  0001 C CNN
+	1    7100 3600
+	1    0    0    -1  
+$EndComp
+Text Label 8300 4450 0    60   ~ 0
+RFM_INT
+Text Label 8300 4550 0    60   ~ 0
+RFM_SS
+Text Label 7300 4450 0    60   ~ 0
+GSM_RX
+Text Label 7300 4000 0    60   ~ 0
+GSM_TX
+Text Label 7300 3900 0    60   ~ 0
+GSM_KEY
+Text Label 7300 3800 0    60   ~ 0
+GSM_SLP
+Text Label 7300 3700 0    60   ~ 0
+FC_EN
+Text Label 7300 3600 0    60   ~ 0
+CAM_EN
+Text Label 7300 4750 0    60   ~ 0
+O2
+Text Label 7300 4850 0    60   ~ 0
+CO2
+Text Label 8500 4750 0    60   ~ 0
+O3
+Text Label 8300 4850 0    60   ~ 0
+V_READ
+$Comp
+L +3V3 #PWR027
+U 1 1 5AE9E5A0
+P 7400 3200
+F 0 "#PWR027" H 7400 3050 50  0001 C CNN
+F 1 "+3V3" H 7400 3340 50  0000 C CNN
+F 2 "" H 7400 3200 50  0001 C CNN
+F 3 "" H 7400 3200 50  0001 C CNN
+	1    7400 3200
+	1    0    0    -1  
+$EndComp
+Text Label 8350 4950 0    60   ~ 0
+SERVO
+$Comp
+L Conn_02x13_Odd_Even J1
+U 1 1 5AE9F034
+P 7900 2150
+F 0 "J1" H 7950 2850 50  0000 C CNN
+F 1 "Center connector" H 7950 1450 50  0000 C CNN
+F 2 "Pin_Headers:Pin_Header_Straight_2x13_Pitch1.27mm_SMD" H 7900 2150 50  0001 C CNN
+F 3 "" H 7900 2150 50  0001 C CNN
+	1    7900 2150
+	1    0    0    -1  
+$EndComp
+Text Label 7300 2650 0    60   ~ 0
+SERVO
+$Comp
+L SW_DIP_x01 SW1
+U 1 1 5AF42AEC
+P 1050 5050
+F 0 "SW1" H 1050 5200 50  0000 C CNN
+F 1 "SW_DIP_x01" H 1050 4900 50  0000 C CNN
+F 2 "CanSat:TX30_vertical" H 1050 5050 50  0001 C CNN
+F 3 "" H 1050 5050 50  0001 C CNN
+	1    1050 5050
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Conn_02x08_Odd_Even J2
+U 1 1 5AF5F185
+P 7900 3600
+F 0 "J2" H 7950 4000 50  0000 C CNN
+F 1 "Conn_02x08_Counter_Clockwise" H 7950 3100 50  0000 C CNN
+F 2 "Pin_Headers:Pin_Header_Straight_2x08_Pitch1.27mm" H 7900 3600 50  0001 C CNN
+F 3 "" H 7900 3600 50  0001 C CNN
+	1    7900 3600
+	1    0    0    -1  
+$EndComp
+$Comp
+L Conn_02x07_Counter_Clockwise J3
+U 1 1 5AF5F422
+P 7900 4750
+F 0 "J3" H 7950 5150 50  0000 C CNN
+F 1 "Conn_02x07_Counter_Clockwise" H 7950 4350 50  0000 C CNN
+F 2 "Pin_Headers:Pin_Header_Straight_2x07_Pitch1.27mm" H 7900 4750 50  0001 C CNN
+F 3 "" H 7900 4750 50  0001 C CNN
+	1    7900 4750
+	1    0    0    -1  
+$EndComp
+Text Label 8250 4650 0    60   ~ 0
+MOSILOW
+Text Label 7300 4650 0    60   ~ 0
+MISOLOW
+Text Label 7300 4550 0    60   ~ 0
+SCKLOW
+Text Label 8450 2750 0    60   ~ 0
+SDA
+Text Label 8450 2650 0    60   ~ 0
+SCL
 Wire Wire Line
 	1350 2400 1350 2600
 Connection ~ 1350 2500
@@ -902,116 +1166,6 @@ Wire Wire Line
 	7600 1450 7600 1550
 Wire Wire Line
 	7600 1550 7700 1550
-Text Label 8300 2350 0    60   ~ 0
-RFM_INT
-Text Label 8300 2450 0    60   ~ 0
-RFM_SS
-Text Label 8200 2550 0    60   ~ 0
-MOSILOW
-Text Label 7300 2550 0    60   ~ 0
-MISOLOW
-Text Label 7300 2350 0    60   ~ 0
-GSM_RX
-Text Label 7300 2250 0    60   ~ 0
-GSM_TX
-Text Label 7300 2150 0    60   ~ 0
-GSM_KEY
-Text Label 7300 2450 0    60   ~ 0
-SCKLOW
-Text Label 7300 2050 0    60   ~ 0
-GSM_SLP
-Text Label 7300 1950 0    60   ~ 0
-FC_EN
-Text Label 7300 1850 0    60   ~ 0
-CAM_EN
-$Comp
-L +BATT #PWR016
-U 1 1 5AE8C831
-P 2450 2950
-F 0 "#PWR016" H 2450 2800 50  0001 C CNN
-F 1 "+BATT" H 2450 3090 50  0000 C CNN
-F 2 "" H 2450 2950 50  0001 C CNN
-F 3 "" H 2450 2950 50  0001 C CNN
-	1    2450 2950
-	1    0    0    -1  
-$EndComp
-$Comp
-L CONN_2 P4
-U 1 1 5AE8CD76
-P 8100 5850
-F 0 "P4" V 8050 5850 40  0000 C CNN
-F 1 "CONN_2" V 8150 5850 40  0000 C CNN
-F 2 "CanSat:TX30_vertical" H 8100 5850 60  0001 C CNN
-F 3 "" H 8100 5850 60  0000 C CNN
-	1    8100 5850
-	1    0    0    -1  
-$EndComp
-$Comp
-L +BATT #PWR017
-U 1 1 5AE8CF14
-P 7650 5650
-F 0 "#PWR017" H 7650 5500 50  0001 C CNN
-F 1 "+BATT" H 7650 5790 50  0000 C CNN
-F 2 "" H 7650 5650 50  0001 C CNN
-F 3 "" H 7650 5650 50  0001 C CNN
-	1    7650 5650
-	1    0    0    -1  
-$EndComp
-$Comp
-L GND #PWR018
-U 1 1 5AE8D324
-P 1050 7100
-F 0 "#PWR018" H 1050 6850 50  0001 C CNN
-F 1 "GND" H 1050 6950 50  0000 C CNN
-F 2 "" H 1050 7100 50  0001 C CNN
-F 3 "" H 1050 7100 50  0001 C CNN
-	1    1050 7100
-	1    0    0    -1  
-$EndComp
-$Comp
-L GND #PWR019
-U 1 1 5AE8D467
-P 1350 2600
-F 0 "#PWR019" H 1350 2350 50  0001 C CNN
-F 1 "GND" H 1350 2450 50  0000 C CNN
-F 2 "" H 1350 2600 50  0001 C CNN
-F 3 "" H 1350 2600 50  0001 C CNN
-	1    1350 2600
-	1    0    0    -1  
-$EndComp
-$Comp
-L GND #PWR020
-U 1 1 5AE8D7F3
-P 3150 2650
-F 0 "#PWR020" H 3150 2400 50  0001 C CNN
-F 1 "GND" H 3150 2500 50  0000 C CNN
-F 2 "" H 3150 2650 50  0001 C CNN
-F 3 "" H 3150 2650 50  0001 C CNN
-	1    3150 2650
-	1    0    0    -1  
-$EndComp
-$Comp
-L +5V #PWR021
-U 1 1 5AE8D89B
-P 3550 1700
-F 0 "#PWR021" H 3550 1550 50  0001 C CNN
-F 1 "+5V" H 3550 1840 50  0000 C CNN
-F 2 "" H 3550 1700 50  0001 C CNN
-F 3 "" H 3550 1700 50  0001 C CNN
-	1    3550 1700
-	1    0    0    -1  
-$EndComp
-$Comp
-L GND #PWR022
-U 1 1 5AE8DC31
-P 7650 6050
-F 0 "#PWR022" H 7650 5800 50  0001 C CNN
-F 1 "GND" H 7650 5900 50  0000 C CNN
-F 2 "" H 7650 6050 50  0001 C CNN
-F 3 "" H 7650 6050 50  0001 C CNN
-	1    7650 6050
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
 	7650 5650 7650 5750
 Wire Wire Line
@@ -1020,72 +1174,10 @@ Wire Wire Line
 	7750 5950 7650 5950
 Wire Wire Line
 	7650 5950 7650 6050
-$Comp
-L +3V3 #PWR023
-U 1 1 5AE8E3E5
-P 1750 1750
-F 0 "#PWR023" H 1750 1600 50  0001 C CNN
-F 1 "+3V3" H 1750 1890 50  0000 C CNN
-F 2 "" H 1750 1750 50  0001 C CNN
-F 3 "" H 1750 1750 50  0001 C CNN
-	1    1750 1750
-	1    0    0    -1  
-$EndComp
-$Comp
-L +3V3 #PWR024
-U 1 1 5AE8E46C
-P 7400 1450
-F 0 "#PWR024" H 7400 1300 50  0001 C CNN
-F 1 "+3V3" H 7400 1590 50  0000 C CNN
-F 2 "" H 7400 1450 50  0001 C CNN
-F 3 "" H 7400 1450 50  0001 C CNN
-	1    7400 1450
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
 	1650 6850 1050 6850
 Wire Wire Line
 	1650 5350 1050 5350
-Text Notes 2600 5000 0    60   ~ 0
-Current flows\nfrom D to C
-Text Label 8200 3300 0    60   ~ 0
-FC_PWM_1
-Text Label 8200 3400 0    60   ~ 0
-FC_PWM_2
-Text Label 8200 3500 0    60   ~ 0
-FC_PWM_3
-Text Label 8200 3600 0    60   ~ 0
-FC_PWM_4
-Text Label 8200 3700 0    60   ~ 0
-FC_PWM_5
-Text Label 8200 3800 0    60   ~ 0
-FC_PWM_6
-Text Label 8200 3900 0    60   ~ 0
-FC_PWM_7
-Text Label 8200 4000 0    60   ~ 0
-FC_PWM_8
-$Comp
-L +5V #PWR025
-U 1 1 5AE9E59E
-P 7600 3200
-F 0 "#PWR025" H 7600 3050 50  0001 C CNN
-F 1 "+5V" H 7600 3340 50  0000 C CNN
-F 2 "" H 7600 3200 50  0001 C CNN
-F 3 "" H 7600 3200 50  0001 C CNN
-	1    7600 3200
-	1    0    0    -1  
-$EndComp
-$Comp
-L GND #PWR026
-U 1 1 5AE9E59F
-P 7100 3600
-F 0 "#PWR026" H 7100 3350 50  0001 C CNN
-F 1 "GND" H 7100 3450 50  0000 C CNN
-F 2 "" H 7100 3600 50  0001 C CNN
-F 3 "" H 7100 3600 50  0001 C CNN
-	1    7100 3600
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
 	8200 3300 8600 3300
 Wire Wire Line
@@ -1130,22 +1222,6 @@ Wire Wire Line
 	7600 3200 7600 3300
 Wire Wire Line
 	7600 3300 7700 3300
-Text Label 8300 4450 0    60   ~ 0
-RFM_INT
-Text Label 8300 4550 0    60   ~ 0
-RFM_SS
-Text Label 7300 4450 0    60   ~ 0
-GSM_RX
-Text Label 7300 4000 0    60   ~ 0
-GSM_TX
-Text Label 7300 3900 0    60   ~ 0
-GSM_KEY
-Text Label 7300 3800 0    60   ~ 0
-GSM_SLP
-Text Label 7300 3700 0    60   ~ 0
-FC_EN
-Text Label 7300 3600 0    60   ~ 0
-CAM_EN
 Wire Wire Line
 	8200 4750 8600 4750
 Wire Wire Line
@@ -1154,105 +1230,36 @@ Wire Wire Line
 	7700 4750 7300 4750
 Wire Wire Line
 	7300 4850 7700 4850
-Text Label 7300 4750 0    60   ~ 0
-O2
-Text Label 7300 4850 0    60   ~ 0
-CO2
-Text Label 8500 4750 0    60   ~ 0
-O3
-Text Label 8300 4850 0    60   ~ 0
-V_READ
-$Comp
-L +3V3 #PWR027
-U 1 1 5AE9E5A0
-P 7400 3200
-F 0 "#PWR027" H 7400 3050 50  0001 C CNN
-F 1 "+3V3" H 7400 3340 50  0000 C CNN
-F 2 "" H 7400 3200 50  0001 C CNN
-F 3 "" H 7400 3200 50  0001 C CNN
-	1    7400 3200
-	1    0    0    -1  
-$EndComp
-Text Label 8350 4950 0    60   ~ 0
-SERVO
 Wire Wire Line
 	8200 4950 8600 4950
-$Comp
-L Conn_02x13_Odd_Even J1
-U 1 1 5AE9F034
-P 7900 2150
-F 0 "J1" H 7950 2850 50  0000 C CNN
-F 1 "Center connector" H 7950 1450 50  0000 C CNN
-F 2 "Pin_Headers:Pin_Header_Straight_2x13_Pitch1.27mm_SMD" H 7900 2150 50  0001 C CNN
-F 3 "" H 7900 2150 50  0001 C CNN
-	1    7900 2150
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
 	8200 2650 8600 2650
 Wire Wire Line
 	8600 2750 8200 2750
 Wire Wire Line
 	7300 2650 7700 2650
-Text Label 7300 2650 0    60   ~ 0
-SERVO
-Text Label 7300 4950 0    60   ~ 0
-SCL
-Text Label 7300 5050 0    60   ~ 0
-SDA
-Wire Wire Line
-	7300 4950 7700 4950
-Wire Wire Line
-	7700 5050 7300 5050
-Text Label 8450 2650 0    60   ~ 0
-SCL
-Text Label 8450 2750 0    60   ~ 0
-SDA
-$Comp
-L SW_DIP_x01 SW1
-U 1 1 5AF42AEC
-P 1050 5050
-F 0 "SW1" H 1050 5200 50  0000 C CNN
-F 1 "SW_DIP_x01" H 1050 4900 50  0000 C CNN
-F 2 "CanSat:TX30_vertical" H 1050 5050 50  0001 C CNN
-F 3 "" H 1050 5050 50  0001 C CNN
-	1    1050 5050
-	0    -1   -1   0   
-$EndComp
 Wire Wire Line
 	1050 5350 1050 5650
-$Comp
-L Conn_02x08_Odd_Even J2
-U 1 1 5AF5F185
-P 7900 3600
-F 0 "J2" H 7950 4000 50  0000 C CNN
-F 1 "Conn_02x08_Counter_Clockwise" H 7950 3100 50  0000 C CNN
-F 2 "Pin_Headers:Pin_Header_Straight_2x08_Pitch1.27mm" H 7900 3600 50  0001 C CNN
-F 3 "" H 7900 3600 50  0001 C CNN
-	1    7900 3600
-	1    0    0    -1  
-$EndComp
-$Comp
-L Conn_02x07_Odd_Even J3
-U 1 1 5AF5F422
-P 7900 4750
-F 0 "J3" H 7950 5150 50  0000 C CNN
-F 1 "Conn_02x07_Counter_Clockwise" H 7950 4350 50  0000 C CNN
-F 2 "Pin_Headers:Pin_Header_Straight_2x07_Pitch1.27mm" H 7900 4750 50  0001 C CNN
-F 3 "" H 7900 4750 50  0001 C CNN
-	1    7900 4750
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
 	8200 4650 8600 4650
 Wire Wire Line
 	7300 4550 7700 4550
 Wire Wire Line
 	7300 4650 7700 4650
-Text Label 8250 4650 0    60   ~ 0
-MOSILOW
-Text Label 7300 4650 0    60   ~ 0
-MISOLOW
-Text Label 7300 4550 0    60   ~ 0
-SCKLOW
+Wire Wire Line
+	7700 5050 7300 5050
+Wire Wire Line
+	7300 4950 7700 4950
+Text Label 7300 5050 0    60   ~ 0
+SDA
+Text Label 7300 4950 0    60   ~ 0
+SCL
+Wire Wire Line
+	7700 2750 7300 2750
+Wire Wire Line
+	8200 5050 8600 5050
+Text Label 7300 2750 0    60   ~ 0
+GAMMA
+Text Label 8600 5050 2    60   ~ 0
+GAMMA
 $EndSCHEMATC
