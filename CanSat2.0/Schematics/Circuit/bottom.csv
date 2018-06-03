@@ -1,0 +1,23 @@
+"Source:","C:/Users/sucha/programming/CanSat/CanSat2.0/Schematics/Circuit/bottom.sch"
+"Date:","31/05/2018 18:29:32"
+"Tool:","Eeschema 4.0.7"
+"Generator:","C:/Program Files/KiCad/bin/scripting/plugins/bom_csv_grouped_by_value.py"
+"Component Count:","4"
+
+"Individual Components:"
+
+"Item","Qty","Reference(s)","Value","LibPart","Footprint","Datasheet"
+"","","C1","100nF","device:C","Capacitors_SMD:C_0805",""
+"","","C2","4.7uF","device:C","Capacitors_SMD:C_0805",""
+"","","IC1","VL53L0X","cansat:VL53L0X","VL53L0X:XDCR_VL53L0CXV0DH%2f1",""
+"","","J1","CENTER_CONN","conn:Conn_01x04","Pin_Headers:Pin_Header_Straight_1x04_Pitch2.54mm",""
+
+
+
+"Collated Components:"
+
+"Item","Qty","Reference(s)","Value","LibPart","Footprint","Datasheet"
+"1","1","C1","100nF","device:C","Capacitors_SMD:C_0805",""
+"2","1","C2","4.7uF","device:C","Capacitors_SMD:C_0805",""
+"3","1","IC1","VL53L0X","cansat:VL53L0X","VL53L0X:XDCR_VL53L0CXV0DH%2f1",""
+"4","1","J1","CENTER_CONN","conn:Conn_01x04","Pin_Headers:Pin_Header_Straight_1x04_Pitch2.54mm",""

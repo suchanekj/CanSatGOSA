@@ -1,0 +1,740 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<export version="D">
+  <design>
+    <source>C:/Users/sucha/programming/CanSat/CanSat2.0/Schematics/Circuit/top.sch</source>
+    <date>31/05/2018 18:29:54</date>
+    <tool>Eeschema 4.0.7</tool>
+    <sheet number="1" name="/" tstamps="/">
+      <title_block>
+        <title>noname.sch</title>
+        <company/>
+        <rev/>
+        <date>3 jan 2018</date>
+        <source>top.sch</source>
+        <comment number="1" value=""/>
+        <comment number="2" value=""/>
+        <comment number="3" value=""/>
+        <comment number="4" value=""/>
+      </title_block>
+    </sheet>
+  </design>
+  <components>
+    <comp ref="D1">
+      <value>LED</value>
+      <footprint>Diodes_SMD:D_0603</footprint>
+      <libsource lib="top-rescue" part="LED-RESCUE-top"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5A4CC8A7</tstamp>
+    </comp>
+    <comp ref="C1">
+      <value>100 nF</value>
+      <footprint>Capacitors_SMD:C_0805</footprint>
+      <libsource lib="top-rescue" part="C-RESCUE-top"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5A4CC8D9</tstamp>
+    </comp>
+    <comp ref="C3">
+      <value>0.22 uF</value>
+      <footprint>Capacitors_SMD:C_0805</footprint>
+      <libsource lib="top-rescue" part="C-RESCUE-top"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5A4CC8DA</tstamp>
+    </comp>
+    <comp ref="R1">
+      <value>105</value>
+      <footprint>Resistors_SMD:R_0805</footprint>
+      <libsource lib="device" part="R"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5A51DC75</tstamp>
+    </comp>
+    <comp ref="U1">
+      <value>LSM303AGRTR</value>
+      <footprint>CanSat:LSM303AGRTR</footprint>
+      <datasheet>STMicroelectronics</datasheet>
+      <fields>
+        <field name="Pole4">IMU ACCEL/MAG I2C/SPI 12LGA</field>
+        <field name="Pole5">LGA-12 STMicroelectronics</field>
+        <field name="Pole6">1.89 USD</field>
+        <field name="Pole7">LSM303AGRTR</field>
+        <field name="Pole8">Good</field>
+      </fields>
+      <libsource lib="LSM303AGRTR" part="LSM303AGRTR"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5A5BB296</tstamp>
+    </comp>
+    <comp ref="C7">
+      <value>100 nF</value>
+      <footprint>Capacitors_SMD:C_0805</footprint>
+      <libsource lib="top-rescue" part="C-RESCUE-top"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5A5BB4B9</tstamp>
+    </comp>
+    <comp ref="U6">
+      <value>MPL3115A2</value>
+      <footprint>Housings_LGA:LGA-8_3x5mm_Pitch1.25mm</footprint>
+      <datasheet>Good</datasheet>
+      <fields>
+        <field name="Pole4">LGA-8 NXP Semiconductors</field>
+        <field name="Pole5">MPL3115A2</field>
+        <field name="Pole6">3.07 USD</field>
+        <field name="Pole7">Pressure Sensor, 50-110kpa, Lga-8</field>
+        <field name="Pole8">NXP Semiconductors</field>
+      </fields>
+      <libsource lib="MPL3115A2" part="MPL3115A2"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5AE071AF</tstamp>
+    </comp>
+    <comp ref="K1">
+      <value>SI7021</value>
+      <footprint>Housings_DFN_QFN:DFN-6-1EP_3x3mm_Pitch0.95mm</footprint>
+      <libsource lib="cansat" part="SI7021"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5AE07217</tstamp>
+    </comp>
+    <comp ref="C8">
+      <value>100 nF</value>
+      <footprint>Capacitors_SMD:C_0805</footprint>
+      <libsource lib="top-rescue" part="C-RESCUE-top"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5AE09A8A</tstamp>
+    </comp>
+    <comp ref="C5">
+      <value>100 nF</value>
+      <footprint>Capacitors_SMD:C_0805</footprint>
+      <libsource lib="top-rescue" part="C-RESCUE-top"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5AE09DED</tstamp>
+    </comp>
+    <comp ref="C10">
+      <value>100 nF</value>
+      <footprint>Capacitors_SMD:C_0805</footprint>
+      <libsource lib="top-rescue" part="C-RESCUE-top"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5AE09F58</tstamp>
+    </comp>
+    <comp ref="C9">
+      <value>100 nF</value>
+      <footprint>Capacitors_SMD:C_0805</footprint>
+      <libsource lib="top-rescue" part="C-RESCUE-top"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5AE09FB6</tstamp>
+    </comp>
+    <comp ref="C11">
+      <value>10 uF</value>
+      <footprint>Capacitors_Tantalum_SMD:CP_Tantalum_Case-T_EIA-3528-12_Reflow</footprint>
+      <libsource lib="device" part="CP1"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5AE0A021</tstamp>
+    </comp>
+    <comp ref="U2">
+      <value>VEML6070</value>
+      <footprint>Housings_DFN_QFN:DFN-6-1EP_2x2mm_Pitch0.65mm</footprint>
+      <libsource lib="cansat" part="VEML6070"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5AE0D9F9</tstamp>
+    </comp>
+    <comp ref="C4">
+      <value>10 uF</value>
+      <footprint>Capacitors_Tantalum_SMD:CP_Tantalum_Case-T_EIA-3528-12_Reflow</footprint>
+      <libsource lib="device" part="CP1"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5AE0E03C</tstamp>
+    </comp>
+    <comp ref="R3">
+      <value>270k</value>
+      <footprint>Resistors_SMD:R_0805</footprint>
+      <libsource lib="device" part="R"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5AE0E53B</tstamp>
+    </comp>
+    <comp ref="R2">
+      <value>10k</value>
+      <footprint>Resistors_SMD:R_0805</footprint>
+      <libsource lib="device" part="R"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5AE0E5C9</tstamp>
+    </comp>
+    <comp ref="U3">
+      <value>TSL2591</value>
+      <footprint>CanSat:AMS_LGA-10-1EP_2.7x4mm_Pitch0.6mm</footprint>
+      <libsource lib="cansat" part="TSL2591"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5AE19F20</tstamp>
+    </comp>
+    <comp ref="C2">
+      <value>1 uF</value>
+      <footprint>Capacitors_SMD:C_0805</footprint>
+      <libsource lib="top-rescue" part="C-RESCUE-top"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5AE1A07A</tstamp>
+    </comp>
+    <comp ref="U4">
+      <value>microservo</value>
+      <footprint>CanSat:microservo</footprint>
+      <libsource lib="cansat" part="microservo"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5AE1AF80</tstamp>
+    </comp>
+    <comp ref="U5">
+      <value>GPS</value>
+      <footprint>CanSat:GPS</footprint>
+      <libsource lib="cansat" part="GPS"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5AE1D1F9</tstamp>
+    </comp>
+    <comp ref="J1">
+      <value>Conn_01x08</value>
+      <footprint>Pin_Headers:Pin_Header_Straight_1x08_Pitch1.27mm</footprint>
+      <libsource lib="conn" part="Conn_01x08"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5AE1E280</tstamp>
+    </comp>
+    <comp ref="Q1">
+      <value>BSS138</value>
+      <footprint>TO_SOT_Packages_SMD:SOT-23</footprint>
+      <libsource lib="transistors" part="BSS138"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5AE21090</tstamp>
+    </comp>
+    <comp ref="R4">
+      <value>10k</value>
+      <footprint>Resistors_SMD:R_0805</footprint>
+      <libsource lib="device" part="R"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5AE2115D</tstamp>
+    </comp>
+    <comp ref="R5">
+      <value>10k</value>
+      <footprint>Resistors_SMD:R_0805</footprint>
+      <libsource lib="device" part="R"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5AE21403</tstamp>
+    </comp>
+    <comp ref="Q2">
+      <value>BSS138</value>
+      <footprint>TO_SOT_Packages_SMD:SOT-23</footprint>
+      <libsource lib="transistors" part="BSS138"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5AE21C23</tstamp>
+    </comp>
+    <comp ref="R6">
+      <value>10k</value>
+      <footprint>Resistors_SMD:R_0805</footprint>
+      <libsource lib="device" part="R"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5AE21C29</tstamp>
+    </comp>
+    <comp ref="R7">
+      <value>10k</value>
+      <footprint>Resistors_SMD:R_0805</footprint>
+      <libsource lib="device" part="R"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5AE21C2F</tstamp>
+    </comp>
+    <comp ref="C6">
+      <value>10 uF</value>
+      <footprint>Capacitors_Tantalum_SMD:CP_Tantalum_Case-T_EIA-3528-12_Reflow</footprint>
+      <libsource lib="device" part="CP1"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5AE9E782</tstamp>
+    </comp>
+    <comp ref="J2">
+      <value>Conn_01x04</value>
+      <footprint>Pin_Headers:Pin_Header_Straight_1x04_Pitch1.27mm</footprint>
+      <libsource lib="conn" part="Conn_01x04"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5B055E1D</tstamp>
+    </comp>
+    <comp ref="D2">
+      <value>LED</value>
+      <footprint>Diodes_SMD:D_0603</footprint>
+      <libsource lib="top-rescue" part="LED-RESCUE-top"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5B056A71</tstamp>
+    </comp>
+    <comp ref="R8">
+      <value>105</value>
+      <footprint>Resistors_SMD:R_0805</footprint>
+      <libsource lib="device" part="R"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5B056A7D</tstamp>
+    </comp>
+    <comp ref="D3">
+      <value>LED</value>
+      <footprint>Diodes_SMD:D_0603</footprint>
+      <libsource lib="top-rescue" part="LED-RESCUE-top"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5B056E08</tstamp>
+    </comp>
+    <comp ref="R9">
+      <value>105</value>
+      <footprint>Resistors_SMD:R_0805</footprint>
+      <libsource lib="device" part="R"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5B056E0E</tstamp>
+    </comp>
+    <comp ref="D4">
+      <value>LED</value>
+      <footprint>Diodes_SMD:D_0603</footprint>
+      <libsource lib="top-rescue" part="LED-RESCUE-top"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5B056E18</tstamp>
+    </comp>
+    <comp ref="R10">
+      <value>105</value>
+      <footprint>Resistors_SMD:R_0805</footprint>
+      <libsource lib="device" part="R"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5B056E1E</tstamp>
+    </comp>
+  </components>
+  <libparts>
+    <libpart lib="transistors" part="BSS138">
+      <aliases>
+        <alias>2N7002</alias>
+        <alias>MMBF170</alias>
+      </aliases>
+      <description>50V Vds, 0.22 A Id, N-channel MOSFET, SOT-23</description>
+      <docs>https://www.fairchildsemi.com/datasheets/BS/BSS138.pdf</docs>
+      <footprints>
+        <fp>SOT?23*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">Q</field>
+        <field name="Value">BSS138</field>
+        <field name="Footprint">TO_SOT_Packages_SMD:SOT-23</field>
+      </fields>
+      <pins>
+        <pin num="1" name="G" type="input"/>
+        <pin num="2" name="S" type="passive"/>
+        <pin num="3" name="D" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="top-rescue" part="C-RESCUE-top">
+      <footprints>
+        <fp>SM*</fp>
+        <fp>C?</fp>
+        <fp>C1-1</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">C</field>
+        <field name="Value">C-RESCUE-top</field>
+      </fields>
+      <pins>
+        <pin num="1" name="~" type="passive"/>
+        <pin num="2" name="~" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="device" part="CP1">
+      <description>Polarised capacitor</description>
+      <footprints>
+        <fp>CP_*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">C</field>
+        <field name="Value">CP1</field>
+      </fields>
+      <pins>
+        <pin num="1" name="~" type="passive"/>
+        <pin num="2" name="~" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="conn" part="Conn_01x04">
+      <description>Generic connector, single row, 01x04</description>
+      <docs>~</docs>
+      <footprints>
+        <fp>Connector*:*_??x*mm*</fp>
+        <fp>Connector*:*1x??x*mm*</fp>
+        <fp>Pin?Header?Straight?1X*</fp>
+        <fp>Pin?Header?Angled?1X*</fp>
+        <fp>Socket?Strip?Straight?1X*</fp>
+        <fp>Socket?Strip?Angled?1X*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">J</field>
+        <field name="Value">Conn_01x04</field>
+      </fields>
+      <pins>
+        <pin num="1" name="Pin_1" type="passive"/>
+        <pin num="2" name="Pin_2" type="passive"/>
+        <pin num="3" name="Pin_3" type="passive"/>
+        <pin num="4" name="Pin_4" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="conn" part="Conn_01x08">
+      <description>Generic connector, single row, 01x08</description>
+      <docs>~</docs>
+      <footprints>
+        <fp>Connector*:*_??x*mm*</fp>
+        <fp>Connector*:*1x??x*mm*</fp>
+        <fp>Pin?Header?Straight?1X*</fp>
+        <fp>Pin?Header?Angled?1X*</fp>
+        <fp>Socket?Strip?Straight?1X*</fp>
+        <fp>Socket?Strip?Angled?1X*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">J</field>
+        <field name="Value">Conn_01x08</field>
+      </fields>
+      <pins>
+        <pin num="1" name="Pin_1" type="passive"/>
+        <pin num="2" name="Pin_2" type="passive"/>
+        <pin num="3" name="Pin_3" type="passive"/>
+        <pin num="4" name="Pin_4" type="passive"/>
+        <pin num="5" name="Pin_5" type="passive"/>
+        <pin num="6" name="Pin_6" type="passive"/>
+        <pin num="7" name="Pin_7" type="passive"/>
+        <pin num="8" name="Pin_8" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="cansat" part="GPS">
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">GPS</field>
+      </fields>
+      <pins>
+        <pin num="1" name="VCC" type="input"/>
+        <pin num="2" name="GND" type="input"/>
+        <pin num="3" name="TX" type="input"/>
+        <pin num="4" name="RX" type="input"/>
+      </pins>
+    </libpart>
+    <libpart lib="top-rescue" part="LED-RESCUE-top">
+      <footprints>
+        <fp>LED-3MM</fp>
+        <fp>LED-5MM</fp>
+        <fp>LED-10MM</fp>
+        <fp>LED-0603</fp>
+        <fp>LED-0805</fp>
+        <fp>LED-1206</fp>
+        <fp>LEDV</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">D</field>
+        <field name="Value">LED-RESCUE-top</field>
+      </fields>
+      <pins>
+        <pin num="1" name="A" type="passive"/>
+        <pin num="2" name="K" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="LSM303AGRTR" part="LSM303AGRTR">
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">LSM303AGRTR</field>
+        <field name="Footprint">LGA12R50P_200X200X100</field>
+        <field name="Datasheet">STMicroelectronics</field>
+        <field name="Field4">IMU ACCEL/MAG I2C/SPI 12LGA</field>
+        <field name="Field5">LGA-12 STMicroelectronics</field>
+        <field name="Field6">1.89 USD</field>
+        <field name="Field7">LSM303AGRTR</field>
+        <field name="Field8">Good</field>
+      </fields>
+      <pins>
+        <pin num="1" name="SCL/SPC" type="BiDi"/>
+        <pin num="2" name="CS_XL" type="BiDi"/>
+        <pin num="3" name="CS_MAG" type="BiDi"/>
+        <pin num="4" name="SDA/SDI/SDO" type="BiDi"/>
+        <pin num="5" name="C1" type="BiDi"/>
+        <pin num="6" name="GND" type="power_in"/>
+        <pin num="7" name="INT_MAG" type="BiDi"/>
+        <pin num="8" name="GND" type="power_in"/>
+        <pin num="9" name="VDD" type="power_in"/>
+        <pin num="10" name="VDD_IO" type="power_in"/>
+        <pin num="11" name="DRDY_MAG" type="BiDi"/>
+        <pin num="12" name="INT_XL" type="BiDi"/>
+      </pins>
+    </libpart>
+    <libpart lib="MPL3115A2" part="MPL3115A2">
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">MPL3115A2</field>
+        <field name="Footprint">PSON125P300X500X120-8N</field>
+        <field name="Datasheet">Good</field>
+        <field name="Field4">LGA-8 NXP Semiconductors</field>
+        <field name="Field5">MPL3115A2</field>
+        <field name="Field6">3.07 USD</field>
+        <field name="Field7">Pressure Sensor, 50-110kpa, Lga-8</field>
+        <field name="Field8">NXP Semiconductors</field>
+      </fields>
+      <pins>
+        <pin num="1" name="VDD" type="power_in"/>
+        <pin num="2" name="CAP" type="BiDi"/>
+        <pin num="3" name="GND" type="power_in"/>
+        <pin num="4" name="VDDIO" type="power_in"/>
+        <pin num="5" name="INT2" type="output"/>
+        <pin num="6" name="INT1" type="output"/>
+        <pin num="7" name="SDL" type="BiDi"/>
+        <pin num="8" name="SCL" type="input"/>
+      </pins>
+    </libpart>
+    <libpart lib="device" part="R">
+      <description>Resistor</description>
+      <footprints>
+        <fp>R_*</fp>
+        <fp>R_*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">R</field>
+        <field name="Value">R</field>
+      </fields>
+      <pins>
+        <pin num="1" name="~" type="passive"/>
+        <pin num="2" name="~" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="cansat" part="SI7021">
+      <fields>
+        <field name="Reference">K</field>
+        <field name="Value">SI7021</field>
+      </fields>
+      <pins>
+        <pin num="1" name="SDA" type="input"/>
+        <pin num="2" name="GND" type="input"/>
+        <pin num="3" name="NC" type="input"/>
+        <pin num="4" name="NC" type="input"/>
+        <pin num="5" name="VCC" type="input"/>
+        <pin num="6" name="SCL" type="input"/>
+      </pins>
+    </libpart>
+    <libpart lib="cansat" part="TSL2591">
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">TSL2591</field>
+      </fields>
+      <pins>
+        <pin num="1" name="SCL" type="input"/>
+        <pin num="2" name="INT" type="input"/>
+        <pin num="3" name="GND" type="input"/>
+        <pin num="4" name="NC" type="input"/>
+        <pin num="5" name="VDD" type="input"/>
+        <pin num="6" name="SDA" type="input"/>
+      </pins>
+    </libpart>
+    <libpart lib="cansat" part="VEML6070">
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">VEML6070</field>
+      </fields>
+      <pins>
+        <pin num="1" name="GND" type="input"/>
+        <pin num="2" name="ACK" type="input"/>
+        <pin num="3" name="SDA" type="input"/>
+        <pin num="4" name="SET" type="input"/>
+        <pin num="5" name="SCL" type="input"/>
+        <pin num="6" name="VDD" type="input"/>
+      </pins>
+    </libpart>
+    <libpart lib="cansat" part="microservo">
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">microservo</field>
+      </fields>
+      <pins>
+        <pin num="1" name="VCC" type="input"/>
+        <pin num="2" name="GND" type="input"/>
+        <pin num="3" name="SIG" type="input"/>
+      </pins>
+    </libpart>
+  </libparts>
+  <libraries>
+    <library logical="top-rescue">
+      <uri>top-rescue.lib</uri>
+    </library>
+    <library logical="device">
+      <uri>C:\Program Files\KiCad\share\kicad\library\device.lib</uri>
+    </library>
+    <library logical="transistors">
+      <uri>C:\Program Files\KiCad\share\kicad\library\transistors.lib</uri>
+    </library>
+    <library logical="conn">
+      <uri>C:\Program Files\KiCad\share\kicad\library\conn.lib</uri>
+    </library>
+    <library logical="cansat">
+      <uri>Libraries\cansat.lib</uri>
+    </library>
+    <library logical="MPL3115A2">
+      <uri>Libraries\MPL3115A2.lib</uri>
+    </library>
+    <library logical="LSM303AGRTR">
+      <uri>Libraries\LSM303AGRTR.lib</uri>
+    </library>
+  </libraries>
+  <nets>
+    <net code="1" name="/SER_P">
+      <node ref="J1" pin="5"/>
+      <node ref="U4" pin="3"/>
+    </net>
+    <net code="2" name="Net-(R2-Pad1)">
+      <node ref="R2" pin="1"/>
+      <node ref="U2" pin="2"/>
+    </net>
+    <net code="3" name="+5V">
+      <node ref="R4" pin="2"/>
+      <node ref="J1" pin="8"/>
+      <node ref="R6" pin="2"/>
+    </net>
+    <net code="4" name="+3V3">
+      <node ref="C9" pin="2"/>
+      <node ref="C10" pin="2"/>
+      <node ref="C8" pin="2"/>
+      <node ref="R2" pin="2"/>
+      <node ref="C11" pin="1"/>
+      <node ref="C5" pin="2"/>
+      <node ref="C6" pin="1"/>
+      <node ref="R7" pin="2"/>
+      <node ref="Q2" pin="1"/>
+      <node ref="U4" pin="1"/>
+      <node ref="C2" pin="2"/>
+      <node ref="U3" pin="5"/>
+      <node ref="J1" pin="1"/>
+      <node ref="U5" pin="1"/>
+      <node ref="U6" pin="1"/>
+      <node ref="U2" pin="6"/>
+      <node ref="U1" pin="3"/>
+      <node ref="U1" pin="2"/>
+      <node ref="C1" pin="2"/>
+      <node ref="U6" pin="4"/>
+      <node ref="K1" pin="5"/>
+      <node ref="C4" pin="1"/>
+      <node ref="C7" pin="2"/>
+      <node ref="U1" pin="10"/>
+      <node ref="U1" pin="9"/>
+      <node ref="R5" pin="2"/>
+      <node ref="Q1" pin="1"/>
+    </net>
+    <net code="5" name="/TX_GPS">
+      <node ref="J1" pin="7"/>
+      <node ref="Q1" pin="2"/>
+      <node ref="R4" pin="1"/>
+    </net>
+    <net code="6" name="Net-(C5-Pad1)">
+      <node ref="C5" pin="1"/>
+      <node ref="U6" pin="2"/>
+    </net>
+    <net code="7" name="/SDA">
+      <node ref="U2" pin="3"/>
+      <node ref="U1" pin="4"/>
+      <node ref="K1" pin="1"/>
+      <node ref="U6" pin="7"/>
+      <node ref="J1" pin="4"/>
+      <node ref="U3" pin="6"/>
+    </net>
+    <net code="8" name="/SCL">
+      <node ref="J1" pin="3"/>
+      <node ref="U2" pin="5"/>
+      <node ref="U1" pin="1"/>
+      <node ref="U3" pin="1"/>
+      <node ref="U6" pin="8"/>
+      <node ref="K1" pin="6"/>
+    </net>
+    <net code="9" name="Net-(R3-Pad2)">
+      <node ref="U2" pin="4"/>
+      <node ref="R3" pin="2"/>
+    </net>
+    <net code="10" name="/LED2">
+      <node ref="R8" pin="2"/>
+      <node ref="J2" pin="2"/>
+    </net>
+    <net code="11" name="GND">
+      <node ref="U5" pin="2"/>
+      <node ref="C7" pin="1"/>
+      <node ref="U6" pin="3"/>
+      <node ref="K1" pin="2"/>
+      <node ref="D1" pin="2"/>
+      <node ref="D2" pin="2"/>
+      <node ref="U4" pin="2"/>
+      <node ref="U3" pin="3"/>
+      <node ref="C2" pin="1"/>
+      <node ref="J1" pin="2"/>
+      <node ref="C10" pin="1"/>
+      <node ref="C8" pin="1"/>
+      <node ref="D3" pin="2"/>
+      <node ref="C9" pin="1"/>
+      <node ref="R3" pin="1"/>
+      <node ref="C4" pin="2"/>
+      <node ref="C1" pin="1"/>
+      <node ref="C6" pin="2"/>
+      <node ref="U2" pin="1"/>
+      <node ref="C11" pin="2"/>
+      <node ref="D4" pin="2"/>
+      <node ref="U1" pin="8"/>
+      <node ref="U1" pin="6"/>
+      <node ref="C3" pin="2"/>
+    </net>
+    <net code="12" name="Net-(D2-Pad1)">
+      <node ref="R8" pin="1"/>
+      <node ref="D2" pin="1"/>
+    </net>
+    <net code="13" name="Net-(D3-Pad1)">
+      <node ref="R9" pin="1"/>
+      <node ref="D3" pin="1"/>
+    </net>
+    <net code="14" name="/LED1">
+      <node ref="J2" pin="1"/>
+      <node ref="R1" pin="2"/>
+    </net>
+    <net code="15" name="/LED3">
+      <node ref="R9" pin="2"/>
+      <node ref="J2" pin="3"/>
+    </net>
+    <net code="16" name="/LED4">
+      <node ref="R10" pin="2"/>
+      <node ref="J2" pin="4"/>
+    </net>
+    <net code="17" name="Net-(D4-Pad1)">
+      <node ref="D4" pin="1"/>
+      <node ref="R10" pin="1"/>
+    </net>
+    <net code="18" name="/RX_GPSL">
+      <node ref="U5" pin="3"/>
+      <node ref="Q2" pin="3"/>
+      <node ref="R7" pin="1"/>
+    </net>
+    <net code="19" name="/RX_GPS">
+      <node ref="J1" pin="6"/>
+      <node ref="Q2" pin="2"/>
+      <node ref="R6" pin="1"/>
+    </net>
+    <net code="20" name="Net-(U1-Pad7)">
+      <node ref="U1" pin="7"/>
+    </net>
+    <net code="21" name="Net-(C3-Pad1)">
+      <node ref="U1" pin="5"/>
+      <node ref="C3" pin="1"/>
+    </net>
+    <net code="22" name="Net-(D1-Pad1)">
+      <node ref="R1" pin="1"/>
+      <node ref="D1" pin="1"/>
+    </net>
+    <net code="23" name="Net-(K1-Pad4)">
+      <node ref="K1" pin="4"/>
+    </net>
+    <net code="24" name="Net-(K1-Pad3)">
+      <node ref="K1" pin="3"/>
+    </net>
+    <net code="25" name="Net-(U6-Pad6)">
+      <node ref="U6" pin="6"/>
+    </net>
+    <net code="26" name="Net-(U6-Pad5)">
+      <node ref="U6" pin="5"/>
+    </net>
+    <net code="27" name="Net-(U1-Pad12)">
+      <node ref="U1" pin="12"/>
+    </net>
+    <net code="28" name="Net-(U1-Pad11)">
+      <node ref="U1" pin="11"/>
+    </net>
+    <net code="29" name="/TX_GPSL">
+      <node ref="R5" pin="1"/>
+      <node ref="U5" pin="4"/>
+      <node ref="Q1" pin="3"/>
+    </net>
+    <net code="30" name="Net-(U3-Pad4)">
+      <node ref="U3" pin="4"/>
+    </net>
+    <net code="31" name="Net-(U3-Pad2)">
+      <node ref="U3" pin="2"/>
+    </net>
+  </nets>
+</export>

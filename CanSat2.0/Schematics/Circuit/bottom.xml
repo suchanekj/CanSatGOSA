@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<export version="D">
+  <design>
+    <source>C:/Users/sucha/programming/CanSat/CanSat2.0/Schematics/Circuit/bottom.sch</source>
+    <date>31/05/2018 18:29:32</date>
+    <tool>Eeschema 4.0.7</tool>
+    <sheet number="1" name="/" tstamps="/">
+      <title_block>
+        <title/>
+        <company/>
+        <rev/>
+        <date/>
+        <source>bottom.sch</source>
+        <comment number="1" value=""/>
+        <comment number="2" value=""/>
+        <comment number="3" value=""/>
+        <comment number="4" value=""/>
+      </title_block>
+    </sheet>
+  </design>
+  <components>
+    <comp ref="IC1">
+      <value>VL53L0X</value>
+      <footprint>VL53L0X:XDCR_VL53L0CXV0DH%2f1</footprint>
+      <libsource lib="cansat" part="VL53L0X"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5B0C3B2F</tstamp>
+    </comp>
+    <comp ref="C1">
+      <value>100nF</value>
+      <footprint>Capacitors_SMD:C_0805</footprint>
+      <libsource lib="device" part="C"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5B0C3B33</tstamp>
+    </comp>
+    <comp ref="C2">
+      <value>4.7uF</value>
+      <footprint>Capacitors_SMD:C_0805</footprint>
+      <libsource lib="device" part="C"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5B0C3B34</tstamp>
+    </comp>
+    <comp ref="J1">
+      <value>CENTER_CONN</value>
+      <footprint>Pin_Headers:Pin_Header_Straight_1x04_Pitch2.54mm</footprint>
+      <libsource lib="conn" part="Conn_01x04"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5B0C6421</tstamp>
+    </comp>
+  </components>
+  <libparts>
+    <libpart lib="device" part="C">
+      <description>Unpolarized capacitor</description>
+      <footprints>
+        <fp>C_*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">C</field>
+        <field name="Value">C</field>
+      </fields>
+      <pins>
+        <pin num="1" name="~" type="passive"/>
+        <pin num="2" name="~" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="conn" part="Conn_01x04">
+      <description>Generic connector, single row, 01x04</description>
+      <docs>~</docs>
+      <footprints>
+        <fp>Connector*:*_??x*mm*</fp>
+        <fp>Connector*:*1x??x*mm*</fp>
+        <fp>Pin?Header?Straight?1X*</fp>
+        <fp>Pin?Header?Angled?1X*</fp>
+        <fp>Socket?Strip?Straight?1X*</fp>
+        <fp>Socket?Strip?Angled?1X*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">J</field>
+        <field name="Value">Conn_01x04</field>
+      </fields>
+      <pins>
+        <pin num="1" name="Pin_1" type="passive"/>
+        <pin num="2" name="Pin_2" type="passive"/>
+        <pin num="3" name="Pin_3" type="passive"/>
+        <pin num="4" name="Pin_4" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="cansat" part="VL53L0X">
+      <fields>
+        <field name="Reference">IC</field>
+        <field name="Value">VL53L0X</field>
+      </fields>
+      <pins>
+        <pin num="1" name="AVDDVCSEL" type="input"/>
+        <pin num="2" name="AVSSVCSEL" type="input"/>
+        <pin num="3" name="GND" type="input"/>
+        <pin num="4" name="GND" type="input"/>
+        <pin num="5" name="XSHUT" type="input"/>
+        <pin num="6" name="GND" type="input"/>
+        <pin num="7" name="GPIO1" type="input"/>
+        <pin num="8" name="DNC" type="input"/>
+        <pin num="9" name="SDA" type="input"/>
+        <pin num="10" name="SCL" type="input"/>
+        <pin num="11" name="AVDD" type="input"/>
+        <pin num="12" name="GND" type="input"/>
+      </pins>
+    </libpart>
+  </libparts>
+  <libraries>
+    <library logical="device">
+      <uri>C:\Program Files\KiCad\share\kicad\library\device.lib</uri>
+    </library>
+    <library logical="conn">
+      <uri>C:\Program Files\KiCad\share\kicad\library\conn.lib</uri>
+    </library>
+    <library logical="cansat">
+      <uri>Libraries\cansat.lib</uri>
+    </library>
+  </libraries>
+  <nets>
+    <net code="1" name="/SCL">
+      <node ref="J1" pin="3"/>
+      <node ref="IC1" pin="10"/>
+    </net>
+    <net code="2" name="/SDA">
+      <node ref="IC1" pin="9"/>
+      <node ref="J1" pin="2"/>
+    </net>
+    <net code="3" name="GND">
+      <node ref="IC1" pin="12"/>
+      <node ref="IC1" pin="6"/>
+      <node ref="IC1" pin="4"/>
+      <node ref="IC1" pin="3"/>
+      <node ref="IC1" pin="2"/>
+      <node ref="C1" pin="2"/>
+      <node ref="J1" pin="1"/>
+      <node ref="C2" pin="2"/>
+    </net>
+    <net code="4" name="Net-(IC1-Pad7)">
+      <node ref="IC1" pin="7"/>
+    </net>
+    <net code="5" name="Net-(IC1-Pad8)">
+      <node ref="IC1" pin="8"/>
+    </net>
+    <net code="6" name="+3V3">
+      <node ref="C2" pin="1"/>
+      <node ref="IC1" pin="1"/>
+      <node ref="C1" pin="1"/>
+      <node ref="IC1" pin="11"/>
+      <node ref="IC1" pin="5"/>
+      <node ref="J1" pin="4"/>
+    </net>
+  </nets>
+</export>

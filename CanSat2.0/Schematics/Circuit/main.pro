@@ -1,6 +1,6 @@
-update=28.4.2018 0:09:19
+update=01/06/2018 19:02:13
 version=1
-last_client=eeschema
+last_client=kicad
 [pcbnew]
 version=1
 LastNetListRead=
@@ -23,8 +23,6 @@ ModuleOutlineThickness=0.150000000000
 [cvpcb]
 version=1
 NetIExt=net
-[general]
-version=1
 [schematic_editor]
 version=1
 PageLayoutDescrFile=
@@ -77,3 +75,5 @@ LibName35=Libraries/regul
 LibName36=Libraries/Relay
 LibName37=Libraries/MAX660
 LibName38=Libraries/analog_devices
+[general]
+version=1
