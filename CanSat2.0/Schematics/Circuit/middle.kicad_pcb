@@ -1319,23 +1319,6 @@
     )
   )
 
-  (module CanSat:Standoff (layer F.Cu) (tedit 5AFEA545) (tstamp 5B002EE1)
-    (at 40.9 78)
-    (fp_text reference REF** (at 0 3.5) (layer F.SilkS)
-      (effects (font (size 1 1) (thickness 0.15)))
-    )
-    (fp_text value Standoff (at 0 -3.25) (layer F.Fab)
-      (effects (font (size 1 1) (thickness 0.15)))
-    )
-    (fp_line (start 0 2.598) (end 2.25 1.299) (layer F.SilkS) (width 0.15))
-    (fp_line (start -2.25 1.299) (end 0 2.598) (layer F.SilkS) (width 0.15))
-    (fp_line (start -2.25 -1.299) (end 0 -2.598) (layer F.SilkS) (width 0.15))
-    (fp_line (start 0 -2.598) (end 2.25 -1.299) (layer F.SilkS) (width 0.15))
-    (fp_line (start -2.25 -1.299) (end -2.25 1.299) (layer F.SilkS) (width 0.15))
-    (fp_line (start 2.25 -1.299) (end 2.25 1.299) (layer F.SilkS) (width 0.15))
-    (pad "" thru_hole circle (at 0 0) (size 4 4) (drill 3.3) (layers *.Cu *.Mask))
-  )
-
   (module CanSat:Standoff (layer F.Cu) (tedit 5AFEA545) (tstamp 5B002EF6)
     (at 78 59.1 90)
     (fp_text reference REF** (at 0 3.5 90) (layer F.SilkS)
@@ -3317,7 +3300,7 @@
   (zone (net 5) (net_name +5V) (layer F.Cu) (tstamp 5B0518AA) (hatch edge 0.508)
     (connect_pads (clearance 0.251))
     (min_thickness 0.17)
-    (fill yes (arc_segments 32) (thermal_gap 0.2) (thermal_bridge_width 0.508))
+    (fill (arc_segments 32) (thermal_gap 0.2) (thermal_bridge_width 0.508))
     (polygon
       (pts
         (xy 43.98 42.47) (xy 56 42.49) (xy 56 18.56) (xy 59.2 19.39) (xy 62.45 20.49)
@@ -3937,7 +3920,7 @@
   (zone (net 2) (net_name GND) (layer B.Cu) (tstamp 5B0518AA) (hatch edge 0.508)
     (connect_pads (clearance 0.251))
     (min_thickness 0.167)
-    (fill yes (arc_segments 32) (thermal_gap 0.2) (thermal_bridge_width 0.508))
+    (fill (arc_segments 32) (thermal_gap 0.2) (thermal_bridge_width 0.508))
     (polygon
       (pts
         (xy 43.98 42.47) (xy 56 42.49) (xy 56 18.56) (xy 59.2 19.39) (xy 62.45 20.49)
