@@ -42,7 +42,7 @@
 #include "SparkFunMPL3115A2.h"
 #endif
 #ifdef HUMIDITY_SENSOR
-#include "HIH7130.h"
+
 #endif
 #ifdef RANGING_SENSOR
 #include "VL53L0X.h"
@@ -51,11 +51,17 @@
 #include "LSM303AGR_ACC_Sensor.h"
 #include "LSM303AGR_MAG_Sensor.h"
 #endif
+#ifdef COMPASS2
+#include "Adafruit_HMC5883_U.h"
+#endif
 #ifdef GSM
 #include "SIM808.h"
 #endif
 #ifdef GPS
 #include "GPS.h"
+#endif
+#ifdef LIGHT_V_IR
+#include "Adafruit_TSL2591.h"
 #endif
 #include "Transmitting.h"
 #include "drone.h"
