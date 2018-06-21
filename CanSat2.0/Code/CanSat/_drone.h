@@ -34,7 +34,7 @@
 #define CANSAT_DRONE_H
 
 #include <Servo.h>
-#include "config.h"
+#include "_config.h"
 
 void drone_init();
 void set_speed(int forward, int side, int rotation, int up);

@@ -34,7 +34,7 @@
 #define CANSAT_CANSAT_H
 
 #include <Arduino.h>
-#include "config.h"
+#include "_config.h"
 #ifdef RADIO
 #include "RFM69.h"
 #endif
@@ -63,8 +63,8 @@
 #ifdef LIGHT_V_IR
 #include "Adafruit_TSL2591.h"
 #endif
-#include "Transmitting.h"
-#include "drone.h"
-#include "states.h"
+#include "_Transmitting.h"
+#include "_drone.h"
+#include "_states.h"
 #endif //CANSAT_CANSAT_H
 

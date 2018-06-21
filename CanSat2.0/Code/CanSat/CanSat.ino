@@ -31,7 +31,7 @@
 */
 
 #include <USBAPI.h>
-#include "CanSat.h"
+#include "_CanSat.h"
 
 #if defined(BAROMETER) || defined(RANGING_SENSOR) || defined(COMPASS) || defined(HUMIDITYSENSOR)
 TwoWire *i2c;
@@ -68,21 +68,12 @@ void setup() {
     pinMode(FC_PWM_7, OUTPUT);
     pinMode(FC_PWM_8, OUTPUT);
 
-    //Arms
-//const int ARM_LED[4] = {47, 24, 76, 31};
-//const int ARM_RANGING_XSHUT[4] = {38, 55, 11, 29};
-//const int ARM_RANGING_INTERRUPT[4] = {19, 4, 53, 73};
+    //LEDs
+
     for (int i = 0; i < 4; i++) {
-        pinMode(ARM_LED[i], OUTPUT);
-        pinMode(ARM_RANGING_XSHUT[i], OUTPUT);
+        pinMode(LED[i], OUTPUT);
     }
-    digitalWrite(ARM_RANGING_XSHUT[2], HIGH);
-        pinMode(ARM_RANGING_INTERRUPT[2], INPUT);
-    
 
-    //Top board
-
-    pinMode(TOP_LED, OUTPUT);
 
     //GSM module
 
@@ -96,8 +87,11 @@ void setup() {
 
     //Servo
 
-    pinMode(SERVO, OUTPUT);
-    servo.attach(SERVO);
+    pinMode(SERVO_PARACHUTE, OUTPUT);
+    servo_parachute.attach(SERVO_PARACHUTE);
+
+    pinMode(SERVO_SAMPLE, OUTPUT);
+    servo_sample.attach(SERVO_SAMPLE);
 
     //O2 sensor
 
@@ -126,26 +120,16 @@ void setup() {
 
     pinMode(BATTERY_VOLTAGE, INPUT);
 
-    pinMode(A2, INPUT);
-    pinMode(A4, INPUT);
-    pinMode(A5, INPUT);
-    pinMode(A6, INPUT);
-    pinMode(A7, INPUT);
-    pinMode(A8, INPUT);
-    pinMode(A9, INPUT);
-    pinMode(A10, INPUT);
-    pinMode(A11, INPUT);
-    pinMode(A12, INPUT);
-    pinMode(A13, INPUT);
-    pinMode(A14, INPUT);
-    pinMode(A15, INPUT);
+    pinMode(O2, INPUT);
+    pinMode(CO2, INPUT);
+    pinMode(O3, INPUT);
 
 #ifdef DEBUG
     // Led blinking.
     for (int i = 0; i < 20; i++) {
-        digitalWrite(TOP_LED, HIGH);
+        for (int j = 0; j < 4; j++) digitalWrite(LED[j], HIGH);
         delay(250);
-        digitalWrite(TOP_LED, LOW);
+        for (int j = 0; j < 4; j++) digitalWrite(LED[j], LOW);
         delay(250);
     }
     DEBUG_SERIAL.begin(9600);
@@ -155,7 +139,7 @@ void setup() {
 
 
 
-#if defined(BAROMETER) || defined(RANGING_SENSOR) || defined(COMPASS) || defined(HUMIDITYSENSOR)
+#if defined(BAROMETER) || defined(RANGING_SENSOR) || defined(COMPASS) || defined(HUMIDITYSENSOR) || defined(COMPASS2) || defined(LIGHT_SENSOR) || defined()
 // Initialize I2C bus.
     i2c = new TwoWire();
     i2c->begin();
@@ -235,11 +219,11 @@ void setup() {
 #endif
 #endif
 
-    flight_state = TESTING;
+    flight_state = LANDED;
     drone_init();
     transmitting_init(0, 0, 0);
     last_time_sent = 0;
-    digitalWrite(TOP_LED, HIGH);
+    for (int j = 0; j < 4; j++) digitalWrite(LED[j], HIGH);
 }
 
 void loop() {
@@ -340,7 +324,11 @@ void loop() {
 #ifdef GPS
     GPS_run();
 #endif
-    voltage = 15 * analogRead(BATTERY_VOLTAGE);
+
+    o2 = analogRead(O2);
+    co2 = analogRead(CO2);
+    o3 = analogRead(O3);
+    voltage = 2 * 5 * analogRead(BATTERY_VOLTAGE);
     runState();
 }
 

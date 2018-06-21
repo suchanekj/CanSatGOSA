@@ -34,7 +34,7 @@
 #define CANSAT_TRANSMITTING_H
 
 #include <Arduino.h>
-#include "config.h"
+#include "_config.h"
 #include "RFM69.h"
 
 void transmitting_init(bool use_radio, bool use_sms, bool use_email);

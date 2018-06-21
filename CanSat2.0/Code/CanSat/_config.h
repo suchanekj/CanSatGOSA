@@ -40,11 +40,11 @@
 
 #define DESTINATION_LAT 499951500
 #define DESTINATION_LON 145513150
-#define DESTINATION_ALT 32500
+#define DESTINATION_ALT 2500
 
 #define EARTH_RADIUS_M 6371009
 #define RAD_PER_DEGREE (PI / 180.0)
-#define STARTING_ALT 32500
+
 /*
  ***********************************************************************************
  *  Subsystem definitions
@@ -52,14 +52,16 @@
 //comment any line to disable subsystem
 
 #define DEBUG
-#define BAROMETER
+//#define BAROMETER
 //#define RADIO
 //#define HUMIDITY_SENSOR
 //#define RANGING_SENSOR
 //#define COMPASS
-#define COMPASS2
 //#define GSM
 #define GPS
+#define LIGHT_SENSOR
+#define UV_SENSOR
+#define SD
 
 /*
  ***********************************************************************************
@@ -70,7 +72,6 @@
 
 #define USE_RADIO 1
 #define USE_EMAIL 0
-#define USE_SMS   0
 
 //Radio Parameters
 
@@ -94,73 +95,66 @@
 
 //PWM output to Flight Controller
 
-#define FC_PWM_1 6
-#define FC_PWM_2 7
-#define FC_PWM_3 46
-#define FC_PWM_4 12
-#define FC_PWM_5 8
-#define FC_PWM_6 9
+
+#define FC_PWM_1 9
+#define FC_PWM_2 24
+#define FC_PWM_3 23
+#define FC_PWM_4 6
+#define FC_PWM_5 43
+#define FC_PWM_6 44
 #define FC_PWM_7 45
-#define FC_PWM_8 44
-
-//Arms
-
-const int ARM_LED[4] = {47, 24, 76, 31};
-const int ARM_RANGING_XSHUT[4] = {38, 55, 11, 29};
-const int ARM_RANGING_INTERRUPT[4] = {19, 4, 53, 73};
+#define FC_PWM_8 12
 
 //Top board
 
-#define TOP_LED 28
+const int LED[4] = {38, 85, 84, 83};
 
 //GSM module
 
 #define GSM_SERIAL Serial2
-#define GSM_SLEEP 83
-#define GSM_POWER_KEY 27
+#define GSM_SLEEP 25
+#define GSM_POWER_KEY 28
 
 //GPS module
 
 #define GPS_SERIAL Serial1
-//#define gpsPort Serial1
-//#define GPS_PORT_NAME "Serial1"
+#define gpsPort Serial1
+#define GPS_PORT_NAME "Serial1"
 
 //Servo
 
-#define SERVO 13
+#define SERVO_PARACHUTE 10
+#define SERVO_SAMPLE 13
 
 //O2 sensor
 
-#define O2 A0
-
-//CO2 sensor
-
-#define CO2 25
+#define O2 A11
+#define CO2 A12
+#define O3 A13
 
 //Camera power
 
-#define CAMERA_POWER 35
+#define CAMERA_POWER 26
 
 //Flight Controller power
 
-#define FC_POWER 34
+#define FC_POWER 27
 
 //Radio transmitter
 
-#define RFM_INT 10
-#define RFM_SS 26
+#define RFM_INT 2
+#define RFM_SS 4
+
+//SD card
+
+#define SD_SS
 
 //Read battery voltage
 
-#define BATTERY_VOLTAGE A8
-
-//UV read
-
-#define UV A6
+#define BATTERY_VOLTAGE A10
 
 //Gamma read
 
-#define GAMMA
-
+#define GAMMA 3
 
 #endif //CANSAT_CONFIG_H

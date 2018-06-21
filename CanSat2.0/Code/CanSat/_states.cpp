@@ -30,7 +30,7 @@
   **********************************************************************************
 */
 
-#include "states.h"
+#include "_states.h"
 
 float old_speed_ahead;
 float old_speed_up;
@@ -45,12 +45,16 @@ int temperature;
 unsigned long last_time_sent;
 int flight_state;
 int voltage;
-Servo servo;
+Servo servo_parachute;
+Servo servo_sample;
+int o2;
+int o3;
+int co2;
 
 void send_init() {
     char str[180] = {0};
     int len, start = 0;
-    sprintf(str,"state,temperature,pressure,bar_alt,UV,humid,armDistance[4],accelerometer[3],magnetometer[3],voltage,hours,minutes,seconds,latitude,longitude,altitude_cm,velocity_n,velocity_e,velocity_d");
+    sprintf(str,"state,temperature,pressure,bar_alt,co2,o2,o3,humid,armDistance[4],accelerometer[3],magnetometer[3],voltage,hours,minutes,seconds,latitude,longitude,altitude_cm,velocity_n,velocity_e,velocity_d");
     do {
         for(len = 0; len < 60 && str[len]; len++);
         transmitting_send(str + start, len);
@@ -59,8 +63,8 @@ void send_init() {
 }
 
 void send_data() {
-    long int data[25] = {flight_state, temperature, pressure, bar_alt, UV, /*humid,*/
-                  /*armDistance[0], armDistance[1],*/ armDistance, /*armDistance[3],*/
+    long int data[27] = {flight_state, temperature, pressure, bar_alt, /*humid,*/
+                  armDistance, co2, o2, o3,
                   accelerometer[0], accelerometer[1], accelerometer[2],
                   magnetometer[0], magnetometer[1], magnetometer[2],
                   my_fix.dateTime.hours, my_fix.dateTime.minutes, my_fix.dateTime.seconds,

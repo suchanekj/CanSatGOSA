@@ -34,9 +34,9 @@
 #define CANSAT_STATES_H
 
 #include <Arduino.h>
-#include "config.h"
-#include "drone.h"
-#include "Transmitting.h"
+#include "_config.h"
+#include "_drone.h"
+#include "_Transmitting.h"
 #include "GPS.h"
 
 extern int armDistance;
@@ -46,9 +46,13 @@ extern int32_t magnetometer[3];
 extern long int pressure;
 extern long int bar_alt;
 extern int temperature;
+extern int o2;
+extern int o3;
+extern int co2;
 extern unsigned long last_time_sent;
 extern int voltage;
-extern Servo servo;
+extern Servo servo_parachute;
+extern Servo servo_sample;
 
 #define WAITING_FOR_RELEASE 0
 #define OPENING_ARMS 1
