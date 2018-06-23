@@ -24,7 +24,7 @@
 #else
  #include <WProgram.h>
 #endif
-#include <Adafruit_Sensor.h>
+#include "Adafruit_Sensor.h"
 #include <Wire.h>
 
 #define TSL2591_VISIBLE           (2)       ///< (channel 0) - (channel 1)

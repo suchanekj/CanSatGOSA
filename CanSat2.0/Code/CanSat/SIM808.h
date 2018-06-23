@@ -34,7 +34,7 @@
 #define CANSAT_SIM808_H
 
 #include <Arduino.h>
-#include "config.h"
+#include "_config.h"
 
 void power_on();
 int8_t sendATcommand(char* ATcommand, char* expected_answer, unsigned int timeout);

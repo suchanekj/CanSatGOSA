@@ -91,12 +91,12 @@ bool RFM69::initialize(uint8_t freqBand, uint8_t nodeID, uint8_t networkID)
   pinMode(_slaveSelectPin, OUTPUT);
   SPI.begin();
 
-  Serial.println(1);
+  DEBUG_SERIAL.println(1);
 
   do writeReg(REG_SYNCVALUE1, 0xAA); while (readReg(REG_SYNCVALUE1) != 0xAA);
   do writeReg(REG_SYNCVALUE1, 0x55); while (readReg(REG_SYNCVALUE1) != 0x55);
 
-  Serial.println(2);
+  DEBUG_SERIAL.println(2);
 
   for (uint8_t i = 0; CONFIG[i][0] != 255; i++)
     writeReg(CONFIG[i][0], CONFIG[i][1]);
@@ -238,11 +238,11 @@ bool RFM69::sendWithRetry(uint8_t toAddress, const void* buffer, uint8_t bufferS
     {
       if (ACKReceived(toAddress))
       {
-        //Serial.print(" ~ms:"); Serial.print(millis() - sentTime);
+        //DEBUG_SERIAL.print(" ~ms:"); DEBUG_SERIAL.print(millis() - sentTime);
         return true;
       }
     }
-    //Serial.print(" RETRY#"); Serial.println(i + 1);
+    //DEBUG_SERIAL.print(" RETRY#"); DEBUG_SERIAL.println(i + 1);
   }
   return false;
 }
@@ -484,7 +484,7 @@ void RFM69::setCS(uint8_t newSPISlaveSelect) {
   pinMode(_slaveSelectPin, OUTPUT);
 }
 
-// Serial.print all the RFM69 register values
+// DEBUG_SERIAL.print all the RFM69 register values
 void RFM69::readAllRegs()
 {
   uint8_t regVal;
@@ -496,11 +496,11 @@ void RFM69::readAllRegs()
     regVal = SPI.transfer(0);
     unselect();
 
-    Serial.print(regAddr, HEX);
-    Serial.print(" - ");
-    Serial.print(regVal,HEX);
-    Serial.print(" - ");
-    Serial.println(regVal,BIN);
+    DEBUG_SERIAL.print(regAddr, HEX);
+    DEBUG_SERIAL.print(" - ");
+    DEBUG_SERIAL.print(regVal,HEX);
+    DEBUG_SERIAL.print(" - ");
+    DEBUG_SERIAL.println(regVal,BIN);
   }
   unselect();
 }

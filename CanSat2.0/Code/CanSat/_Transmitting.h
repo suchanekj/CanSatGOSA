@@ -37,7 +37,7 @@
 #include "_config.h"
 #include "RFM69.h"
 
-void transmitting_init(bool use_radio, bool use_sms, bool use_email);
+void transmitting_init();
 void transmitting_send(long int data[], int size);
 void transmitting_send(char *message, int len);
 

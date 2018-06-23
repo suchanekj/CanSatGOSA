@@ -33,7 +33,6 @@
 #ifndef CANSAT_CANSAT_H
 #define CANSAT_CANSAT_H
 
-#include <Arduino.h>
 #include "_config.h"
 #ifdef RADIO
 #include "RFM69.h"

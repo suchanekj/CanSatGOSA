@@ -57,9 +57,9 @@
 //      If you have a Mega, Leo or Due board, you could use Serial1, 
 //      Serial2 or Serial3:
 //
-             #define gpsPort Serial1
-             #define GPS_PORT_NAME "Serial1"
-             #define DEBUG_PORT Serial
+//             #define gpsPort Serial1
+//             #define GPS_PORT_NAME "Serial1"
+//             #define DEBUG_PORT Serial
 //
 //      These extra ports do not have to be disconnected to upload new
 //      sketches over USB.
@@ -68,10 +68,10 @@
 //      in an Interrupt Service Routine (see NMEA_isr.INO).
 //      Also uncomment NMEAGPS_INTERRUPT_PROCESSING in NMEAGPS_cfg.h.
 //
-//             #include <NeoHWSerial.h>
-//             #define gpsPort NeoSerial
-//             #define GPS_PORT_NAME "NeoSerial"
-//             #define DEBUG_PORT NeoSerial
+             #include "NeoHWSerial.h"
+             #define gpsPort NeoSerial1
+             #define GPS_PORT_NAME "NeoSerial1"
+             #define DEBUG_PORT NeoSerial
 //
 //      Note that the DEBUG_PORT must be NeoSerial, not Serial
 //      (see NeoHWSerial documentation for additional requirements).

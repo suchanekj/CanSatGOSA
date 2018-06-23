@@ -33,16 +33,12 @@
 #include "_Transmitting.h"
 
 RFM69 radio;
-bool radio_enabled, sms_enabled, email_enabled;
 
-void transmitting_init(bool use_radio, bool use_sms, bool use_email) {
-    radio_enabled = use_radio;
-    sms_enabled = use_sms;
-    email_enabled = use_email;
+void transmitting_init() {
 #ifdef RADIO
     //Initialize radio
     radio.setCS(RFM_SS);
-    radio.initialize(FREQUENCY,NODEID,NETWORKID);
+    radio.initialize(FREQUENCY, NODEID, NETWORKID);
     radio.setHighPower(); //To use the high power capabilities of the RFM69HW
     radio.encrypt(ENCRYPTKEY);
     radio.setFrequency(434200000);
@@ -65,17 +61,18 @@ void transmitting_send(long int data[], int size) {
     const int len = 60;
     char message[len];
     int end = 0;
-    for(int i = 0; i < size; i++) {
-        if(end > 0) {
+    for (int i = 0; i < size; i++) {
+        if (end > 0) {
             sprintf(message + end, ";");
             end++;
         }
         sprintf(message + end, "%ld", data[i]);
-        while(end < len && message[end]) end++;
-        if(end >= len - 12) {
-          message[end - 1] = '&';
-          transmitting_send(message, end);
-          end = 0;
+        while (end < len && message[end]) end++;
+        if (end >= len - 12) {
+            end++;
+            message[end - 1] = '&';
+            transmitting_send(message, end);
+            end = 0;
         }
     }
     transmitting_send(message, end);

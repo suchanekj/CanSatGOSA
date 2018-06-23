@@ -133,7 +133,7 @@ int8_t sendATcommand(char* ATcommand, char* expected_answer, unsigned int timeou
     char response[100] = {0};
     unsigned long previous;
 
-    while(GSM_SERIAL.available() > 0) Serial.read();    // Clean the input buffer
+    while(GSM_SERIAL.available() > 0) DEBUG_SERIAL.read();    // Clean the input buffer
 
     GSM_SERIAL.println(ATcommand);    // Send the AT command
 
@@ -145,7 +145,7 @@ int8_t sendATcommand(char* ATcommand, char* expected_answer, unsigned int timeou
     do{
         // if there are data in the UART input buffer, reads it and checks for the answer
         if(GSM_SERIAL.available() != 0){
-            response[x] = Serial.read();
+            response[x] = DEBUG_SERIAL.read();
             x++;
             // check if the desired answer is in the response of the module
             if (strstr(response, expected_answer) != NULL)
@@ -161,7 +161,7 @@ int8_t sendATcommand(char* ATcommand, char* expected_answer, unsigned int timeou
 }
 
 void sendsms(){
-    Serial.println("Starting Shield to send sms...");
+    DEBUG_SERIAL.println("Starting Shield to send sms...");
     power_on();
 
     delay(3000);
@@ -172,45 +172,45 @@ void sendsms(){
 
     delay(3000);
 
-    Serial.println("Connecting to the network...");
+    DEBUG_SERIAL.println("Connecting to the network...");
 
     while( (sendATcommand("AT+CREG?", "+CREG: 0,1", 500) ||
             sendATcommand("AT+CREG?", "+CREG: 0,5", 500)) == 0 );
 
-    Serial.print("Setting SMS mode...");
+    DEBUG_SERIAL.print("Setting SMS mode...");
     digitalWrite(greenled, HIGH);
     digitalWrite(redled, LOW);
     sendATcommand("AT+CMGF=1", "OK", 1000);    // sets the SMS mode to text
-    Serial.println("Sending SMS");
+    DEBUG_SERIAL.println("Sending SMS");
 
     sprintf(aux_str,"AT+CMGS=\"%s\"", phone_number);
     answer = sendATcommand(aux_str, ">", 2000);    // send the SMS number
     if (answer == 1)
     {
-        Serial.println(sms_text);
-        Serial.write(0x1A);
+        DEBUG_SERIAL.println(sms_text);
+        DEBUG_SERIAL.write(0x1A);
         answer = sendATcommand("", "OK", 20000);
         if (answer == 1)
         {
-            Serial.print("Sent ");
+            DEBUG_SERIAL.print("Sent ");
             digitalWrite(greenled, LOW);
             digitalWrite(redled, HIGH);
         }
         else
         {
-            Serial.print("error ");
+            DEBUG_SERIAL.print("error ");
         }
     }
     else
     {
-        Serial.print("error ");
-        Serial.println(answer, DEC);
+        DEBUG_SERIAL.print("error ");
+        DEBUG_SERIAL.println(answer, DEC);
     }
 
 }
 
 void sendsms1(){
-    Serial.println("Starting Shield to send sms...");
+    DEBUG_SERIAL.println("Starting Shield to send sms...");
     power_on();
 
     delay(3000);
@@ -221,46 +221,46 @@ void sendsms1(){
 
     delay(3000);
 
-    Serial.println("Connecting to the network...");
+    DEBUG_SERIAL.println("Connecting to the network...");
 
     while( (sendATcommand("AT+CREG?", "+CREG: 0,1", 500) ||
             sendATcommand("AT+CREG?", "+CREG: 0,5", 500)) == 0 );
 
-    Serial.print("Setting SMS mode...");
+    DEBUG_SERIAL.print("Setting SMS mode...");
     digitalWrite(greenled, HIGH);
     digitalWrite(redled, LOW);
     sendATcommand("AT+CMGF=1", "OK", 1000);    // sets the SMS mode to text
-    Serial.println("Sending SMS");
+    DEBUG_SERIAL.println("Sending SMS");
 
     sprintf(aux_str,"AT+CMGS=\"%s\"", phone_number1);
     answer = sendATcommand(aux_str, ">", 2000);    // send the SMS number
     if (answer == 1)
     {
-        Serial.println(sms_text);
-        Serial.write(0x1A);
+        DEBUG_SERIAL.println(sms_text);
+        DEBUG_SERIAL.write(0x1A);
         answer = sendATcommand("", "OK", 20000);
         if (answer == 1)
         {
-            Serial.print("Sent ");
+            DEBUG_SERIAL.print("Sent ");
             digitalWrite(greenled, LOW);
             digitalWrite(redled, HIGH);
         }
         else
         {
-            Serial.print("error ");
+            DEBUG_SERIAL.print("error ");
         }
     }
     else
     {
-        Serial.print("error ");
-        Serial.println(answer, DEC);
+        DEBUG_SERIAL.print("error ");
+        DEBUG_SERIAL.println(answer, DEC);
     }
 
 }
 
 void makevoicecall(){
 
-    Serial.println("Starting Shield to make a voice call...");
+    DEBUG_SERIAL.println("Starting Shield to make a voice call...");
     power_on();
 
     delay(3000);
@@ -271,7 +271,7 @@ void makevoicecall(){
 
     delay(3000);
 
-    Serial.println("Connecting to the network...");
+    DEBUG_SERIAL.println("Connecting to the network...");
 
     //Enables the use of command ATH
     sendATcommand("AT+CVHU=0", "OK", 10000);
@@ -279,10 +279,10 @@ void makevoicecall(){
     while ( (sendATcommand("AT+CREG?", "+CREG: 0,1", 500) ||
              sendATcommand("AT+CREG?", "+CREG: 0,5", 500)) == 0 );
 
-    Serial.print("Calling to ");
+    DEBUG_SERIAL.print("Calling to ");
     digitalWrite(greenled, HIGH);
     digitalWrite(redled, LOW);
-    Serial.print(phone_number);
+    DEBUG_SERIAL.print(phone_number);
 
 
     //Make the phone call
@@ -294,13 +294,13 @@ void makevoicecall(){
     // disconnects the existing call
     digitalWrite(greenled, LOW);
     digitalWrite(redled, HIGH);
-    Serial.println("ATH");
-    Serial.println("Call disconnected");
+    DEBUG_SERIAL.println("ATH");
+    DEBUG_SERIAL.println("Call disconnected");
 }
 
 void makevoicecall1(){
 
-    Serial.println("Starting Shield to make a voice call...");
+    DEBUG_SERIAL.println("Starting Shield to make a voice call...");
     power_on();
 
     delay(3000);
@@ -311,7 +311,7 @@ void makevoicecall1(){
 
     delay(3000);
 
-    Serial.println("Connecting to the network...");
+    DEBUG_SERIAL.println("Connecting to the network...");
 
     //Enables the use of command ATH
     sendATcommand("AT+CVHU=0", "OK", 10000);
@@ -319,10 +319,10 @@ void makevoicecall1(){
     while ( (sendATcommand("AT+CREG?", "+CREG: 0,1", 500) ||
              sendATcommand("AT+CREG?", "+CREG: 0,5", 500)) == 0 );
 
-    Serial.print("Calling to ");
+    DEBUG_SERIAL.print("Calling to ");
     digitalWrite(greenled, HIGH);
     digitalWrite(redled, LOW);
-    Serial.print(phone_number);
+    DEBUG_SERIAL.print(phone_number);
 
 
     //Make the phone call
@@ -334,15 +334,15 @@ void makevoicecall1(){
     // disconnects the existing call
     digitalWrite(greenled, LOW);
     digitalWrite(redled, HIGH);
-    Serial.println("ATH");
-    Serial.println("Call disconnected");
+    DEBUG_SERIAL.println("ATH");
+    DEBUG_SERIAL.println("Call disconnected");
 }
 
 
 
 void sendemail(){
 
-    Serial.println("Starting Shield to send an email...");
+    DEBUG_SERIAL.println("Starting Shield to send an email...");
     power_on();
 
     delay(3000);
@@ -392,17 +392,17 @@ void sendemail(){
 
     delay(2000);
 
-    Serial.println("Sending email...");
+    DEBUG_SERIAL.println("Sending email...");
     // sends the email and waits the answer of the module
     answer = sendATcommand("AT+SMTPSEND", "+SMTP: SUCCESS", 60000);
     if (answer == 1)
     {
         digitalWrite(greenled, LOW);
         digitalWrite(redled, HIGH);
-        Serial.println("Done!");
+        DEBUG_SERIAL.println("Done!");
     }
     else
     {
-        Serial.println("Error");
+        DEBUG_SERIAL.println("Error");
     }
 }

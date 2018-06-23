@@ -429,15 +429,15 @@ bool ubloxGPS::send( const msg_t & msg, msg_t *reply_msg )
     ok = wait_for_ack();
 
     #if 0
-      Serial.print( F("wait_for_ack ") );
+      DEBUG_SERIAL.print( F("wait_for_ack ") );
       if (ok)
-        Serial.print( F("ok! ") );
+        DEBUG_SERIAL.print( F("ok! ") );
       else
-        Serial.print( F("failed! ") );
+        DEBUG_SERIAL.print( F("failed! ") );
       if (ack_received)
-        Serial.println( F("ACK!") );
+        DEBUG_SERIAL.println( F("ACK!") );
       else if (nak_received)
-        Serial.println( F("NAK!") );
+        DEBUG_SERIAL.println( F("NAK!") );
     #endif
   }
 
@@ -465,7 +465,7 @@ bool ubloxGPS::parseField( char c )
   switch (rx().msg_class) {
 
     case UBX_NAV: //=================================================
-//if (chrCount == 0) Serial << F( " NAV ") << (uint8_t) rx().msg_id;
+//if (chrCount == 0) DEBUG_SERIAL << F( " NAV ") << (uint8_t) rx().msg_id;
       switch (rx().msg_id) {
         case UBX_NAV_STATUS : return parseNavStatus ( chr );
         case UBX_NAV_POSLLH : return parseNavPosLLH ( chr );
@@ -562,7 +562,7 @@ bool ubloxGPS::parseNavDOP   ( uint8_t chr )
 {
   bool ok = true;
 
-//if (chrCount == 0) Serial.print( F( "dop ") );
+//if (chrCount == 0) DEBUG_SERIAL.print( F( "dop ") );
   #ifdef UBLOX_PARSE_DOP
     switch (chrCount) {
       case 0: case 1: case 2: case 3:

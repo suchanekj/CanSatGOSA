@@ -86,8 +86,8 @@ boolean Adafruit_TSL2591::begin(void)
   for (uint8_t i=0; i<0x20; i++)
   {
     uint8_t id = read8(0x12);
-    Serial.print("$"); Serial.print(i, HEX);
-    Serial.print(" = 0x"); Serial.println(read8(i), HEX);
+    DEBUG_SERIAL.print("$"); DEBUG_SERIAL.print(i, HEX);
+    DEBUG_SERIAL.print(" = 0x"); DEBUG_SERIAL.println(read8(i), HEX);
   }
   */
 
@@ -95,7 +95,7 @@ boolean Adafruit_TSL2591::begin(void)
   if (id != 0x50 ) {
     return false;
   }
-  // Serial.println("Found Adafruit_TSL2591");
+  // DEBUG_SERIAL.println("Found Adafruit_TSL2591");
 
   _initialized = true;
 

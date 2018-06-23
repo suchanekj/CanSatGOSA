@@ -33,11 +33,14 @@
 #ifndef CANSAT_CONFIG_H
 #define CANSAT_CONFIG_H
 
+#include "GPSport.h"
+
 /*
  ***********************************************************************************
  *  Landing spot
  */
 
+#define STARTING_ALT 32500
 #define DESTINATION_LAT 499951500
 #define DESTINATION_LON 145513150
 #define DESTINATION_ALT 2500
@@ -52,8 +55,8 @@
 //comment any line to disable subsystem
 
 #define DEBUG
-//#define BAROMETER
-//#define RADIO
+#define BAROMETER
+#define RADIO
 //#define HUMIDITY_SENSOR
 //#define RANGING_SENSOR
 //#define COMPASS
@@ -91,7 +94,7 @@
 
 //debugging
 
-#define DEBUG_SERIAL Serial
+#define DEBUG_SERIAL NeoSerial
 
 //PWM output to Flight Controller
 
@@ -111,15 +114,12 @@ const int LED[4] = {38, 85, 84, 83};
 
 //GSM module
 
-#define GSM_SERIAL Serial2
+#define GSM_SERIAL NeoSerial2
 #define GSM_SLEEP 25
 #define GSM_POWER_KEY 28
 
 //GPS module
 
-#define GPS_SERIAL Serial1
-#define gpsPort Serial1
-#define GPS_PORT_NAME "Serial1"
 
 //Servo
 

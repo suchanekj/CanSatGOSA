@@ -31,9 +31,11 @@
 */
 
 #include <USBAPI.h>
+#include <Wire.h>
+#include <Arduino.h>
 #include "_CanSat.h"
 
-#if defined(BAROMETER) || defined(RANGING_SENSOR) || defined(COMPASS) || defined(HUMIDITYSENSOR)
+#if defined(BAROMETER) || defined(RANGING_SENSOR) || defined(COMPASS) || defined(HUMIDITYSENSOR) || defined(COMPASS2) || defined(LIGHT_SENSOR)
 TwoWire *i2c;
 #endif
 
@@ -83,12 +85,14 @@ void setup() {
 
     //GPS module
 
- //   GPS_SERIAL.begin(9600);
+    //   GPS_SERIAL.begin(9600);
 
     //Servo
 
     pinMode(SERVO_PARACHUTE, OUTPUT);
     servo_parachute.attach(SERVO_PARACHUTE);
+
+    servo_parachute.write(0);
 
     pinMode(SERVO_SAMPLE, OUTPUT);
     servo_sample.attach(SERVO_SAMPLE);
@@ -139,12 +143,12 @@ void setup() {
 
 
 
-#if defined(BAROMETER) || defined(RANGING_SENSOR) || defined(COMPASS) || defined(HUMIDITYSENSOR) || defined(COMPASS2) || defined(LIGHT_SENSOR) || defined()
+#if defined(BAROMETER) || defined(RANGING_SENSOR) || defined(COMPASS) || defined(HUMIDITYSENSOR) || defined(COMPASS2) || defined(LIGHT_SENSOR)
 // Initialize I2C bus.
     i2c = new TwoWire();
     i2c->begin();
 #ifdef DEBUG
-    Serial.println("I2C initialized");
+    DEBUG_SERIAL.println("I2C initialized");
 #endif
 #endif
 
@@ -167,10 +171,10 @@ void setup() {
 
     alt_mod = STARTING_ALT - bar_alt;
 
-    Serial.println(bar_alt);
-    Serial.println(alt_mod);
+    DEBUG_SERIAL.println(bar_alt);
+    DEBUG_SERIAL.println(alt_mod);
 #ifdef DEBUG
-    Serial.println("barometer initialized");
+    DEBUG_SERIAL.println("barometer initialized");
 #endif
 #endif
 
@@ -195,33 +199,33 @@ void setup() {
 #ifdef COMPASS
     Acc = new LSM303AGR_ACC_Sensor(i2c);
 #ifdef DEBUG
-    Serial.println("Accelerometer initialized");
+    DEBUG_SERIAL.println("Accelerometer initialized");
 #endif
     Acc->Enable();
 #ifdef DEBUG
-    Serial.println("Accelerometer enabled");
+    DEBUG_SERIAL.println("Accelerometer enabled");
 #endif
     Mag = new LSM303AGR_MAG_Sensor(i2c);
 #ifdef DEBUG
-    Serial.println("Magnetometer initialized");
+    DEBUG_SERIAL.println("Magnetometer initialized");
 #endif
     Mag->Enable();
 #ifdef DEBUG
-    Serial.println("Magnetometer enabled");
+    DEBUG_SERIAL.println("Magnetometer enabled");
 #endif
 #endif
 
 #ifdef GPS
     GPS_init();
 #ifdef DEBUG
-    Serial.println("GPS initialized");
+    DEBUG_SERIAL.println("GPS initialized");
     delay(1000);
 #endif
 #endif
 
     flight_state = LANDED;
     drone_init();
-    transmitting_init(0, 0, 0);
+    transmitting_init();
     last_time_sent = 0;
     for (int j = 0; j < 4; j++) digitalWrite(LED[j], HIGH);
 }
@@ -232,18 +236,18 @@ void loop() {
     pressure = barometer.readPressure() * 100.0;
     bar_alt = (101325 - pressure / 100.0) * 9.0 + alt_mod;
 #ifdef DEBUGa
-    Serial.print("Alt(cm): ");
-    Serial.print(bar_alt);
+    DEBUG_SERIAL.print("Alt(cm): ");
+    DEBUG_SERIAL.print(bar_alt);
     
-    Serial.print("Pressure(Pa): ");
-    Serial.print(pressure);
+    DEBUG_SERIAL.print("Pressure(Pa): ");
+    DEBUG_SERIAL.print(pressure);
 #endif
 
     temperature = barometer.readTemp() * 100;
 #ifdef DEBUGa
-    Serial.print(" Temp: ");
-    Serial.print(temperature);
-    Serial.println();
+    DEBUG_SERIAL.print(" Temp: ");
+    DEBUG_SERIAL.print(temperature);
+    DEBUG_SERIAL.println();
 #endif
 #endif
 
@@ -262,8 +266,8 @@ void loop() {
     {
         humidity.readRegister(address);
 
-        Serial.println("Getting Readings from HIH7130");
-        Serial.println(" ");
+        DEBUG_SERIAL.println("Getting Readings from HIH7130");
+        DEBUG_SERIAL.println(" ");
         // Read and print out the Relative Humidity, convert it to %RH
         humid = humidity.Measure_Humidity();
 
@@ -271,29 +275,29 @@ void loop() {
         temperature = humidity.Measure_Temperature();
 
         // Output data to screen
-        Serial.print("Relative Humidity Reading: ");
-        Serial.print(humid);
-        Serial.println(" %RH");
-        Serial.print("Temperature Reading in Celsius: ");
-        Serial.print(temperature);
-        Serial.println(" C");
-        Serial.println("        ***************************        ");
-        Serial.println(" ");
+        DEBUG_SERIAL.print("Relative Humidity Reading: ");
+        DEBUG_SERIAL.print(humid);
+        DEBUG_SERIAL.println(" %RH");
+        DEBUG_SERIAL.print("Temperature Reading in Celsius: ");
+        DEBUG_SERIAL.print(temperature);
+        DEBUG_SERIAL.println(" C");
+        DEBUG_SERIAL.println("        ***************************        ");
+        DEBUG_SERIAL.println(" ");
     }
     else
     {
-        Serial.println("HIH7130 Disconnected!");
-        Serial.println(" ");
-        Serial.println("        ************        ");
-        Serial.println(" ");
+        DEBUG_SERIAL.println("HIH7130 Disconnected!");
+        DEBUG_SERIAL.println(" ");
+        DEBUG_SERIAL.println("        ************        ");
+        DEBUG_SERIAL.println(" ");
     }
 #endif
 
 #ifdef RANGING_SENSOR
     armDistance = ranging_sensor.readRangeContinuousMillimeters();
-    if (ranging_sensor.timeoutOccurred()) { Serial.print(" TIMEOUT"); }
+    if (ranging_sensor.timeoutOccurred()) { DEBUG_SERIAL.print(" TIMEOUT"); }
 
-    Serial.println();
+    DEBUG_SERIAL.println();
 #endif
 
 #ifdef COMPASS
@@ -326,9 +330,13 @@ void loop() {
 #endif
 
     o2 = analogRead(O2);
-    co2 = analogRead(CO2);
+    co2 = analogRead(CO2) * 5 / 8.5;
     o3 = analogRead(O3);
     voltage = 2 * 5 * analogRead(BATTERY_VOLTAGE);
+    //DEBUG_SERIAL.println(o2);
+    //DEBUG_SERIAL.println(co2);
+    //DEBUG_SERIAL.println(o3);
+    delay(1000);
     runState();
 }
 
