@@ -35,7 +35,7 @@
 float old_speed_ahead;
 float old_speed_up;
 
-int armDistance;
+int distance;
 int humid;
 int32_t accelerometer[3];
 int32_t magnetometer[3];
@@ -43,7 +43,7 @@ long int bar_alt;
 long int pressure;
 int temperature;
 unsigned long last_time_sent;
-int flight_state;
+byte flight_state;
 int voltage;
 Servo servo_parachute;
 Servo servo_sample;
@@ -51,30 +51,35 @@ int o2;
 int o3;
 int co2;
 
+int sending_counter;
+
 void send_init() {
-    char str[180] = {0};
-    int len, start = 0;
-    sprintf(str,"state,temperature,pressure,bar_alt,co2,o2,o3,humid,armDistance[4],accelerometer[3],magnetometer[3],voltage,hours,minutes,seconds,latitude,longitude,altitude_cm,velocity_n,velocity_e,velocity_d");
-    do {
-        for(len = 0; len < 60 && str[len]; len++);
-        transmitting_send(str + start, len);
-        start += len;
-    } while(len == 60);
+//    char str[180] = {0};
+//    int len, start = 0;
+//    sprintf(str,"state,temperature,pressure,bar_alt,co2,o2,o3,humid,distance[4],accelerometer[3],magnetometer[3],voltage,hours,minutes,seconds,latitude,longitude,altitude_cm,velocity_n,velocity_e,velocity_d");
+//    do {
+//        for(len = 0; len < 60 && str[len]; len++);
+//        transmitting_send(str + start, len);
+//        start += len;
+//    } while(len == 60);
+    sending_counter = 0;
 }
 
 void send_data() {
     long int data[27] = {flight_state, temperature, pressure, bar_alt, /*humid,*/
-                  armDistance, co2, o2, o3,
+                  distance, co2, o2, o3,
                   accelerometer[0], accelerometer[1], accelerometer[2],
                   magnetometer[0], magnetometer[1], magnetometer[2],
                   my_fix.dateTime.hours, my_fix.dateTime.minutes, my_fix.dateTime.seconds,
                   my_fix.latitudeL(), my_fix.longitudeL(), my_fix.altitude_cm(),
                   my_fix.velocity_north, my_fix.velocity_east, my_fix.velocity_down};
-    transmitting_send(data, 21);
+    transmitting_send(data, 21, sending_counter++);
 }
 
 void runState() {
     switch(flight_state) {
+        case INIT:
+            flight_state = LANDED;
         case WAITING_FOR_RELEASE:
             waitingForRelease();
             break;
@@ -99,20 +104,23 @@ void runState() {
         case TESTING:
             testing();
             break;
+        case PARACHUTING:
+            parachuting();
+            break;
     }
 
 }
 
 void waitingForRelease() {
-    //if(last_time_sent == 0) send_init();
     if(millis() - last_time_sent > 500) {
         send_data();
         last_time_sent = millis();
     }
+    if(my_fix.velocity_down > 500 || bar_vel > 500) flight_state = OPENING_ARMS;
 }
 
 void openingArms() {
-    set_speed(0, 0, 1000, -1000);
+    set_speed(0, 0, 1000, -500);
     if(millis() - last_time_sent > 500) {
         send_data();
         last_time_sent = millis();
@@ -197,7 +205,7 @@ void testing() {
     float speed_up = 100;
 
     old_speed_ahead += speed_ahead - sqrt(my_fix.velocity_east * my_fix.velocity_east + my_fix.velocity_north * my_fix.velocity_north);
-    old_speed_up += speed_up - armDistance;
+    old_speed_up += speed_up - distance;
 
     old_speed_up = min(old_speed_up, 1000);
     old_speed_up = max(old_speed_up, 0);
@@ -213,10 +221,19 @@ void testing() {
     DEBUG_SERIAL.print(rotation);
     DEBUG_SERIAL.print(" ");
     DEBUG_SERIAL.println(old_speed_up);
-    set_speed(0, 0, 0, old_speed_up);
+    set_speed(10, 10, 10, 10);
     DEBUG_SERIAL.print("Speed set");
     if(millis() - last_time_sent > 500) {
         send_data();
         last_time_sent = millis();
     }
+}
+
+void parachuting() {
+    servo_parachute.write(SERVO_PARACUTE_OPEN);
+    if(millis() - last_time_sent > 500) {
+        send_data();
+        last_time_sent = millis();
+    }
+    if(distance < 20) flight_state = LANDED;
 }

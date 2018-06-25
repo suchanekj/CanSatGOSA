@@ -35,19 +35,6 @@
 RFM69 radio;
 
 void transmitting_init() {
-#ifdef RADIO
-    //Initialize radio
-    radio.setCS(RFM_SS);
-    radio.initialize(FREQUENCY, NODEID, NETWORKID);
-    radio.setHighPower(); //To use the high power capabilities of the RFM69HW
-    radio.encrypt(ENCRYPTKEY);
-    radio.setFrequency(434200000);
-#ifdef DEBUG
-    DEBUG_SERIAL.print("Transmitting at ");
-    int f = radio.getFrequency();
-    DEBUG_SERIAL.println(f);
-#endif
-#endif
 }
 
 void transmitting_send(char message[], int len) {
@@ -57,18 +44,21 @@ void transmitting_send(char message[], int len) {
     radio.send(GATEWAYID, message, len);
 }
 
-void transmitting_send(long int data[], int size) {
+void transmitting_send(long int data[], int size, int messageId) {
     const int len = 60;
     char message[len];
     int end = 0;
     for (int i = 0; i < size; i++) {
+        if (end == 0) {
+            sprintf(message, "[%u]", messageId);
+        }
         if (end > 0) {
             sprintf(message + end, ";");
             end++;
         }
         sprintf(message + end, "%ld", data[i]);
         while (end < len && message[end]) end++;
-        if (end >= len - 12) {
+        if (end >= len - 19) {
             end++;
             message[end - 1] = '&';
             transmitting_send(message, end);

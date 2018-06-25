@@ -37,8 +37,10 @@
 #include "_config.h"
 #include "RFM69.h"
 
+extern RFM69 radio;
+
 void transmitting_init();
-void transmitting_send(long int data[], int size);
+void transmitting_send(long int data[], int size, int messageId);
 void transmitting_send(char *message, int len);
 
 #endif //CANSAT_TRANSMITTING_H

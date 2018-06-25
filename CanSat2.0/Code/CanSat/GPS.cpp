@@ -38,6 +38,7 @@
 //======================================================================
 
 #include "GPS.h"
+#include <avr/wdt.h>
 
 gps_fix my_fix;
 
@@ -50,7 +51,7 @@ gps_fix my_fix;
 
 #if !defined(UBLOX_PARSE_STATUS) & !defined(UBLOX_PARSE_TIMEGPS) & \
     !defined(UBLOX_PARSE_TIMEUTC) & !defined(UBLOX_PARSE_POSLLH) & \
-    !defined(UBLOX_PARSE_VELNED) & !defined(UBLOX_PARSE_SVINFO)  & \
+    !defined(UBLOX_PARSE_VELNED) & !defined(UBLOX_PARSE_SVINFO) & \
     !defined(UBLOX_PARSE_DOP)
 
 #error No UBX binary messages enabled: no fix data available for fusing.
@@ -58,9 +59,9 @@ gps_fix my_fix;
 #endif
 
 #if defined(UBLOX_PARSE_DOP) & \
-    ( !defined(GPS_FIX_HDOP) & \
+    (!defined(GPS_FIX_HDOP) & \
       !defined(GPS_FIX_VDOP) & \
-      !defined(GPS_FIX_PDOP) )
+      !defined(GPS_FIX_PDOP))
 #warning UBX DOP message is enabled, but all GPS_fix DOP members are disabled.
 #endif
 
@@ -68,7 +69,7 @@ gps_fix my_fix;
 //  Resetting the messages with ublox::configNMEA requires that
   //    all message types are recognized (i.e., the enum has all
   //    values).
-  #error You must "#define NMEAGPS_RECOGNIZE_ALL" in NMEAGPS_cfg.h!
+#error You must "#define NMEAGPS_RECOGNIZE_ALL" in NMEAGPS_cfg.h!
 #endif
 
 //-----------------------------------------------------------------
@@ -80,42 +81,41 @@ gps_fix my_fix;
 //         (i.e., "enabled" in the ublox device)
 //  Then, all configured messages are parsed and explicitly merged.
 
-class MyGPS : public ubloxGPS
-{
+class MyGPS : public ubloxGPS {
 public:
 
-    enum
-    {
+    enum {
         GETTING_STATUS,
         GETTING_LEAP_SECONDS,
+        GETTING_STATUS2,
+        GETTING_LEAP_SECONDS2,
         GETTING_UTC,
         RUNNING
     }
             state NEOGPS_BF(8);
 
-    MyGPS( Stream *device ) : ubloxGPS( device )
-    {
+    MyGPS(Stream *device) : ubloxGPS(device) {
         state = GETTING_STATUS;
     }
 
     //--------------------------
 
-    void get_status()
-    {
+    void get_status() {
         static bool acquiring = false;
 
         if (fix().status == gps_fix::STATUS_NONE) {
             static uint32_t dotPrint;
-            bool            requestNavStatus = false;
+            bool requestNavStatus = false;
 
             if (!acquiring) {
                 acquiring = true;
                 dotPrint = millis();
-                DEBUG_PORT.print( F("Acquiring...") );
+                DEBUG_PORT.print(F("Acquiring..."));
                 requestNavStatus = true;
 
             } else if (millis() - dotPrint > 1000UL) {
                 dotPrint = millis();
+                wdt_reset();
                 DEBUG_PORT << '.';
 
                 static uint8_t requestPeriod;
@@ -125,7 +125,7 @@ public:
 
             if (requestNavStatus)
                 // Turn on the UBX status message
-                enable_msg( ublox::UBX_NAV, ublox::UBX_NAV_STATUS );
+                enable_msg(ublox::UBX_NAV, ublox::UBX_NAV_STATUS);
 
         } else {
             if (acquiring)
@@ -135,10 +135,11 @@ public:
 #if defined(GPS_FIX_TIME) & defined(GPS_FIX_DATE) & \
             defined(UBLOX_PARSE_TIMEGPS)
 
-            if (!enable_msg( ublox::UBX_NAV, ublox::UBX_NAV_TIMEGPS ))
-                DEBUG_PORT.println( F("enable TIMEGPS failed!") );
+            if (!enable_msg(ublox::UBX_NAV, ublox::UBX_NAV_TIMEGPS))
+                DEBUG_PORT.println(F("enable TIMEGPS failed!"));
 
-            state = GETTING_LEAP_SECONDS;
+            /*if(state == GETTING_STATUS)*/ state = GETTING_LEAP_SECONDS;
+//            else state = GETTING_LEAP_SECONDS2;
 #else
             start_running();
           state = RUNNING;
@@ -148,21 +149,25 @@ public:
 
     //--------------------------
 
-    void get_leap_seconds()
-    {
+    void get_leap_seconds() {
 #if defined(GPS_FIX_TIME) & defined(GPS_FIX_DATE) & \
           defined(UBLOX_PARSE_TIMEGPS)
 
         if (GPSTime::leap_seconds != 0) {
             DEBUG_PORT << F("Acquired leap seconds: ") << GPSTime::leap_seconds << '\n';
 
-            if (!disable_msg( ublox::UBX_NAV, ublox::UBX_NAV_TIMEGPS ))
-                DEBUG_PORT.println( F("disable TIMEGPS failed!") );
+            if (!disable_msg(ublox::UBX_NAV, ublox::UBX_NAV_TIMEGPS))
+                DEBUG_PORT.println(F("disable TIMEGPS failed!"));
+//            delay(10000);
 
 #if defined(UBLOX_PARSE_TIMEUTC)
-            if (!enable_msg( ublox::UBX_NAV, ublox::UBX_NAV_TIMEUTC ))
-                DEBUG_PORT.println( F("enable TIMEUTC failed!") );
+            if (!enable_msg(ublox::UBX_NAV, ublox::UBX_NAV_TIMEUTC))
+                DEBUG_PORT.println(F("enable TIMEUTC failed!"));
             state = GETTING_UTC;
+            wdt_reset();
+//            if(state == GETTING_LEAP_SECONDS) state = GETTING_STATUS2;
+//            /*else */state = GETTING_UTC;
+//            delay(1000);
 #else
             start_running();
 #endif
@@ -173,15 +178,14 @@ public:
 
     //--------------------------
 
-    void get_utc()
-    {
+    void get_utc() {
 #if defined(GPS_FIX_TIME) & defined(GPS_FIX_DATE) & \
           defined(UBLOX_PARSE_TIMEUTC)
 
         lock();
-        bool            safe = is_safe();
-        NeoGPS::clock_t sow  = GPSTime::start_of_week();
-        NeoGPS::time_t  utc  = fix().dateTime;
+        bool safe = is_safe();
+        NeoGPS::clock_t sow = GPSTime::start_of_week();
+        NeoGPS::time_t utc = fix().dateTime;
         unlock();
 
         if (safe && (sow != 0)) {
@@ -189,6 +193,7 @@ public:
             DEBUG_PORT << F("Acquired Start-of-Week: ") << sow << '\n';
 
             start_running();
+            wdt_reset();
         }
 #endif
 
@@ -196,24 +201,23 @@ public:
 
     //--------------------------
 
-    void start_running()
-    {
+    void start_running() {
         bool enabled_msg_with_time = false;
 
 #if (defined(GPS_FIX_LOCATION) | \
            defined(GPS_FIX_LOCATION_DMS) | \
            defined(GPS_FIX_ALTITUDE)) & \
           defined(UBLOX_PARSE_POSLLH)
-        if (!enable_msg( ublox::UBX_NAV, ublox::UBX_NAV_POSLLH ))
-            DEBUG_PORT.println( F("enable POSLLH failed!") );
+        if (!enable_msg(ublox::UBX_NAV, ublox::UBX_NAV_POSLLH))
+            DEBUG_PORT.println(F("enable POSLLH failed!"));
 
         enabled_msg_with_time = true;
 #endif
 
 #if (defined(GPS_FIX_SPEED) | defined(GPS_FIX_HEADING)) & \
           defined(UBLOX_PARSE_VELNED)
-        if (!enable_msg( ublox::UBX_NAV, ublox::UBX_NAV_VELNED ))
-            DEBUG_PORT.println( F("enable VELNED failed!") );
+        if (!enable_msg(ublox::UBX_NAV, ublox::UBX_NAV_VELNED))
+            DEBUG_PORT.println(F("enable VELNED failed!"));
 
         enabled_msg_with_time = true;
 #endif
@@ -239,8 +243,8 @@ public:
 
 #if defined(GPS_FIX_TIME) & defined(GPS_FIX_DATE)
         if (enabled_msg_with_time &&
-            !disable_msg( ublox::UBX_NAV, ublox::UBX_NAV_TIMEUTC ))
-            DEBUG_PORT.println( F("disable TIMEUTC failed!") );
+            !disable_msg(ublox::UBX_NAV, ublox::UBX_NAV_TIMEUTC))
+            DEBUG_PORT.println(F("disable TIMEUTC failed!"));
 
 #elif defined(GPS_FIX_TIME) | defined(GPS_FIX_DATE)
         // If both aren't defined, we can't convert TOW to UTC,
@@ -252,18 +256,29 @@ public:
 #endif
 
         state = RUNNING;
-        trace_header( DEBUG_PORT );
+        trace_header(DEBUG_PORT);
 
     } // start_running
 
     //--------------------------
 
-    bool running()
-    {
+    bool running() {
         switch (state) {
-            case GETTING_STATUS      : get_status      (); break;
-            case GETTING_LEAP_SECONDS: get_leap_seconds(); break;
-            case GETTING_UTC         : get_utc         (); break;
+            case GETTING_STATUS      :
+                get_status();
+                break;
+            case GETTING_LEAP_SECONDS:
+                get_leap_seconds();
+                break;
+            case GETTING_STATUS2      :
+                get_status();
+                break;
+            case GETTING_LEAP_SECONDS2:
+                get_leap_seconds();
+                break;
+            case GETTING_UTC         :
+                get_utc();
+                break;
         }
 
         return (state == RUNNING);
@@ -273,33 +288,32 @@ public:
 } NEOGPS_PACKED;
 
 // Construct the GPS object and hook it to the appropriate serial device
-static MyGPS gps( &gpsPort );
+static MyGPS gps(&gpsPort);
 
 #ifdef NMEAGPS_INTERRUPT_PROCESSING
-static void GPSisr( uint8_t c )
-  {
-    gps.handle( c );
-  }
+
+static void GPSisr(uint8_t c) {
+    gps.handle(c);
+}
+
 #endif
 
 //--------------------------
 
-static void configNMEA( uint8_t rate )
-{
-    for (uint8_t i=NMEAGPS::NMEA_FIRST_MSG; i<=NMEAGPS::NMEA_LAST_MSG; i++) {
-        ublox::configNMEA( gps, (NMEAGPS::nmea_msg_t) i, rate );
+static void configNMEA(uint8_t rate) {
+    for (uint8_t i = NMEAGPS::NMEA_FIRST_MSG; i <= NMEAGPS::NMEA_LAST_MSG; i++) {
+        ublox::configNMEA(gps, (NMEAGPS::nmea_msg_t) i, rate);
     }
 }
 
 //--------------------------
 
-static void disableUBX()
-{
-    gps.disable_msg( ublox::UBX_NAV, ublox::UBX_NAV_TIMEGPS );
-    gps.disable_msg( ublox::UBX_NAV, ublox::UBX_NAV_TIMEUTC );
-    gps.disable_msg( ublox::UBX_NAV, ublox::UBX_NAV_VELNED );
-    gps.disable_msg( ublox::UBX_NAV, ublox::UBX_NAV_POSLLH );
-    gps.disable_msg( ublox::UBX_NAV, ublox::UBX_NAV_DOP );
+static void disableUBX() {
+    gps.disable_msg(ublox::UBX_NAV, ublox::UBX_NAV_TIMEGPS);
+    gps.disable_msg(ublox::UBX_NAV, ublox::UBX_NAV_TIMEUTC);
+    gps.disable_msg(ublox::UBX_NAV, ublox::UBX_NAV_VELNED);
+    gps.disable_msg(ublox::UBX_NAV, ublox::UBX_NAV_POSLLH);
+    gps.disable_msg(ublox::UBX_NAV, ublox::UBX_NAV_DOP);
 }
 
 //--------------------------
@@ -315,7 +329,7 @@ void GPS_init() {
 
     // Start the UART for the GPS device
 #ifdef NMEAGPS_INTERRUPT_PROCESSING
-    gpsPort.attachInterrupt( GPSisr );
+    gpsPort.attachInterrupt(GPSisr);
 #endif
     gpsPort.begin(9600);
 

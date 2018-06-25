@@ -39,12 +39,13 @@
 #include "_Transmitting.h"
 #include "GPS.h"
 
-extern int armDistance;
+extern int distance;
 extern int humid;
 extern int32_t accelerometer[3];
 extern int32_t magnetometer[3];
 extern long int pressure;
 extern long int bar_alt;
+extern int bar_vel;
 extern int temperature;
 extern int o2;
 extern int o3;
@@ -54,16 +55,22 @@ extern int voltage;
 extern Servo servo_parachute;
 extern Servo servo_sample;
 
-#define WAITING_FOR_RELEASE 0
-#define OPENING_ARMS 1
-#define BREAKING 2
-#define FLYING 3
-#define LANDING 4
-#define LANDED 5
-#define SLEEPING 6
-#define TESTING 7
+#define INIT 0
+#define BOOTING 1
+#define WAITING_FOR_RELEASE 2
+#define OPENING_ARMS 3
+#define BREAKING 4
+#define FLYING 5
+#define LANDING 6
+#define LANDED 7
+#define SLEEPING 8
+#define TESTING 9
+#define PARACHUTING 10
 
-extern int flight_state;
+extern byte flight_state;
+
+void send_data();
+void send_init();
 
 void waitingForRelease();
 void openingArms();
@@ -73,6 +80,7 @@ void landing();
 void landed();
 void sleeping();
 void testing();
+void parachuting();
 
 void runState();
 

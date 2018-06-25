@@ -55,16 +55,20 @@
 //comment any line to disable subsystem
 
 #define DEBUG
-#define BAROMETER
-#define RADIO
-//#define HUMIDITY_SENSOR
-//#define RANGING_SENSOR
-//#define COMPASS
-//#define GSM
-#define GPS
-#define LIGHT_SENSOR
-#define UV_SENSOR
-#define SD
+
+#define BAROMETER 1
+#define RADIO 2
+//#define HUMIDITY_SENSOR 3
+//#define RANGING_SENSOR 4
+//#define COMPASS 5
+//#define GSM 6
+#define GPS 7
+#define LIGHT_SENSOR 8
+#define UV_SENSOR 9
+#define SD 10
+#define COMPASS2 11
+
+#define INIT_DONE 11
 
 /*
  ***********************************************************************************
@@ -87,6 +91,9 @@
 
 #define GSM_WAIT_FOR_POWER_UP 10000
 
+#define SERVO_PARACUTE_CLOSED 0
+#define SERVO_PARACUTE_OPEN 180
+
 /*
  ***********************************************************************************
  *  Port definitions
@@ -99,14 +106,23 @@
 //PWM output to Flight Controller
 
 
-#define FC_PWM_1 9
-#define FC_PWM_2 24
+//#define FC_PWM_1 9
+//#define FC_PWM_2 24
+//#define FC_PWM_3 23
+//#define FC_PWM_4 6
+//#define FC_PWM_5 44
+//#define FC_PWM_6 45
+//#define FC_PWM_7 46
+//#define FC_PWM_8 12
+
+#define FC_PWM_1 12
+#define FC_PWM_2 9
 #define FC_PWM_3 23
 #define FC_PWM_4 6
-#define FC_PWM_5 43
-#define FC_PWM_6 44
-#define FC_PWM_7 45
-#define FC_PWM_8 12
+#define FC_PWM_5 45
+#define FC_PWM_6 46
+#define FC_PWM_7 24
+#define FC_PWM_8 46
 
 //Top board
 

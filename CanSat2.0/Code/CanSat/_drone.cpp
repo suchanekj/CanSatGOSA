@@ -31,6 +31,7 @@
 */
 
 #include "_drone.h"
+#include <Arduino.h>
 
 Servo roll, pitch, yaw, trottle, aux1, aux2, aux3, aux4;
 
@@ -40,9 +41,18 @@ void drone_init() {
     yaw.attach(FC_PWM_3);
     trottle.attach(FC_PWM_4);
     aux1.attach(FC_PWM_5);
-    aux2.attach(FC_PWM_6);
+//    aux2.attach(FC_PWM_6);
     aux3.attach(FC_PWM_7);
-    aux4.attach(FC_PWM_8);
+//    aux4.attach(FC_PWM_8);
+    roll.writeMicroseconds(1500);
+    pitch.writeMicroseconds(1500);
+    yaw.writeMicroseconds(1500);
+    trottle.writeMicroseconds(1100);
+    aux1.writeMicroseconds(1800);
+//    aux2.writeMicroseconds(1850);
+    aux3.writeMicroseconds(1650);
+//    aux4.writeMicroseconds(1750);
+//    delay(1000000);
 }
 
 void set_speed(int forward, int side, int rotation, int up) {
