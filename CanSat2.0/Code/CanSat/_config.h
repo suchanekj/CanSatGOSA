@@ -33,14 +33,17 @@
 #ifndef CANSAT_CONFIG_H
 #define CANSAT_CONFIG_H
 
+#include "GPSport.h"
+
 /*
  ***********************************************************************************
  *  Landing spot
  */
 
+#define STARTING_ALT 500
 #define DESTINATION_LAT 499951500
 #define DESTINATION_LON 145513150
-#define DESTINATION_ALT 2500
+#define DESTINATION_ALT 500
 
 #define EARTH_RADIUS_M 6371009
 #define RAD_PER_DEGREE (PI / 180.0)
@@ -52,26 +55,26 @@
 //comment any line to disable subsystem
 
 #define DEBUG
-//#define BAROMETER
-//#define RADIO
-//#define HUMIDITY_SENSOR
-//#define RANGING_SENSOR
-//#define COMPASS
-//#define GSM
-#define GPS
-#define LIGHT_SENSOR
-#define UV_SENSOR
-#define SD
+
+#define BAROMETER 1
+#define RADIO 2
+#define HUMIDITY_SENSOR 3
+#define RANGING_SENSOR 4
+//#define COMPASS 5
+//#define GSM 6
+#define GPS 7
+#define LIGHT_SENSOR 8
+#define UV_SENSOR 9
+#define SD 10
+#define COMPASS2 11
+#define SPECTROSCOP 12
+
+#define INIT_DONE 13
 
 /*
  ***********************************************************************************
  *  Parameter definitions
  */
-
-//Transmitting
-
-#define USE_RADIO 1
-#define USE_EMAIL 0
 
 //Radio Parameters
 
@@ -84,6 +87,20 @@
 
 #define GSM_WAIT_FOR_POWER_UP 10000
 
+#define SERVO_PARACUTE_CLOSED (int)180
+#define SERVO_PARACUTE_OPEN (int)0
+
+#define EEPROM_STATE 0
+#define EEPROM_MODULES_0 5
+#define EEPROM_MODULES_1 9
+#define EEPROM_GPS 14
+#define EEPROM_CURRENT_MODULE 19
+
+#define STATES_N 12
+
+#define COMPASS_OFFSET_X 0
+#define COMPASS_OFFSET_Y 0
+
 /*
  ***********************************************************************************
  *  Port definitions
@@ -91,19 +108,28 @@
 
 //debugging
 
-#define DEBUG_SERIAL Serial
+#define DEBUG_SERIAL NeoSerial
 
 //PWM output to Flight Controller
 
 
-#define FC_PWM_1 9
-#define FC_PWM_2 24
+//#define FC_PWM_1 9
+//#define FC_PWM_2 24
+//#define FC_PWM_3 23
+//#define FC_PWM_4 6
+//#define FC_PWM_5 44
+//#define FC_PWM_6 45
+//#define FC_PWM_7 46
+//#define FC_PWM_8 12
+
+#define FC_PWM_1 12
+#define FC_PWM_2 9
 #define FC_PWM_3 23
 #define FC_PWM_4 6
-#define FC_PWM_5 43
-#define FC_PWM_6 44
-#define FC_PWM_7 45
-#define FC_PWM_8 12
+#define FC_PWM_5 45
+#define FC_PWM_6 46
+#define FC_PWM_7 24
+#define FC_PWM_8 46
 
 //Top board
 
@@ -111,15 +137,12 @@ const int LED[4] = {38, 85, 84, 83};
 
 //GSM module
 
-#define GSM_SERIAL Serial2
+#define GSM_SERIAL NeoSerial2
 #define GSM_SLEEP 25
 #define GSM_POWER_KEY 28
 
 //GPS module
 
-#define GPS_SERIAL Serial1
-#define gpsPort Serial1
-#define GPS_PORT_NAME "Serial1"
 
 //Servo
 

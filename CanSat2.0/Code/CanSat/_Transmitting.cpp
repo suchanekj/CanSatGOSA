@@ -31,51 +31,43 @@
 */
 
 #include "_Transmitting.h"
+#include "_states.h"
+#include "_config.h"
 
 RFM69 radio;
-bool radio_enabled, sms_enabled, email_enabled;
 
-void transmitting_init(bool use_radio, bool use_sms, bool use_email) {
-    radio_enabled = use_radio;
-    sms_enabled = use_sms;
-    email_enabled = use_email;
-#ifdef RADIO
-    //Initialize radio
-    radio.setCS(RFM_SS);
-    radio.initialize(FREQUENCY,NODEID,NETWORKID);
-    radio.setHighPower(); //To use the high power capabilities of the RFM69HW
-    radio.encrypt(ENCRYPTKEY);
-    radio.setFrequency(434200000);
-#ifdef DEBUG
-    DEBUG_SERIAL.print("Transmitting at ");
-    int f = radio.getFrequency();
-    DEBUG_SERIAL.println(f);
-#endif
-#endif
+void transmitting_init() {
 }
 
 void transmitting_send(char message[], int len) {
 #ifdef DEBUG
     DEBUG_SERIAL.println(message);
 #endif
-    radio.send(GATEWAYID, message, len);
+#ifdef RADIO
+    if(radio_on)
+        radio.send(GATEWAYID, message, len);
+#endif
 }
 
-void transmitting_send(long int data[], int size) {
+void transmitting_send(long int data[], int size, int messageId) {
     const int len = 60;
     char message[len];
     int end = 0;
-    for(int i = 0; i < size; i++) {
-        if(end > 0) {
+    for (int i = 0; i < size; i++) {
+        if (end == 0) {
+            sprintf(message, "[%u]", messageId);
+        }
+        if (end > 0) {
             sprintf(message + end, ";");
             end++;
         }
         sprintf(message + end, "%ld", data[i]);
-        while(end < len && message[end]) end++;
-        if(end >= len - 12) {
-          message[end - 1] = '&';
-          transmitting_send(message, end);
-          end = 0;
+        while (end < len && message[end]) end++;
+        if (end >= len - 19) {
+            end++;
+            message[end - 1] = '&';
+            transmitting_send(message, end);
+            end = 0;
         }
     }
     transmitting_send(message, end);

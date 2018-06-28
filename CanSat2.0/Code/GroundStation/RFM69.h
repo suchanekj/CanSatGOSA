@@ -72,7 +72,7 @@
 #define RF69_FSTEP  61.03515625 // == FXOSC / 2^19 = 32MHz / 2^19 (p13 in datasheet)
 
 //qbcan specific flags
-#define FREQUENCY   RF69_433MHZ
+#define FREQUENCY   RF69_868MHZ
 #define IS_RFM69HW
 
 class RFM69 {

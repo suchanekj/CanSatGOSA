@@ -38,7 +38,7 @@
 #include "ubxGPS.h"
 #include "GPSport.h"
 #include "Streamers.h"
-#include "config.h"
+#include "_config.h"
 
 extern gps_fix my_fix;
 

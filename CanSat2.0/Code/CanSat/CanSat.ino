@@ -1,7 +1,7 @@
 /*
   CanSat GOSA
   Code for a tiny probe to investigate existance of life
-  Copyright (C) 2018  Jakub SuchĂˇnek, suchanek989@seznam.cz
+  Copyright (C) 2018  Jakub Suchánek, suchanek989@seznam.cz
   http://github.com/suchanekj/CanSatGOSA
 
   License
@@ -31,9 +31,12 @@
 */
 
 #include <USBAPI.h>
+#include <Wire.h>
+#include <EEPROM.h>
+#include <avr/wdt.h>
 #include "_CanSat.h"
 
-#if defined(BAROMETER) || defined(RANGING_SENSOR) || defined(COMPASS) || defined(HUMIDITYSENSOR)
+#if defined(BAROMETER) || defined(RANGING_SENSOR) || defined(COMPASS) || defined(HUMIDITYSENSOR) || defined(COMPASS2) || defined(LIGHT_SENSOR)
 TwoWire *i2c;
 #endif
 
@@ -43,7 +46,7 @@ long int alt_mod;
 #endif
 
 #ifdef HUMIDITY_SENSOR
-HIH7130 humidity;
+Adafruit_Si7021 hum = Adafruit_Si7021();
 #endif
 
 #ifdef RANGING_SENSOR
@@ -55,9 +58,129 @@ LSM303AGR_ACC_Sensor *Acc;
 LSM303AGR_MAG_Sensor *Mag;
 #endif
 
+#ifdef COMPASS2
+Adafruit_HMC5883_Unified mag = Adafruit_HMC5883_Unified(12345);
+#endif
+
+#ifdef LIGHT_SENSOR
+Adafruit_TSL2591 tsl = Adafruit_TSL2591(2591);
+#endif
+
+#ifdef UV_SENSOR
+Adafruit_VEML6070 uv = Adafruit_VEML6070();
+#endif
+
+#ifdef SPECTROSCOP
+AS726X spectroscop;
+#endif
+
+void changeInitState(int new_state) {
+    EEPROM.put(EEPROM_CURRENT_MODULE, new_state);
+    init_state = new_state;
+}
+
+int old_bar_time;
+int old_bar_alt;
+
+ISR(WDT_vect) {
+}
+
 void setup() {
 
+    flight_state = EEPROM.read(EEPROM_STATE);
+    if(STATES_N <= flight_state) flight_state = INIT;
+    EEPROM.put(EEPROM_STATE, (byte) INIT);
+    init_state = 0;
+    if(flight_state != BOOTING) changeState(INIT);
+
+    if (flight_state == INIT) {
+        EEPROM.put(EEPROM_MODULES_0, (byte) 0);
+        EEPROM.put(EEPROM_MODULES_1, (byte) 0);
+        EEPROM.put(EEPROM_GPS, (byte) 0);
+        EEPROM.put(EEPROM_CURRENT_MODULE, (byte) 0);
+        barometer_on = 1;
+        radio_on = 1;
+        humidity_sensor_on = 1;
+        ranging_sensor_on = 1;
+        compass_on = 1;
+        gsm_on = 1;
+        gps_on = 1;
+        light_sensor_on = 1;
+        uv_sensor_on = 1;
+        sd_on = 1;
+        compass2_on = 1;
+    } else {
+        if(flight_state == INIT || flight_state == BOOTING) {
+            byte old_init_state = EEPROM.read(EEPROM_CURRENT_MODULE);
+            if (old_init_state != INIT_DONE && old_init_state != 0) {
+                uint16_t working_modules = (EEPROM.read(EEPROM_MODULES_0) << 8) + EEPROM.read(EEPROM_MODULES_1);
+#ifdef GPS
+                if(old_init_state == GPS) {
+                    byte GPS_counter = EEPROM.read(EEPROM_GPS);
+                    if(GPS_counter < 5) EEPROM.put(EEPROM_GPS, GPS_counter + 1);
+                    else {
+                        working_modules |= 1 << GPS;
+                    }
+                }
+                else working_modules |= 1 << old_init_state;
+#endif
+#ifndef GPS
+                working_modules |= 1 << old_init_state;
+#endif
+                EEPROM.put(EEPROM_MODULES_0, (byte)(working_modules >> 8));
+                EEPROM.put(EEPROM_MODULES_1, (byte)working_modules);
+            }
+        }
+        uint16_t working_modules = (EEPROM.read(EEPROM_MODULES_0) << 8) + EEPROM.read(EEPROM_MODULES_1);
+#ifdef DEBUG
+        DEBUG_SERIAL.begin(9600);
+        while (!DEBUG_SERIAL);
+        DEBUG_SERIAL.print("broken modules are ");
+        DEBUG_SERIAL.println(flight_state, BIN);
+#endif
+#ifdef BAROMETER
+        barometer_on = 1 - (working_modules >> BAROMETER) & 1;
+#endif
+#ifdef RADIO
+        radio_on = 1 - (working_modules >> RADIO) & 1;
+#endif
+#ifdef HUMIDITY_SENSOR
+        humidity_sensor_on = 1 - (working_modules >> HUMIDITY_SENSOR) & 1;
+#endif
+#ifdef RANGING_SENSOR
+        ranging_sensor_on = 1 - (working_modules >> RANGING_SENSOR) & 1;
+#endif
+#ifdef COMPASS
+        compass_on = 1 - (working_modules >> COMPASS) & 1;
+#endif
+#ifdef GSM
+        gsm_on = 1 - (working_modules >> GSM) & 1;
+#endif
+#ifdef GPS
+        gps_on = 1 - (working_modules >> GPS) & 1;
+#endif
+#ifdef LIGHT_SENSOR
+        light_sensor_on = 1 - (working_modules >> LIGHT_SENSOR) & 1;
+#endif
+#ifdef UV_SENSOR
+        uv_sensor_on = 1 - (working_modules >> UV_SENSOR) & 1;
+#endif
+#ifdef SD
+        sd_on = 1 - (working_modules >> SD) & 1;
+#endif
+#ifdef COMPASS2
+        compass2_on = 1 - (working_modules >> COMPASS2) & 1;
+#endif
+        if (flight_state == OPENING_ARMS || flight_state == BREAKING || flight_state == FLYING ||
+            flight_state == LANDING) {
+            changeState(PARACHUTING);
+        }
+    }
+
     //PWM output to Flight Controller
+
+    wdt_enable(WDTO_4S);
+    wdt_reset();
 
     pinMode(FC_PWM_1, OUTPUT);
     pinMode(FC_PWM_2, OUTPUT);
@@ -83,12 +206,16 @@ void setup() {
 
     //GPS module
 
- //   GPS_SERIAL.begin(9600);
+    //   GPS_SERIAL.begin(9600);
 
     //Servo
 
     pinMode(SERVO_PARACHUTE, OUTPUT);
     servo_parachute.attach(SERVO_PARACHUTE);
+
+    if (flight_state == PARACHUTING) servo_parachute.write(SERVO_PARACUTE_OPEN);
+    else
+        servo_parachute.write(SERVO_PARACUTE_CLOSED);
 
     pinMode(SERVO_SAMPLE, OUTPUT);
     servo_sample.attach(SERVO_SAMPLE);
@@ -108,7 +235,7 @@ void setup() {
 
     //Flight Controller power
 
-    digitalWrite(FC_POWER, HIGH);
+    digitalWrite(FC_POWER, LOW);
     pinMode(FC_POWER, OUTPUT);
 
     //Radio transmitter
@@ -126,209 +253,367 @@ void setup() {
 
 #ifdef DEBUG
     // Led blinking.
-    for (int i = 0; i < 20; i++) {
-        for (int j = 0; j < 4; j++) digitalWrite(LED[j], HIGH);
-        delay(250);
-        for (int j = 0; j < 4; j++) digitalWrite(LED[j], LOW);
-        delay(250);
+    if (flight_state == INIT) {
+        for (int i = 0; i < 20; i++) {
+            for (int j = 0; j < 4; j++) digitalWrite(LED[j], HIGH);
+            delay(250);
+            for (int j = 0; j < 4; j++) digitalWrite(LED[j], LOW);
+            delay(250);
+            wdt_reset();
+        }
     }
     DEBUG_SERIAL.begin(9600);
-    while(!DEBUG_SERIAL);
-    DEBUG_SERIAL.println("REBOOT");
+    while (!DEBUG_SERIAL);
+    DEBUG_SERIAL.print("REBOOT at ");
+    DEBUG_SERIAL.println(flight_state);
 #endif
 
+    if(flight_state == INIT)
+        changeState(BOOTING);
 
-
-#if defined(BAROMETER) || defined(RANGING_SENSOR) || defined(COMPASS) || defined(HUMIDITYSENSOR) || defined(COMPASS2) || defined(LIGHT_SENSOR) || defined()
+#if defined(BAROMETER) || defined(RANGING_SENSOR) || defined(COMPASS) || defined(HUMIDITY_SENSOR) || defined(COMPASS2) || defined(LIGHT_SENSOR)
 // Initialize I2C bus.
     i2c = new TwoWire();
     i2c->begin();
+    wdt_reset();
 #ifdef DEBUG
-    Serial.println("I2C initialized");
+    DEBUG_SERIAL.println("I2C initialized");
 #endif
 #endif
 
 #ifdef BAROMETER
-    // Initlialize components.
-    barometer.begin(); // Get sensor online
+    if (barometer_on) {
+        changeInitState(BAROMETER);
+        // Initlialize components.
+        barometer.begin(); // Get sensor online
 
-    barometer.setModeBarometer();
-    barometer.setOversampleRate(7); // Set Oversample to the recommended 128
-    barometer.enableEventFlags(); // Enable all three pressure and temp event flags 
+        barometer.setModeBarometer();
+        barometer.setOversampleRate(7); // Set Oversample to the recommended 128
+        barometer.enableEventFlags(); // Enable all three pressure and temp event flags
 
-    delay(1000);
-    barometer.readPressure();
-    delay(1000);
-    barometer.readPressure();
-    delay(1000);
-    barometer.readPressure();
+        wdt_reset();
 
-    bar_alt = (1013.25 - barometer.readPressure() / 100.0) * 900.0;
+        delay(300);
+        barometer.readPressure();
+        delay(300);
+        barometer.readPressure();
+        delay(300);
+        barometer.readPressure();
 
-    alt_mod = STARTING_ALT - bar_alt;
+        bar_alt = (1013.25 - barometer.readPressure() / 100.0) * 900.0;
 
-    Serial.println(bar_alt);
-    Serial.println(alt_mod);
+        alt_mod = STARTING_ALT - bar_alt;
+
+        bar_alt_0 = bar_alt;
+
+        old_bar_time = -10000;
+
+        wdt_reset();
+
+        DEBUG_SERIAL.println(bar_alt);
+        DEBUG_SERIAL.println(alt_mod);
 #ifdef DEBUG
-    Serial.println("barometer initialized");
+        DEBUG_SERIAL.println("barometer initialized");
 #endif
+    }
 #endif
 
 #ifdef HUMIDITY_SENSOR
-    // The address can be changed making the option of connecting multiple devices
-    humidity.getAddr_HIH7130(HIH7130_DEFAULT_ADDRESS);   // 0x27
-    humidity.begin();
-    delay(500);
+    if(humidity_sensor_on) {
+        changeInitState(HUMIDITY_SENSOR);
+        if (!hum.begin()) {
+#ifdef DEBUG
+            DEBUG_SERIAL.println("Did not find Si7021 sensor!");
+#endif
+            while (true);
+        }
+#ifdef DEBUG
+        DEBUG_SERIAL.println("humidity initialized");
+#endif
+    }
+
 #endif
 
 #ifdef RANGING_SENSOR
-    ranging_sensor.init();
-    ranging_sensor.setTimeout(300);
+    if (ranging_sensor_on) {
+        changeInitState(RANGING_SENSOR);
+        ranging_sensor.init();
+        ranging_sensor.setTimeout(300);
 
-    // Start continuous back-to-back mode (take readings as
-    // fast as possible).  To use continuous timed mode
-    // instead, provide a desired inter-measurement period in
-    // ms (e.g. sensor.startContinuous(100)).
-    ranging_sensor.startContinuous();
+        // Start continuous back-to-back mode (take readings as
+        // fast as possible).  To use continuous timed mode
+        // instead, provide a desired inter-measurement period in
+        // ms (e.g. sensor.startContinuous(100)).
+        ranging_sensor.startContinuous();
+        wdt_reset();
+#ifdef DEBUG
+        DEBUG_SERIAL.println("ranging initialized");
+#endif
+    }
 #endif
 
 #ifdef COMPASS
-    Acc = new LSM303AGR_ACC_Sensor(i2c);
+    if(compass_on) {
+        changeInitState(COMPASS);
+        Acc = new LSM303AGR_ACC_Sensor(i2c);
+        wdt_reset();
 #ifdef DEBUG
-    Serial.println("Accelerometer initialized");
+        DEBUG_SERIAL.println("Accelerometer initialized");
 #endif
-    Acc->Enable();
+        Acc->Enable();
 #ifdef DEBUG
-    Serial.println("Accelerometer enabled");
+        DEBUG_SERIAL.println("Accelerometer enabled");
 #endif
-    Mag = new LSM303AGR_MAG_Sensor(i2c);
+        Mag = new LSM303AGR_MAG_Sensor(i2c);
 #ifdef DEBUG
-    Serial.println("Magnetometer initialized");
+        DEBUG_SERIAL.println("Magnetometer initialized");
 #endif
-    Mag->Enable();
+        Mag->Enable();
 #ifdef DEBUG
-    Serial.println("Magnetometer enabled");
+        DEBUG_SERIAL.println("Magnetometer enabled");
 #endif
+    }
 #endif
 
 #ifdef GPS
-    GPS_init();
+    if (gps_on) {
+        changeInitState(GPS);
+        wdt_reset();
+        GPS_init();
+        wdt_reset();
 #ifdef DEBUG
-    Serial.println("GPS initialized");
-    delay(1000);
+        DEBUG_SERIAL.println("GPS initialized");
 #endif
+    }
 #endif
 
-    flight_state = LANDED;
+
+#ifdef RADIO
+    if (radio_on) {
+        changeInitState(RADIO);
+        //Initialize radio
+        radio.setCS(RFM_SS);
+        radio.initialize(FREQUENCY, NODEID, NETWORKID);
+        radio.setHighPower(); //To use the high power capabilities of the RFM69HW
+        radio.encrypt(ENCRYPTKEY);
+        radio.setFrequency(868000000);
+        radio.setPowerLevel(28);
+#ifdef DEBUG
+        DEBUG_SERIAL.print("Transmitting at ");
+        uint32_t f = radio.getFrequency();
+        DEBUG_SERIAL.println(f);
+#endif
+    }
+#endif
+
+#ifdef COMPASS2
+    if(compass2_on) {
+        if (!mag.begin()) {
+            /* There was a problem detecting the HMC5883 ... check your connections */
+#ifdef DEBUG
+            DEBUG_SERIAL.println("Ooops, no HMC5883 detected ... Check your wiring!");
+#endif
+            while (1);
+        }
+#ifdef DEBUG
+        DEBUG_SERIAL.println("compass2 initialized");
+#endif
+    }
+#endif
+
+#ifdef LIGHT_SENSOR
+    if(light_sensor_on) {
+        // You can change the gain on the fly, to adapt to brighter/dimmer light situations
+        //tsl.setGain(TSL2591_GAIN_LOW);    // 1x gain (bright light)
+        tsl.setGain(TSL2591_GAIN_MED);      // 25x gain
+        //tsl.setGain(TSL2591_GAIN_HIGH);   // 428x gain
+
+        // Changing the integration time gives you a longer time over which to sense light
+        // longer timelines are slower, but are good in very low light situtations!
+        //tsl.setTiming(TSL2591_INTEGRATIONTIME_100MS);  // shortest integration time (bright light)
+        // tsl.setTiming(TSL2591_INTEGRATIONTIME_200MS);
+        tsl.setTiming(TSL2591_INTEGRATIONTIME_300MS);
+        // tsl.setTiming(TSL2591_INTEGRATIONTIME_400MS);
+        // tsl.setTiming(TSL2591_INTEGRATIONTIME_500MS);
+        // tsl.setTiming(TSL2591_INTEGRATIONTIME_600MS);  // longest integration time (dim light)
+
+#ifdef DEBUG
+        /* Display the gain and integration time for reference sake */
+        DEBUG_SERIAL.println(F("------------------------------------"));
+        DEBUG_SERIAL.print(F("Gain:         "));
+        tsl2591Gain_t gain = tsl.getGain();
+        switch (gain) {
+            case TSL2591_GAIN_LOW:
+                DEBUG_SERIAL.println(F("1x (Low)"));
+                break;
+            case TSL2591_GAIN_MED:
+                DEBUG_SERIAL.println(F("25x (Medium)"));
+                break;
+            case TSL2591_GAIN_HIGH:
+                DEBUG_SERIAL.println(F("428x (High)"));
+                break;
+            case TSL2591_GAIN_MAX:
+                DEBUG_SERIAL.println(F("9876x (Max)"));
+                break;
+        }
+        DEBUG_SERIAL.print(F("Timing:       "));
+        DEBUG_SERIAL.print((tsl.getTiming() + 1) * 100, DEC);
+        DEBUG_SERIAL.println(F(" ms"));
+        DEBUG_SERIAL.println(F("------------------------------------"));
+        DEBUG_SERIAL.println(F(""));
+#endif
+    }
+#endif
+
+#ifdef UV_SENSOR
+    if(uv_sensor_on) {
+#ifdef DEBUG
+        DEBUG_SERIAL.println("VEML6070 Test");
+#endif
+        uv.begin(VEML6070_1_T);
+    }
+#endif
+
+#ifdef SPECTROSCOP
+    if(spectroscop_on){
+        spectroscop.begin();
+    }
+#endif
+
+//    flight_state = TESTING;
+    changeInitState(INIT_DONE);
+    wdt_reset();
     drone_init();
-    transmitting_init(0, 0, 0);
+    wdt_reset();
+    transmitting_init();
+    wdt_reset();
+    send_init();
+    wdt_reset();
     last_time_sent = 0;
     for (int j = 0; j < 4; j++) digitalWrite(LED[j], HIGH);
 }
 
 void loop() {
+    wdt_reset();
 #ifdef BAROMETER
-    
-    pressure = barometer.readPressure() * 100.0;
-    bar_alt = (101325 - pressure / 100.0) * 9.0 + alt_mod;
+    if(barometer_on) {
+        pressure = barometer.readPressure() * 100.0;
+        bar_alt = (101325 - pressure / 100.0) * 9.0 + alt_mod;
+        if(millis() - old_bar_time > 500) {
+            bar_vel = ((old_bar_alt - bar_alt) * 1000) / (millis() - old_bar_time);
+            old_bar_time = millis();
+            old_bar_alt = bar_alt;
+        }
 #ifdef DEBUGa
-    Serial.print("Alt(cm): ");
-    Serial.print(bar_alt);
+        DEBUG_SERIAL.print("Alt(cm): ");
+        DEBUG_SERIAL.print(bar_alt);
     
-    Serial.print("Pressure(Pa): ");
-    Serial.print(pressure);
+        DEBUG_SERIAL.print("Pressure(Pa): ");
+        DEBUG_SERIAL.print(pressure);
 #endif
 
-    temperature = barometer.readTemp() * 100;
+        temperature = barometer.readTemp() * 100;
 #ifdef DEBUGa
-    Serial.print(" Temp: ");
-    Serial.print(temperature);
-    Serial.println();
+        DEBUG_SERIAL.print(" Temp: ");
+        DEBUG_SERIAL.print(temperature);
+        DEBUG_SERIAL.println();
 #endif
+    }
 #endif
 
 #ifdef HUMIDITY_SENSOR
-    byte error;
-    int8_t address;
-
-    address = humidity.hih_i2cAddress;
-    // The i2c_scanner uses the return value of
-    // the Write.endTransmisstion to see if
-    // a device did acknowledge to the address.
-    Wire.beginTransmission(address);
-    error = Wire.endTransmission();
-    DEBUG_SERIAL.print(error);
-    if (error == 0)
-    {
-        humidity.readRegister(address);
-
-        Serial.println("Getting Readings from HIH7130");
-        Serial.println(" ");
-        // Read and print out the Relative Humidity, convert it to %RH
-        humid = humidity.Measure_Humidity();
-
-        // Read and print out the temperature, then convert to C and F scales
-        temperature = humidity.Measure_Temperature();
-
-        // Output data to screen
-        Serial.print("Relative Humidity Reading: ");
-        Serial.print(humid);
-        Serial.println(" %RH");
-        Serial.print("Temperature Reading in Celsius: ");
-        Serial.print(temperature);
-        Serial.println(" C");
-        Serial.println("        ***************************        ");
-        Serial.println(" ");
-    }
-    else
-    {
-        Serial.println("HIH7130 Disconnected!");
-        Serial.println(" ");
-        Serial.println("        ************        ");
-        Serial.println(" ");
+    if(humidity_sensor_on) {
+        hum.readHumidity();
     }
 #endif
 
 #ifdef RANGING_SENSOR
-    armDistance = ranging_sensor.readRangeContinuousMillimeters();
-    if (ranging_sensor.timeoutOccurred()) { Serial.print(" TIMEOUT"); }
-
-    Serial.println();
+    if(ranging_sensor_on) {
+        bottom_distance = ranging_sensor.readRangeContinuousMillimeters();
+#ifdef DEBUG
+        if (ranging_sensor.timeoutOccurred()) { DEBUG_SERIAL.println(" TIMEOUT"); }
+#endif
+    }
 #endif
 
 #ifdef COMPASS
-    // Read accelerometer LSM303AGR.
-    Acc->GetAxes(accelerometer);
+    if(compass_on) {
+        // Read accelerometer LSM303AGR.
+        Acc->GetAxes(accelerometer);
 
-    // Read magnetometer LSM303AGR.
-    Mag->GetAxes(magnetometer);
+        // Read magnetometer LSM303AGR.
+        Mag->GetAxes(magnetometer);
 
-    // Output data.
+        // Output data.
 #if 0
-    DEBUG_SERIAL.print("| Acc[mg]: ");
-    DEBUG_SERIAL.print(accelerometer[0]);
-    DEBUG_SERIAL.print(" ");
-    DEBUG_SERIAL.print(accelerometer[1]);
-    DEBUG_SERIAL.print(" ");
-    DEBUG_SERIAL.print(accelerometer[2]);
-    DEBUG_SERIAL.print(" | Mag[mGauss]: ");
-    DEBUG_SERIAL.print(magnetometer[0]);
-    DEBUG_SERIAL.print(" ");
-    DEBUG_SERIAL.print(magnetometer[1]);
-    DEBUG_SERIAL.print(" ");
-    DEBUG_SERIAL.print(magnetometer[2]);
-    DEBUG_SERIAL.println(" |");
+        DEBUG_SERIAL.print("| Acc[mg]: ");
+        DEBUG_SERIAL.print(accelerometer[0]);
+        DEBUG_SERIAL.print(" ");
+        DEBUG_SERIAL.print(accelerometer[1]);
+        DEBUG_SERIAL.print(" ");
+        DEBUG_SERIAL.print(accelerometer[2]);
+        DEBUG_SERIAL.print(" | Mag[mGauss]: ");
+        DEBUG_SERIAL.print(magnetometer[0]);
+        DEBUG_SERIAL.print(" ");
+        DEBUG_SERIAL.print(magnetometer[1]);
+        DEBUG_SERIAL.print(" ");
+        DEBUG_SERIAL.print(magnetometer[2]);
+        DEBUG_SERIAL.println(" |");
 #endif
+    }
 #endif
 
 #ifdef GPS
-    GPS_run();
+    if(gps_on)
+        GPS_run();
+#endif
+
+#ifdef COMPASS2
+    if(compass2_on) {
+        /* Get a new sensor event */
+        sensors_event_t event;
+        mag.getEvent(&event);
+#ifdef DEBUG
+        /* Display the results (magnetic vector values are in micro-Tesla (uT)) */
+        DEBUG_SERIAL.print("X: "); DEBUG_SERIAL.print(event.magnetic.x); DEBUG_SERIAL.print("  ");
+        DEBUG_SERIAL.print("Y: "); DEBUG_SERIAL.print(event.magnetic.y); DEBUG_SERIAL.print("  ");
+        DEBUG_SERIAL.print("Z: "); DEBUG_SERIAL.print(event.magnetic.z); DEBUG_SERIAL.print("  ");DEBUG_SERIAL.println("uT");
+#endif
+        magnetometer[0] = event.magnetic.x + COMPASS_OFFSET_X;
+        magnetometer[1] = event.magnetic.y + COMPASS_OFFSET_Y;
+        magnetometer[2] = event.magnetic.z;
+    }
+#endif
+
+#ifdef LIGHT_SENSOR
+    if(light_sensor_on && flight_state == LANDED) {
+
+    }
+#endif
+
+#ifdef UV_SENSOR
+    uv_light = uv.readUV();
+#endif
+
+#ifdef SPECTROSCOP
+    spectroscop.takeMeasurements();
+    spectroscopy[0] = spectroscop.getCalibratedR();
+    spectroscopy[1] = spectroscop.getCalibratedS();
+    spectroscopy[2] = spectroscop.getCalibratedT();
+    spectroscopy[3] = spectroscop.getCalibratedU();
+    spectroscopy[4] = spectroscop.getCalibratedV();
+    spectroscopy[5] = spectroscop.getCalibratedW();
 #endif
 
     o2 = analogRead(O2);
-    co2 = analogRead(CO2);
+    co2 = analogRead(CO2) * 5 / 8.5;
     o3 = analogRead(O3);
     voltage = 2 * 5 * analogRead(BATTERY_VOLTAGE);
+    if(my_fix.velocity_down > min(5000, 1000 + max(my_fix.altitude_cm() - DESTINATION_ALT, 0)) || bar_vel > min(5000, 1000 + max(bar_alt - DESTINATION_ALT, 0))) changeState(PARACHUTING);
+    DEBUG_SERIAL.println(min(5000, 1000 + max(my_fix.altitude_cm() - DESTINATION_ALT, 0)));
+    DEBUG_SERIAL.println(min(5000, 1000 + max(bar_alt - DESTINATION_ALT, 0)));
+    DEBUG_SERIAL.println(my_fix.velocity_down);
+    DEBUG_SERIAL.println(bar_vel);
     runState();
 }
 

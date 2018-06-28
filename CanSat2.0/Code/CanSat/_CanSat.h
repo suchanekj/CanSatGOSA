@@ -33,7 +33,6 @@
 #ifndef CANSAT_CANSAT_H
 #define CANSAT_CANSAT_H
 
-#include <Arduino.h>
 #include "_config.h"
 #ifdef RADIO
 #include "RFM69.h"
@@ -42,7 +41,7 @@
 #include "SparkFunMPL3115A2.h"
 #endif
 #ifdef HUMIDITY_SENSOR
-
+#include "Adafruit_Si7021.h"
 #endif
 #ifdef RANGING_SENSOR
 #include "VL53L0X.h"
@@ -60,9 +59,16 @@
 #ifdef GPS
 #include "GPS.h"
 #endif
-#ifdef LIGHT_V_IR
+#ifdef LIGHT_SENSOR
 #include "Adafruit_TSL2591.h"
 #endif
+#ifdef UV_SENSOR
+#include "Adafruit_VEML6070.h"
+#endif
+#ifdef SPECTROSCOP
+#include "AS726X.h"
+#endif
+
 #include "_Transmitting.h"
 #include "_drone.h"
 #include "_states.h"

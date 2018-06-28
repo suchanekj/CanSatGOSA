@@ -39,12 +39,14 @@
 #include "_Transmitting.h"
 #include "GPS.h"
 
-extern int armDistance;
+extern int bottom_distance;
 extern int humid;
 extern int32_t accelerometer[3];
 extern int32_t magnetometer[3];
 extern long int pressure;
 extern long int bar_alt;
+extern long int bar_alt_0;
+extern int bar_vel;
 extern int temperature;
 extern int o2;
 extern int o3;
@@ -53,17 +55,44 @@ extern unsigned long last_time_sent;
 extern int voltage;
 extern Servo servo_parachute;
 extern Servo servo_sample;
+extern int uv_light;
+extern int light_vis;
+extern int light_ir;
+extern int spectroscopy[6];
 
-#define WAITING_FOR_RELEASE 0
-#define OPENING_ARMS 1
-#define BREAKING 2
-#define FLYING 3
-#define LANDING 4
-#define LANDED 5
-#define SLEEPING 6
-#define TESTING 7
+extern byte barometer_on;
+extern byte radio_on;
+extern byte humidity_sensor_on;
+extern byte ranging_sensor_on;
+extern byte compass_on;
+extern byte gsm_on;
+extern byte gps_on;
+extern byte light_sensor_on;
+extern byte uv_sensor_on;
+extern byte sd_on;
+extern byte compass2_on;
+extern byte spectrometer_on;
+extern byte init_state;
 
-extern int flight_state;
+#define INIT 0
+#define BOOTING 1
+#define WAITING_FOR_RELEASE 2
+#define OPENING_ARMS 3
+#define BREAKING 4
+#define FLYING 5
+#define LANDING 6
+#define LANDED 7
+#define SLEEPING 8
+#define TESTING 9
+#define PARACHUTING 10
+#define LAUNCHING 11
+
+extern byte flight_state;
+
+void send_data();
+void send_init();
+
+void changeState(int new_state);
 
 void waitingForRelease();
 void openingArms();
@@ -73,6 +102,8 @@ void landing();
 void landed();
 void sleeping();
 void testing();
+void parachuting();
+void launching();
 
 void runState();
 

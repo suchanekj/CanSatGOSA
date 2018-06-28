@@ -59,10 +59,10 @@ void setup()
   radio.initialize(FREQUENCY, NODEID, NETWORKID);
   radio.setHighPower(); //Use the high power capabilities of the RFM69HW
   radio.encrypt(ENCRYPTKEY);
-  radio.setFrequency(434200000);
+  radio.setFrequency(868000000);
   radio.promiscuous(promiscuousMode);
-  Serial.println("Listening at 433 Mhz");
-  int f = radio.getFrequency();
+  Serial.println("Listening at 868 Mhz");
+  uint32_t f = radio.getFrequency();
   Serial.println(f);
 
 }
