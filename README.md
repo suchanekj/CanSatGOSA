@@ -46,3 +46,4 @@ Current contributors:
 * 1.2 Final report (LaTex article) created (**it is not completed**) 03/04/2018
 * 1.3 Final report (LaTex article) completed 12/04/2018
 * 2.0 New contributers, Analysis, CanSat 2.0 3D printed parts and PLR.pdf (Pre-launch report) added 18/06/2018
+* 2.1 Analysis part 2 completed, chamber software added 28/06/2018
