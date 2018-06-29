@@ -45,7 +45,7 @@ void drone_init() {
     aux2.attach(FC_PWM_6);
     aux3.attach(FC_PWM_7);
     aux4.attach(FC_PWM_8);
-    wdt_disable();
+//    wdt_disable();
     roll.writeMicroseconds(1500);
     pitch.writeMicroseconds(1500);
     yaw.writeMicroseconds(1500);
@@ -54,8 +54,6 @@ void drone_init() {
 //    aux2.writeMicroseconds(1600);
     aux3.writeMicroseconds(1500);
 //    aux4.writeMicroseconds(1800);
-    delay(10000);
-    aux1.writeMicroseconds(1700);
 }
 
 void set_speed(int forward, int side, int rotation, int up) {

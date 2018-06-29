@@ -34,6 +34,9 @@
 #include "_states.h"
 #include "_config.h"
 
+//#include <SD.h>
+//#include <SPI.h>
+
 RFM69 radio;
 
 void transmitting_init() {
@@ -47,15 +50,29 @@ void transmitting_send(char message[], int len) {
     if(radio_on)
         radio.send(GATEWAYID, message, len);
 #endif
+#ifdef SD_CARD
+    if(sd_on) {
+        File dataFile = SD.open("datalog.txt", FILE_WRITE);
+
+        // if the file is available, write to it:
+        if (dataFile) {
+            dataFile.println(message);
+            dataFile.close();
+        }
+    }
+#endif
 }
 
 void transmitting_send(long int data[], int size, int messageId) {
     const int len = 60;
     char message[len];
     int end = 0;
+    sprintf(message, "[%u]", messageId);
+    while (end < len && message[end]) end++;
     for (int i = 0; i < size; i++) {
-        if (end == 0) {
+        if(end == 0) {
             sprintf(message, "[%u]", messageId);
+            while (end < len && message[end]) end++;
         }
         if (end > 0) {
             sprintf(message + end, ";");
@@ -63,9 +80,10 @@ void transmitting_send(long int data[], int size, int messageId) {
         }
         sprintf(message + end, "%ld", data[i]);
         while (end < len && message[end]) end++;
-        if (end >= len - 19) {
-            end++;
-            message[end - 1] = '&';
+        if (end >= len - 13) {
+            end+=2;
+            message[end - 2] = '&';
+            message[end - 1] = 0;
             transmitting_send(message, end);
             end = 0;
         }

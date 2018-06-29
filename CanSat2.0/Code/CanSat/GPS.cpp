@@ -115,7 +115,7 @@ public:
 
             } else if (millis() - dotPrint > 1000UL) {
                 dotPrint = millis();
-                wdt_reset();
+//                wdt_reset();
                 DEBUG_PORT << '.';
 
                 static uint8_t requestPeriod;

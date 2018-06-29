@@ -34,6 +34,7 @@
 #define CANSAT_CONFIG_H
 
 #include "GPSport.h"
+//#include <Arduino.h>
 
 /*
  ***********************************************************************************
@@ -59,17 +60,18 @@
 #define BAROMETER 1
 #define RADIO 2
 #define HUMIDITY_SENSOR 3
-#define RANGING_SENSOR 4
+//#define RANGING_SENSOR 4
 //#define COMPASS 5
 //#define GSM 6
-#define GPS 7
+//#define GPS 7
 #define LIGHT_SENSOR 8
 #define UV_SENSOR 9
-#define SD 10
-#define COMPASS2 11
-#define SPECTROSCOP 12
+//#define SD_CARD 10
+//#define COMPASS2 11
+//#define SPECTROSCOP 12
+#define I2C 13
 
-#define INIT_DONE 13
+#define INIT_DONE 14
 
 /*
  ***********************************************************************************
@@ -98,8 +100,10 @@
 
 #define STATES_N 12
 
-#define COMPASS_OFFSET_X 0
-#define COMPASS_OFFSET_Y 0
+#define COMPASS_OFFSET_X 10.5
+#define COMPASS_OFFSET_Y 32.5
+
+#define HEADING_OFFSET 0
 
 /*
  ***********************************************************************************
@@ -137,7 +141,7 @@ const int LED[4] = {38, 85, 84, 83};
 
 //GSM module
 
-#define GSM_SERIAL NeoSerial2
+#define GSM_SERIAL NeoSeial2
 #define GSM_SLEEP 25
 #define GSM_POWER_KEY 28
 
@@ -170,7 +174,7 @@ const int LED[4] = {38, 85, 84, 83};
 
 //SD card
 
-#define SD_SS
+#define SD_SS 57
 
 //Read battery voltage
 

@@ -53,12 +53,9 @@
 #ifdef COMPASS2
 #include "Adafruit_HMC5883_U.h"
 #endif
-#ifdef GSM
-#include "SIM808.h"
-#endif
-#ifdef GPS
+
 #include "GPS.h"
-#endif
+
 #ifdef LIGHT_SENSOR
 #include "Adafruit_TSL2591.h"
 #endif

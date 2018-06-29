@@ -37,7 +37,6 @@
 #include "_config.h"
 #include "_drone.h"
 #include "_Transmitting.h"
-#include "GPS.h"
 
 extern int bottom_distance;
 extern int humid;
@@ -59,6 +58,7 @@ extern int uv_light;
 extern int light_vis;
 extern int light_ir;
 extern int spectroscopy[6];
+extern float heading;
 
 extern byte barometer_on;
 extern byte radio_on;
@@ -71,7 +71,9 @@ extern byte light_sensor_on;
 extern byte uv_sensor_on;
 extern byte sd_on;
 extern byte compass2_on;
-extern byte spectrometer_on;
+extern byte spectroscop_on;
+extern byte SD_on;
+extern byte i2c_on;
 extern byte init_state;
 
 #define INIT 0

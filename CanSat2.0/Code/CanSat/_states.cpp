@@ -33,6 +33,7 @@
 #include "_states.h"
 #include "math.h"
 #include "USBAPI.h"
+#include "GPS.h"
 #include <EEPROM.h>
 
 float old_speed_ahead;
@@ -54,11 +55,12 @@ Servo servo_sample;
 int o2;
 int o3;
 int co2;
-int bar_vel;
+int bar_vel = 0;
 int uv_light;
 int light_vis;
 int light_ir;
 int spectroscopy[6];
+float heading;
 
 byte barometer_on;
 byte radio_on;
@@ -71,7 +73,9 @@ byte light_sensor_on;
 byte uv_sensor_on;
 byte sd_on;
 byte compass2_on;
-byte spectrometer_on;
+byte spectroscop_on;
+byte SD_on;
+byte i2c_on;
 byte init_state;
 
 int sending_counter;
@@ -89,14 +93,13 @@ void send_init() {
 }
 
 void send_data() {
-    long int data[31] = {flight_state, voltage, temperature, pressure, bar_alt, humid,
-                  bottom_distance, co2, o2, o3, uv_light, light_vis, light_ir,
+    long int data[23] = {flight_state, voltage, temperature, pressure, bar_alt, humid,
+                  co2, o2, uv_light, light_vis, light_ir,
                   magnetometer[0], magnetometer[1], magnetometer[2],
-                  spectroscopy[0], spectroscopy[1], spectroscopy[2], spectroscopy[3], spectroscopy[4], spectroscopy[5],
                   my_fix.dateTime.hours, my_fix.dateTime.minutes, my_fix.dateTime.seconds,
                   my_fix.latitudeL(), my_fix.longitudeL(), my_fix.altitude_cm(),
                   my_fix.velocity_north, my_fix.velocity_east, my_fix.velocity_down};
-    transmitting_send(data, 31, sending_counter++);
+    transmitting_send(data, 23, sending_counter++);
 }
 
 void changeState(int new_state) {
@@ -108,50 +111,52 @@ void runState() {
     switch(flight_state) {
         case INIT:
             changeState(WAITING_FOR_RELEASE);
+        case BOOTING:
+            changeState(WAITING_FOR_RELEASE);
         case WAITING_FOR_RELEASE:
             waitingForRelease();
-            break;
+            return;
         case OPENING_ARMS:
             openingArms();
-            break;
+            return;
         case BREAKING:
             breaking();
-            break;
+            return;
         case FLYING:
             flying();
-            break;
+            return;
         case LANDING:
             landing();
-            break;
+            return;
         case LANDED:
             landed();
-            break;
+            return;
         case SLEEPING:
             sleeping();
-            break;
+            return;
         case TESTING:
             testing();
-            break;
+            return;
         case PARACHUTING:
             parachuting();
-            break;
+            return;
     }
 
 }
 
 void waitingForRelease() {
     if(millis() - last_time_sent > 500) {
-        send_data();
         last_time_sent = millis();
+        send_data();
     }
-    if(my_fix.velocity_down > 500 || bar_vel > 500) changeState(OPENING_ARMS);
+    if(bar_vel > 500) changeState(OPENING_ARMS);
 }
 
 void openingArms() {
     set_speed(0, 0, 1000, -500);
     if(millis() - last_time_sent > 500) {
-        send_data();
         last_time_sent = millis();
+        send_data();
     }
     changeState(BREAKING);
 }
@@ -159,68 +164,70 @@ void openingArms() {
 void breaking() {
     set_speed(0, 0, 0, 1000);
     if(millis() - last_time_sent > 500) {
-        send_data();
         last_time_sent = millis();
+        send_data();
     }
-    if(my_fix.velocity_down <= 0 || bar_vel <= 0) changeState(FLYING);
+    if(bar_vel <= 500) changeState(FLYING);
 }
 
 void flying() {
-    float X = (DESTINATION_LON - my_fix.longitude()) * EARTH_RADIUS_M * RAD_PER_DEGREE * cos(my_fix.latitude());
-    float Y = (DESTINATION_LAT - my_fix.latitude()) * EARTH_RADIUS_M * RAD_PER_DEGREE;
-    float H = DESTINATION_ALT - my_fix.altitude_cm();
-    float X2 = X * X;
-    float Y2 = Y * Y;
-    float Distance = sqrt(X2 + Y2);
-    float speed_ahead = min(Distance / (-H + 0.1) * 100, 100);
-    float speed_up = -100;
 
-    old_speed_ahead += speed_ahead - sqrt(my_fix.velocity_east * my_fix.velocity_east + my_fix.velocity_north * my_fix.velocity_north);
-    old_speed_up += speed_up + my_fix.velocity_down;
+    float speed_up = -120;
+
+    old_speed_up += speed_up + bar_vel;
 
     old_speed_up = min(old_speed_up, 1000);
     old_speed_up = max(old_speed_up, 0);
 
-    old_speed_ahead = min(old_speed_ahead, 400);
-    old_speed_ahead = max(old_speed_ahead, -400);
-
-    float rotation = (atan2(X, Y) - atan2(magnetometer[0], magnetometer[1]) /* my_fix.heading()*/ * RAD_PER_DEGREE) * 200;
-
-    DEBUG_SERIAL.print("Setting speed ");
-    DEBUG_SERIAL.print(old_speed_ahead);
-    DEBUG_SERIAL.print(" 0 ");
-    DEBUG_SERIAL.print(rotation);
-    DEBUG_SERIAL.print(" ");
-    DEBUG_SERIAL.println(old_speed_up);
-    set_speed(old_speed_ahead, 0, rotation, old_speed_up);
-    DEBUG_SERIAL.print("Speed set");
+    set_speed(0, 0, 0, old_speed_up);
     if(millis() - last_time_sent > 500) {
-        send_data();
         last_time_sent = millis();
+        send_data();
+    }
+    if(bar_alt - DESTINATION_ALT < 10000) {
+        changeState(LANDING);
     }
 }
 
+int n = 0;
+
 void landing() {
+    float speed_up = -(bar_alt - DESTINATION_ALT + 2000) / 120;
+
+    old_speed_up += speed_up + bar_vel;
+
+    old_speed_up = min(old_speed_up, 1000);
+    old_speed_up = max(old_speed_up, 0);
+
+    set_speed(0, 0, 0, old_speed_up);
 
     if(millis() - last_time_sent > 500) {
-        send_data();
         last_time_sent = millis();
+        send_data();
+    }
+    if(bar_alt - DESTINATION_ALT < 2000) {
+        n++;
+        if(n > 20) changeState(LANDING);
     }
 }
 
 void landed() {
-
+    set_speed(0, 0, 0, 0);
+    servo_sample.write(180);
+    delay(500);
+    servo_sample.write(0);
+    delay(500);
     if(millis() - last_time_sent > 500) {
-        send_data();
         last_time_sent = millis();
+        send_data();
     }
 }
 
 void sleeping() {
     delay(60000);
     if(millis() - last_time_sent > 500) {
-        send_data();
         last_time_sent = millis();
+        send_data();
     }
 }
 
@@ -234,16 +241,19 @@ void testing() {
     DEBUG_SERIAL.println(old_speed_up);
 //    set_speed(0, 0, 0, old_speed_up);
     if(millis() - last_time_sent > 500) {
-        send_data();
         last_time_sent = millis();
+        send_data();
     }
 }
 
+bool was_high = 0;
+
 void parachuting() {
+    if(bar_alt > 10000) was_high = 1;
     servo_parachute.write(SERVO_PARACUTE_OPEN);
     if(millis() - last_time_sent > 500) {
-        send_data();
         last_time_sent = millis();
+        send_data();
     }
-    if(bottom_distance < 20) changeState(LANDED);
+    if(bar_alt < 1000 && was_high) changeState(LANDED);
 }
