@@ -38,7 +38,7 @@
 #include "RFM69.h"
 #endif
 #ifdef BAROMETER
-#include "SparkFunMPL3115A2.h"
+#include "BMP180.h"
 #endif
 #ifdef HUMIDITY_SENSOR
 #include "Adafruit_Si7021.h"
@@ -54,7 +54,7 @@
 #include "Adafruit_HMC5883_U.h"
 #endif
 
-#include "GPS.h"
+//#include "GPS.h"
 
 #ifdef LIGHT_SENSOR
 #include "Adafruit_TSL2591.h"

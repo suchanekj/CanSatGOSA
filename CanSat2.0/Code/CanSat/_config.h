@@ -33,8 +33,8 @@
 #ifndef CANSAT_CONFIG_H
 #define CANSAT_CONFIG_H
 
-#include "GPSport.h"
-//#include <Arduino.h>
+//#include "GPSport.h"
+#include <Arduino.h>
 
 /*
  ***********************************************************************************
@@ -66,7 +66,7 @@
 //#define GPS 7
 #define LIGHT_SENSOR 8
 #define UV_SENSOR 9
-//#define SD_CARD 10
+#define SD_CARD 10
 //#define COMPASS2 11
 //#define SPECTROSCOP 12
 #define I2C 13
@@ -112,7 +112,7 @@
 
 //debugging
 
-#define DEBUG_SERIAL NeoSerial
+#define DEBUG_SERIAL Serial
 
 //PWM output to Flight Controller
 
@@ -141,7 +141,7 @@ const int LED[4] = {38, 85, 84, 83};
 
 //GSM module
 
-#define GSM_SERIAL NeoSeial2
+//#define GSM_SERIAL NeoSeial2
 #define GSM_SLEEP 25
 #define GSM_POWER_KEY 28
 

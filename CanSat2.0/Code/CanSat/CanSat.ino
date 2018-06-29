@@ -34,7 +34,7 @@
 #include <Wire.h>
 #include <EEPROM.h>
 #include <avr/wdt.h>
-//#include <SD.h>
+#include <SD.h>
 #include <SPI.h>
 #include "_CanSat.h"
 
@@ -43,7 +43,7 @@ TwoWire *i2c;
 #endif
 
 #ifdef BAROMETER
-MPL3115A2 barometer;
+BMP180 bmp;
 long int alt_mod;
 #endif
 
@@ -296,48 +296,39 @@ void setup() {
 
 #ifdef BAROMETER
     if (barometer_on && i2c_on) {
-        changeInitState(BAROMETER);
-        // Initlialize components.
-        barometer.begin(); // Get sensor online
-
-        barometer.setModeBarometer();
-        barometer.setOversampleRate(7); // Set Oversample to the recommended 128
-        barometer.enableEventFlags(); // Enable all three pressure and temp event flags
-
+        if (bmp.begin())
+            DEBUG_SERIAL.println("BMP180 init success");
+        else
+        {
+            //In case of error let user know of the problem
+            DEBUG_SERIAL.println("BMP180 init fail (disconnected?)\n\n");
+            while(1); // Pause forever.
+        }
         wdt_reset();
+
+
+        double T,P;
+
+        // Get a new pressure reading:
 
         if(flight_state == BOOTING || flight_state == INIT) {
             delay(1000);
-            barometer.readPressure();
+            bmp.getData(T,P);
             wdt_reset();
             delay(1000);
-            barometer.readPressure();
+            bmp.getData(T,P);
             delay(1000);
-            barometer.readPressure();
+            bmp.getData(T,P);
             wdt_reset();
-            delay(1000);
-            barometer.readPressure();
-            delay(1000);
-            barometer.readPressure();
-            wdt_reset();
-            delay(1000);
-            barometer.readPressure();
-            delay(1000);
-            barometer.readPressure();
-            wdt_reset();
-            delay(1000);
-            barometer.readPressure();
-            delay(1000);
-            barometer.readPressure();
-            wdt_reset();
-            delay(1000);
-            barometer.readPressure();
         }
-        else barometer.readPressure();
+        else
+            bmp.getData(T,P);
 
-        bar_alt = (1013.25 - barometer.readPressure() / 100.0) * 900.0;
+        while(P < 1000 || P > 1200) bmp.getData(T,P);
 
-        alt_mod = STARTING_ALT - bar_alt;
+        bar_alt = (long)(((double)1013.25 - P) * (double)900.0);
+
+        alt_mod = (long)STARTING_ALT - (long)bar_alt;
 
         bar_alt_0 = bar_alt;
 
@@ -568,8 +559,16 @@ void loop() {
 #ifdef BAROMETER
     if(barometer_on && i2c_on) {
         changeInitState(BAROMETER);
-        pressure = barometer.readPressure() * 100.0;
-        bar_alt = (101325 - pressure / 100.0) * 9.0 + alt_mod;
+        double T,P;
+
+        bmp.getData(T,P);
+
+
+
+        temperature = T * 100;
+        if(P >= 1000 || P <= 1200) pressure = P * (double)100;
+
+        bar_alt = (101325 - P * 100) * 9.0 + alt_mod;
         if(millis() - old_bar_time > 500) {
             bar_vel = (long)((old_bar_alt - bar_alt) * (long)1000) / (long)(millis() - old_bar_time);
             DEBUG_SERIAL.println((old_bar_alt - bar_alt) * 1000);
@@ -585,8 +584,6 @@ void loop() {
         DEBUG_SERIAL.print("Pressure(Pa): ");
         DEBUG_SERIAL.print(pressure);
 #endif
-
-        temperature = barometer.readTemp() * 100;
 #ifdef DEBUGa
         DEBUG_SERIAL.print(" Temp: ");
         DEBUG_SERIAL.print(temperature);

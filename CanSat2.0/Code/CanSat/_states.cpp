@@ -33,7 +33,7 @@
 #include "_states.h"
 #include "math.h"
 #include "USBAPI.h"
-#include "GPS.h"
+//#include "GPS.h"
 #include <EEPROM.h>
 
 float old_speed_ahead;
@@ -93,13 +93,13 @@ void send_init() {
 }
 
 void send_data() {
-    long int data[23] = {flight_state, voltage, temperature, pressure, bar_alt, humid,
+    long int data[14] = {flight_state, voltage, temperature, pressure, bar_alt, humid,
                   co2, o2, uv_light, light_vis, light_ir,
-                  magnetometer[0], magnetometer[1], magnetometer[2],
+                  magnetometer[0], magnetometer[1], magnetometer[2]/*,
                   my_fix.dateTime.hours, my_fix.dateTime.minutes, my_fix.dateTime.seconds,
                   my_fix.latitudeL(), my_fix.longitudeL(), my_fix.altitude_cm(),
-                  my_fix.velocity_north, my_fix.velocity_east, my_fix.velocity_down};
-    transmitting_send(data, 23, sending_counter++);
+                  my_fix.velocity_north, my_fix.velocity_east, my_fix.velocity_down*/};
+    transmitting_send(data, 14, sending_counter++);
 }
 
 void changeState(int new_state) {
@@ -246,14 +246,15 @@ void testing() {
     }
 }
 
-bool was_high = 0;
 
 void parachuting() {
-    if(bar_alt > 10000) was_high = 1;
     servo_parachute.write(SERVO_PARACUTE_OPEN);
     if(millis() - last_time_sent > 500) {
         last_time_sent = millis();
         send_data();
     }
-    if(bar_alt < 1000 && was_high) changeState(LANDED);
+    if(bar_alt - DESTINATION_ALT < 2000) {
+        n++;
+        if(n > 20) changeState(LANDING);
+    }
 }

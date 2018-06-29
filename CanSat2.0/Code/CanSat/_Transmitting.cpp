@@ -34,8 +34,8 @@
 #include "_states.h"
 #include "_config.h"
 
-//#include <SD.h>
-//#include <SPI.h>
+#include <SD.h>
+#include <SPI.h>
 
 RFM69 radio;
 
@@ -57,7 +57,7 @@ void transmitting_send(char message[], int len) {
         // if the file is available, write to it:
         if (dataFile) {
             dataFile.println(message);
-            dataFile.close();
+            dataFile.close()
         }
     }
 #endif
