@@ -107,39 +107,39 @@ void AS726X::printMeasurements()
 	if (_sensorVersion == SENSORTYPE_AS7262)
 	{
 		//Visible readings
-		Serial.print(" Reading: V[");
+//		Serial.print(" Reading: V[");
 		Serial.print(getCalibratedViolet(), 2);
-		Serial.print("] B[");
+		Serial.print(";");
 		Serial.print(getCalibratedBlue(), 2);
-		Serial.print("] G[");
+		Serial.print(";");
 		Serial.print(getCalibratedGreen(), 2);
-		Serial.print("] Y[");
+		Serial.print(";");
 		Serial.print(getCalibratedYellow(), 2);
-		Serial.print("] O[");
+		Serial.print(";");
 		Serial.print(getCalibratedOrange(), 2);
-		Serial.print("] R[");
+		Serial.print(";");
 		Serial.print(getCalibratedRed(), 2);
 	}
 	else if (_sensorVersion == SENSORTYPE_AS7263)
 	{
 		//Near IR readings
-		Serial.print(" Reading: R[");
+//		Serial.print(" Reading: R[");
 		Serial.print(getCalibratedR(), 2);
-		Serial.print("] S[");
+		Serial.print(";");
 		Serial.print(getCalibratedS(), 2);
-		Serial.print("] T[");
+		Serial.print(";");
 		Serial.print(getCalibratedT(), 2);
-		Serial.print("] U[");
+		Serial.print(";");
 		Serial.print(getCalibratedU(), 2);
-		Serial.print("] V[");
+		Serial.print(";");
 		Serial.print(getCalibratedV(), 2);
-		Serial.print("] W[");
+		Serial.print(";");
 		Serial.print(getCalibratedW(), 2);
 	}
 
-	Serial.print("] tempF[");
-	Serial.print(tempF, 1);
-	Serial.print("]");
+//	Serial.print("] tempF[");
+//	Serial.print(tempF, 1);
+//	Serial.print("]");
 
 	Serial.println();
 }
@@ -151,33 +151,33 @@ void AS726X::printUncalibratedMeasurements()
 	if (_sensorVersion == SENSORTYPE_AS7262)
 	{
 		//Visible readings
-		Serial.print(" Reading: V[");
+//		Serial.print(" Reading: V[");
 		Serial.print(getViolet(), 2);
-		Serial.print("] B[");
+		Serial.print(";");
 		Serial.print(getBlue(), 2);
-		Serial.print("] G[");
+		Serial.print(";");
 		Serial.print(getGreen(), 2);
-		Serial.print("] Y[");
+		Serial.print(";");
 		Serial.print(getYellow(), 2);
-		Serial.print("] O[");
+		Serial.print(";");
 		Serial.print(getOrange(), 2);
-		Serial.print("] R[");
+		Serial.print(";");
 		Serial.print(getRed(), 2);
 	}
 	else if (_sensorVersion == SENSORTYPE_AS7263)
 	{
 		//Near IR readings
-		Serial.print(" Reading: R[");
+//		Serial.print(" Reading: R[");
 		Serial.print(getR(), 2);
-		Serial.print("] S[");
+		Serial.print(";");
 		Serial.print(getS(), 2);
-		Serial.print("] T[");
+		Serial.print(";");
 		Serial.print(getT(), 2);
-		Serial.print("] U[");
+		Serial.print(";");
 		Serial.print(getU(), 2);
-		Serial.print("] V[");
+		Serial.print(";");
 		Serial.print(getV(), 2);
-		Serial.print("] W[");
+		Serial.print(";");
 		Serial.print(getW(), 2);
 	}
 
