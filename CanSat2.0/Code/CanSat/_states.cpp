@@ -80,6 +80,8 @@ byte init_state;
 
 int sending_counter;
 
+int sending_counter;
+
 void send_init() {
 //    char str[180] = {0};
 //    int len, start = 0;
@@ -257,4 +259,13 @@ void parachuting() {
         n++;
         if(n > 20) changeState(LANDING);
     }
+}
+
+void parachuting() {
+    servo_parachute.write(SERVO_PARACUTE_OPEN);
+    if(millis() - last_time_sent > 500) {
+        send_data();
+        last_time_sent = millis();
+    }
+    if(distance < 20) flight_state = LANDED;
 }

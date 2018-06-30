@@ -112,7 +112,7 @@
 
 //debugging
 
-#define DEBUG_SERIAL Serial
+#define DEBUG_SERIAL NeoSerial
 
 //PWM output to Flight Controller
 

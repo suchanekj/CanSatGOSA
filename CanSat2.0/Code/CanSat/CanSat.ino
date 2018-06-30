@@ -706,6 +706,17 @@ void loop() {
     spectroscopy[5] = spectroscop.getCalibratedW();
 #endif
 
+#ifdef COMPASS2
+    if(!mag.begin())
+    {
+        /* There was a problem detecting the HMC5883 ... check your connections */
+#ifdef DEBUG
+        Serial.println("Ooops, no HMC5883 detected ... Check your wiring!");
+#endif
+        while(1);
+    }
+#endif
+
     o2 = analogRead(O2);
     co2 = analogRead(CO2) * 5 / 8.5;
     o3 = analogRead(O3);
