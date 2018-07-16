@@ -5,9 +5,11 @@ CanSat code is software for autonomous exploration and landings of probe "CanSat
 
 The whole code is using following subcodes:
 * GroundStation - incoming datas of pressure, position, time and temperature
-* Cansat - used libraries
-* Final report (Detail information about the probe in LaTex article. Unfortunately only in Czech.)
+* Cansat (2.0) - used libraries - Code, Cirtuits...
+* Final report (Detail information about the probe Cansat in LaTex article. Unfortunately only in Czech.)
+* Pre launch report - English detail description of Cansat 2.0
 * Analysis - our own atmospheric model running on data from CanSat
+* After flight report - final description of the whole project
 
 # Support
 In case you need help with use of our program or support us, you can contact us on our public email dotazy@gosa.cz or on email of programming director suchanek989@seznam.cz
@@ -24,7 +26,7 @@ Contributions are welcome and encouraged.  You can contribute in many ways:
 # Requirements
 * Hardware requirements: qbcan for matching ports or an AVR microcontroller with RFM69HW (will have to edit port specifications)
 * Idealy used for original construction of CanSat: https://github.com/suchanekj/CanSatGOSA/tree/master/Schematics
-* Also used for original construction of CanSat 2.0: https://github.com/suchanekj/CanSatGOSA/tree/master/CanSat2.0/Schematics (in development)
+* Also used for original construction of CanSat 2.0: https://github.com/suchanekj/CanSatGOSA/tree/master/CanSat2.0/Schematics 
 * Software requirements: AVR chip programmmer
 
 # Used code
@@ -42,8 +44,10 @@ Current contributors:
 * Völfl, Lukáš (LukasVolfl)
 # Versions:
 * 1.0 Groundstation subcode created and README added 29/03/2018
-* 1.1 CanSat subcode created (**it is not completed**) and Model files completed 01/04/2018
-* 1.2 Final report (LaTex article) created (**it is not completed**) 03/04/2018
+* 1.1 CanSat subcode created and Model files completed 01/04/2018
+* 1.2 Final report (LaTex article) created 03/04/2018
 * 1.3 Final report (LaTex article) completed 12/04/2018
 * 2.0 New contributers, Analysis, CanSat 2.0 3D printed parts and PLR.pdf (Pre-launch report) added 18/06/2018
 * 2.1 Analysis part 2 completed, chamber software added 28/06/2018
+* 2.2 After flight report added, Analysis repaired and added - project completely done 16/07/2018
+ (**Thanks everyone for your support to our project!**)
